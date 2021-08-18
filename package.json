@@ -1,0 +1,79 @@
+{
+  "name": "alzaide",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "nodemon --exec babel-node app.ts",
+    "test": "ts-mocha"
+  },
+  "dependencies": {
+    "@types/mocha": "^9.0.0",
+    "chai": "^4.3.4",
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "express": "~4.16.1",
+    "mocha": "^9.0.3",
+    "morgan": "~1.9.1",
+    "nodemon": "^2.0.12",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.14.8",
+    "@babel/core": "^7.15.0",
+    "@babel/node": "^7.14.9",
+    "@babel/plugin-proposal-class-properties": "^7.14.5",
+    "@babel/plugin-proposal-object-rest-spread": "^7.14.7",
+    "@babel/plugin-transform-runtime": "^7.15.0",
+    "@babel/preset-env": "^7.15.0",
+    "@babel/preset-typescript": "^7.15.0",
+    "@babel/register": "^7.14.5",
+    "@types/express": "^4.17.13",
+    "@types/node": "^16.4.13",
+    "@types/uuid": "^8.3.1",
+    "ts-mocha": "^8.0.0",
+    "typescript": "^4.3.5"
+  },
+  "babel": {
+    "plugins": [
+      [
+        "@babel/plugin-transform-runtime",
+        {
+          "regenerator": true
+        }
+      ],
+      "@babel/proposal-class-properties",
+      "@babel/proposal-object-rest-spread"
+    ],
+    "presets": [
+      [
+        "@babel/env",
+        {
+          "targets": {
+            "node": "14"
+          }
+        }
+      ],
+      "@babel/typescript"
+    ]
+  },
+  "mocha": {
+    "extension": [
+      "js"
+    ],
+    "package": "./package.json",
+    "reporter": "spec",
+    "slow": 75,
+    "timeout": 2000,
+    "ui": "bdd",
+    "spec": "tst/**/*.spec.ts",
+    "watch-files": [
+      "src/**/*.*s",
+      "tst/**/*.*s"
+    ],
+    "watch-ignore": [
+      "node_modules"
+    ],
+    "require": "@babel/register",
+    "exit": true
+  }
+}
