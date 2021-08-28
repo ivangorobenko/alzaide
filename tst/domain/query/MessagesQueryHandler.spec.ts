@@ -9,7 +9,6 @@ import {InMemoryMessageRepositoryImpl} from "../../../src/application/repos/InMe
 describe("Query de message", () => {
     it('doit récupérer tous les messages existant', function () {
         //GIVEN
-
         const repository: MessageRepository = new InMemoryMessageRepositoryImpl();
         const messageOrError1: Result<Message> = Message.create("1", "Message 1", 123);
         const messageOrError2: Result<Message> = Message.create("2", "Message 2", 124);
@@ -33,5 +32,17 @@ describe("Query de message", () => {
         expect(message2.contenu).to.be.equals("Message 2");
         expect(message2.timestamp).to.be.equals(124);
     });
+    it("doit renvoyer la liste vide s'il n'existe aucun message", function () {
+        //GIVEN
+        const repository: MessageRepository = new InMemoryMessageRepositoryImpl();
 
+        const messagesQueryHandler = new MessagesQueryHandler(repository);
+        //WHEN
+        const resultOrError = messagesQueryHandler.handle(new MessagesQuery());
+
+        //THEN
+        expect(resultOrError.isFailure).to.be.false;
+        const messages: Message[] = resultOrError.getValue();
+        expect(messages.length).to.be.equals(0);
+    });
 });
