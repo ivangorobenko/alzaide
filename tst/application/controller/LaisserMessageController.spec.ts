@@ -1,6 +1,6 @@
 import chai, {expect} from "chai";
 
-import {LaisserMessageController} from "../../../src/application/use_cases/LaisserMessageController";
+import {LaisserMessageController} from "../../../src/application/controller/LaisserMessageController";
 import {Request, Response} from "express";
 import {LAISSER_MESSAGE} from "../../../src/domain/command/LaisserMessageCommandHandler";
 import {TestableCommandBus} from "./TestableCommandBus";

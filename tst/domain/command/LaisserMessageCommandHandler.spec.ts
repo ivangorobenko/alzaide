@@ -14,10 +14,10 @@ describe("LaisserMessageCommandHandler", () => {
         //GIVEN
         let savedMessage = undefined;
         const command = new LaisserMessage("Mon message");
-        const sut = new LaisserMessageCommandHandler(command, {save: (id, message) => savedMessage = message}, {now: () => 123});
+        const sut = new LaisserMessageCommandHandler({save: (id, message) => savedMessage = message}, {now: () => 123});
 
         //WHEN
-        sut.handle();
+        sut.handle(command);
 
         //THEN
         savedMessage.contenu.should.be.equals("Mon message");
@@ -27,10 +27,10 @@ describe("LaisserMessageCommandHandler", () => {
         //GIVEN
         let savedMessage: Message = undefined;
         const command = new LaisserMessage("Mon message");
-        const sut = new LaisserMessageCommandHandler(command, {save: (id, message) => savedMessage = message}, {now: () => 123});
+        const sut = new LaisserMessageCommandHandler({save: (id, message) => savedMessage = message}, {now: () => 123});
 
         //WHEN
-        sut.handle();
+        sut.handle(command);
 
         //THEN
         expect(savedMessage).to.be.an.instanceof(Message);
@@ -39,10 +39,10 @@ describe("LaisserMessageCommandHandler", () => {
         //GIVEN
         let savedMessage: Message;
         const command = new LaisserMessage("");
-        const sut = new LaisserMessageCommandHandler(command, {save: (id, message) => savedMessage = message}, {now: () => 123});
+        const sut = new LaisserMessageCommandHandler({save: (id, message) => savedMessage = message}, {now: () => 123});
 
         //WHEN
-        const resultOrError: Result<any> = sut.handle();
+        const resultOrError: Result<any> = sut.handle(command);
 
         //THEN
         expect(resultOrError.isFailure).to.be.true;
@@ -51,10 +51,10 @@ describe("LaisserMessageCommandHandler", () => {
         //GIVEN
         let savedMessage: Message;
         const command = new LaisserMessage("Mon message");
-        const sut = new LaisserMessageCommandHandler(command, {save: (id, message) => savedMessage = message}, {now: () => 123});
+        const sut = new LaisserMessageCommandHandler({save: (id, message) => savedMessage = message}, {now: () => 123});
 
         //WHEN
-        const resultOrError: Result<MessageLaisseEvent> = sut.handle();
+        const resultOrError: Result<MessageLaisseEvent> = sut.handle(command);
 
         //THEN
         expect(resultOrError.getValue()).to.be.an.instanceof(MessageLaisseEvent);
