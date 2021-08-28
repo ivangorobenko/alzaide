@@ -1,5 +1,7 @@
+// @ts-ignore
 import chai,{expect} from "chai";
 import {buildApp} from "../../../../src/buildApp";
+// @ts-ignore
 import chaiHttp from "chai-http";
 
 chai.should();

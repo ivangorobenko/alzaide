@@ -2,8 +2,8 @@ import {Application} from "express";
 import {configureMessageRoutes} from "./infrastructure/http/routes/messageRoutes";
 import {CommandBus} from "./core/CommandBus";
 import {LAISSER_MESSAGE, LaisserMessageCommandHandler} from "./domain/command/LaisserMessageCommandHandler";
-import {InMemoryRepository} from "./repos/InMemoryRepository";
 import {Timer} from "./core/Timer";
+import {MessageRepositoryImpl} from "./application/repos/MessageRepositoryImpl";
 
 const express = require('express');
 const path = require('path');
@@ -20,7 +20,7 @@ export const buildApp =
         app.use(cookieParser());
         app.use(express.static(path.join(__dirname, 'public')));
         const commandBus = new CommandBus()
-        commandBus.subscribe(LAISSER_MESSAGE, new LaisserMessageCommandHandler(new InMemoryRepository(), new Timer()))
+        commandBus.subscribe(LAISSER_MESSAGE, new LaisserMessageCommandHandler(new MessageRepositoryImpl(), new Timer()))
         app.use('/', configureMessageRoutes(commandBus));
 
         return app;

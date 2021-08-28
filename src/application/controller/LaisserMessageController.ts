@@ -11,7 +11,6 @@ export class LaisserMessageController {
 
     laisserMessage(req: Request, res: Response) {
         const resultOrError = this.commandBus.dispatch(new LaisserMessage(req.body.message));
-        console.log(resultOrError.isFailure);
         res.sendStatus(resultOrError.isFailure ? 500 : 200);
     }
 }

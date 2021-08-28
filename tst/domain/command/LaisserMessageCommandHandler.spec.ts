@@ -1,3 +1,4 @@
+// @ts-ignore
 import chai, {expect} from "chai";
 import {Message} from "../../../src/domain/agregat/Message";
 import {Result} from "../../../src/core/Result";
@@ -22,18 +23,27 @@ describe("LaisserMessageCommandHandler", () => {
         //THEN
         savedMessage.contenu.should.be.equals("Mon message");
         savedMessage.timestamp.should.be.equals(123);
+        expect(savedMessage).to.be.an.instanceof(Message);
+
     });
-    it('doit enregistrer un agrégat Message', function () {
+    it('doit enregistrer un agrégat Message avec un identifiant unique', function () {
         //GIVEN
-        let savedMessage: Message = undefined;
-        const command = new LaisserMessage("Mon message");
-        const sut = new LaisserMessageCommandHandler({save: (id, message) => savedMessage = message}, {now: () => 123});
+        const ids = [];
+        const command1 = new LaisserMessage("Mon message 1");
+        const command2 = new LaisserMessage("Mon message 2");
+        // @ts-ignore
+        const sut = new LaisserMessageCommandHandler({
+            save: (id, message) => {
+                ids.push(id);
+            }
+        }, {now: () => 123});
 
         //WHEN
-        sut.handle(command);
+        sut.handle(command1);
+        sut.handle(command2);
 
         //THEN
-        expect(savedMessage).to.be.an.instanceof(Message);
+        expect(ids[0]).to.not.be.equal(ids[1]);
     });
     it('doit renvoyer un erreur en cas d echec de traitement de la commande', function () {
         //GIVEN
