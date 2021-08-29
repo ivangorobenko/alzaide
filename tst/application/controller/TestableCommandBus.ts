@@ -16,6 +16,6 @@ export class TestableCommandBus extends CommandBus {
 
     dispatch(command: Command): Result<string> {
         this._dispatchedCommand = command;
-        return this.failDispatch ? Result.fail("Faileure") : Result.ok();
+        return this.failDispatch ? Result.fail("Echec") : Result.ok();
     }
 }

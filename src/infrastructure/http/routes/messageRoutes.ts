@@ -1,12 +1,15 @@
 import express, {Request, Response} from "express";
-import {LaisserMessageController} from "../../../application/controller/LaisserMessageController";
+import {MessageController} from "../../../application/controller/MessageController";
 import {CommandBus} from "../../../core/CommandBus";
 
-const memberRouter = express.Router();
+const messageRouter = express.Router();
 
 export const configureMessageRoutes = (commandBus: CommandBus) => {
-    memberRouter.put('/message',
-        (req: Request, res: Response) => new LaisserMessageController(commandBus).laisserMessage(req, res)
+    messageRouter.put('/message',
+        (req: Request, res: Response) => new MessageController(commandBus).laisserMessage(req, res)
     )
-    return memberRouter;
+    messageRouter.get('/messages',
+        (req: Request, res: Response) => new MessageController(commandBus).laisserMessage(req, res)
+    )
+    return messageRouter;
 }
