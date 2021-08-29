@@ -1,18 +1,8 @@
 import {expect} from "chai";
 import {Message} from "../../../src/domain/agregat/Message";
 import {MessageDataMapper} from "../../../src/application/mapper/MessageDataMapper";
+import {MessageDB} from "../../../src/application/repos/MessageDB";
 
-export class MessageDB {
-    id;
-    contenu;
-    timestamp;
-
-    constructor(id: string, contenu: string, timestamp: number) {
-        this.id = id;
-        this.contenu = contenu;
-        this.timestamp = timestamp;
-    }
-}
 
 describe("MessageDataMapper", () => {
     it("doit permettre de mapper un objet MessageDB venant de la persistence vers une entité Message", function () {

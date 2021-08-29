@@ -1,5 +1,5 @@
-import {MessageDB} from "../../../tst/application/mapper/MessageDataMapper.spec";
 import {Message} from "../../domain/agregat/Message";
+import {MessageDB} from "../repos/MessageDB";
 
 export class MessageDataMapper {
     static mapFromDBToDomain(messageDB: MessageDB): Message {

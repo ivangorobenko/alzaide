@@ -1,3 +1,4 @@
+// @ts-ignore
 import chai, {expect} from "chai";
 
 import {MessageController} from "../../../src/application/controller/MessageController";
@@ -24,6 +25,7 @@ describe("MessageController", () => {
             //THEN
             expect(commandBus.dispatchedCommand).to.not.be.undefined;
             expect(commandBus.dispatchedCommand.type).to.be.equal(LAISSER_MESSAGE);
+            // @ts-ignore
             expect(commandBus.dispatchedCommand.contenu).to.be.equal("Mon message");
         });
 

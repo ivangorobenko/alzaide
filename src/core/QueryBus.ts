@@ -2,7 +2,7 @@ import {Query} from "./Query";
 import {QueryHandler} from "./QueryHandler";
 import {Result} from "./Result";
 
-export interface QueryHandlers<> {
+export interface QueryHandlers {
     [type: string]: QueryHandler<any>;
 }
 
