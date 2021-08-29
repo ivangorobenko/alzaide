@@ -1,6 +1,6 @@
 import {Result} from "./Result";
-import {Event} from "./Event";
+import {Query} from "./Query";
 
 export interface QueryHandler<T> {
-    handle(Command): Result<Event>;
+    handle(query: Query): Result<T>;
 }

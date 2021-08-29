@@ -13,7 +13,7 @@ describe("La configuration de routes", () => {
             expect(res.status).to.be.equal(200)
         })
     });
-    it.skip('doit rendre accessible la route GET /messages', function () {
+    it('doit rendre accessible la route GET /messages', function () {
         chai.request(buildApp()).get("/messages",).end((err,res)=>{
             expect(res.status).to.be.equal(200)
         })
