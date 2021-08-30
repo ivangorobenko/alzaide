@@ -1,7 +1,7 @@
 import {Request, Response} from "express";
 import {CommandBus} from "../../core/CommandBus";
-import {LaisserMessage} from "../../domain/command/LaisserMessageCommandHandler";
 import {QueryBus} from "../../core/QueryBus";
+import {LaisserMessage} from "../../domain/command/LaisserMessageCommandHandler";
 import {MessagesQuery} from "../../domain/query/MessagesQueryHandler";
 
 export class MessageController {

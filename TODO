@@ -1,4 +1,4 @@
-- FIX: ne doit pas sauvegarder de message si n'arrive pas à lire le contenu ex. de test avec content type foireux
-- Ajouter le linter, le hook de pré-commit
+- Ajouter le hook de pré-commit avec husky
+- Mettre en place une pipeline
 - Ajouter le ReadMe
 - Ajouter un test d'intégration qui test écriture puis la lecture de messages ?
