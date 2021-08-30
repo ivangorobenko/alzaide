@@ -1,4 +1,5 @@
 import {Result} from "../../core/Result";
+import {log} from "util";
 
 export class Message {
     get timestamp(): number {
@@ -25,9 +26,14 @@ export class Message {
 
 
     public static create(id: string, contenu: string, timestamp: number): Result<Message> {
-        if (contenu === "") return Result.fail("Le contenu de message ne peut pas être vide")
-        if (!timestamp) return Result.fail("Le contenu du message ne peut pas être vide")
-        if (!id) return Result.fail("L'idenntifiant du message ne peut pas être absent")
-        return Result.ok(new Message(id, contenu, timestamp))
+        const hasMissingValue = (value: any) => !value;
+
+        const findAParameterWithError = (parameters: any) => {
+            const parameterWithError = Object.entries(parameters).find(([key, value]) => hasMissingValue(value));
+            return parameterWithError ? parameterWithError[0] : undefined;
+        };
+        const parameterNameWithError = findAParameterWithError({id, contenu, timestamp});
+
+        return parameterNameWithError ? Result.fail(`${parameterNameWithError} du message ne peut pas être vide`) : Result.ok(new Message(id, contenu, timestamp))
     }
 }
