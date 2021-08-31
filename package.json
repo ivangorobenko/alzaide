@@ -222,9 +222,14 @@
       }
     }
   },
+  "lint-staged": {
+    "{src,test}/**/*.{ts,js,jsx}": [
+      "node_modules/eslint/bin/eslint.js --fix"
+    ]
+  },
   "husky": {
     "hooks": {
-      "pre-commit": "echo '#### TEST start..' && yarn test > /dev/null && echo '..end'"
+      "pre-commit": "echo '### LINT start..' && lint-staged > /dev/null && echo '..end #### TEST start..' && yarn test > /dev/null && echo '..end'"
     }
   }
 }
