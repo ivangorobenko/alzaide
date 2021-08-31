@@ -43,7 +43,8 @@
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-simple-import-sort": "^5.0.3",
     "eslint-plugin-unused-imports": "^0.1.2",
-    "prettier": "^2.3.2"
+    "prettier": "^2.3.2",
+    "husky": "^4.2.5"
   },
   "babel": {
     "plugins": [
@@ -179,7 +180,12 @@
         "rules": {
           "@typescript-eslint/no-explicit-any": 0,
           "@typescript-eslint/explicit-module-boundary-types": 0,
-          "@typescript-eslint/no-unused-vars": ["error", { "args": "none" }],
+          "@typescript-eslint/no-unused-vars": [
+            "error",
+            {
+              "args": "none"
+            }
+          ],
           "unused-imports/no-unused-imports": 0
         }
       },
@@ -214,6 +220,11 @@
           ]
         }
       }
+    }
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "echo '..end #### TEST start..' && yarn test > /dev/null && echo '..end'"
     }
   }
 }
