@@ -224,7 +224,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "echo '..end #### TEST start..' && yarn test > /dev/null && echo '..end'"
+      "pre-commit": "echo '#### TEST start..' && yarn test > /dev/null && echo '..end'"
     }
   }
 }
