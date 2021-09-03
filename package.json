@@ -27,6 +27,8 @@
     "@babel/preset-env": "^7.15.0",
     "@babel/preset-typescript": "^7.15.0",
     "@babel/register": "^7.14.5",
+    "@commitlint/cli": "^13.1.0",
+    "@commitlint/config-conventional": "^13.1.0",
     "@types/express": "^4.17.13",
     "@types/node": "^16.4.13",
     "@types/uuid": "^8.3.1",
@@ -229,7 +231,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "echo '### LINT start..' && lint-staged > /dev/null && echo '..end #### TEST start..' && yarn test > /dev/null && echo '..end'"
+      "pre-commit": "echo '#### TEST start..' && yarn test > /dev/null && echo '..end'"
     }
   }
 }
