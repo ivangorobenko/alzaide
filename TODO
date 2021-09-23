@@ -1,4 +1,3 @@
-- Ajouter le hook de pré-commit avec husky
 - Mettre en place une pipeline
 - Ajouter le ReadMe
 - Ajouter un test d'intégration qui test écriture puis la lecture de messages ?
