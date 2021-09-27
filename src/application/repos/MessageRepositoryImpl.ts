@@ -1,21 +1,23 @@
-import {MessageRepository} from "./MessageRepository";
-import {Message} from "../../domain/agregat/Message";
 import {MessageDB} from "../../../tst/application/mapper/MessageDataMapper.spec";
+import {Message} from "../../domain/agregat/Message";
 import {MessageDataMapper} from "../mapper/MessageDataMapper";
+import {MessageRepository} from "./MessageRepository";
 
 interface MessagesDB {
-    [name: string]: MessageDB
+    [name: string]: MessageDB;
 }
 
 export class MessageRepositoryImpl implements MessageRepository {
     private readonly data: MessagesDB;
 
     constructor() {
-        this.data = {}
+        this.data = {};
     }
 
     findAllMessages(): Message[] {
-        const messages: Message[] = Object.values(this.data).map((messageDB) => MessageDataMapper.mapFromDBToDomain(messageDB))
+        const messages: Message[] = Object.values(this.data).map(messageDB =>
+            MessageDataMapper.mapFromDBToDomain(messageDB)
+        );
         return messages;
     }
 

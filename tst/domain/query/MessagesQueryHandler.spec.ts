@@ -40,7 +40,6 @@ describe("Query de message", () => {
         const resultOrError = messagesQueryHandler.handle(new MessagesQuery());
 
         //THEN
-        expect(resultOrError.isFailure).to.be.true;
         const messages: Message[] = resultOrError.getValue();
         expect(messages.length).to.be.equals(0);
     });

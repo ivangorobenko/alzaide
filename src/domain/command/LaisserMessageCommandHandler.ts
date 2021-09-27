@@ -18,8 +18,7 @@ export class LaisserMessageCommandHandler {
     }
 
     handle(command: LaisserMessage): Result<MessageLaisseEvent> {
-        console.log({command: command.contenu});
-        const messageOrError: Result<Message> = Message.create(uuidv4(), command.contenu.message, this.timer.now());
+        const messageOrError: Result<Message> = Message.create(uuidv4(), command.message, this.timer.now());
         if (messageOrError.isFailure) return Result.fail("Le message n'a pas pu être laissé");
         const message: Message = messageOrError.getValue();
         this.repository.save(message.id, message);
@@ -28,7 +27,7 @@ export class LaisserMessageCommandHandler {
 }
 
 export class LaisserMessage extends Command {
-    constructor(readonly contenu: any) {
+    constructor(readonly message: string) {
         super(LAISSER_MESSAGE);
     }
 }

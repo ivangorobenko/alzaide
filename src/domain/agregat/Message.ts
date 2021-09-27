@@ -31,10 +31,6 @@ export class Message {
             return parameterWithError ? parameterWithError[0] : undefined;
         };
         const parameterNameWithError = findAParameterWithError({id, contenu, timestamp});
-        console.log({contenu});
-        console.log({id});
-        console.log({timestamp});
-        console.log(parameterNameWithError);
 
         return parameterNameWithError
             ? Result.fail(`${parameterNameWithError} du message ne peut pas être vide`)

@@ -1,50 +1,53 @@
 // @ts-ignore
 import chai, {expect} from "chai";
-
-import {MessageController} from "../../../src/application/controller/MessageController";
 import {Request, Response} from "express";
-import {LAISSER_MESSAGE} from "../../../src/domain/command/LaisserMessageCommandHandler";
-import {TestableCommandBus} from "./TestableCommandBus";
-import {RECUPERER_MESSAGES} from "../../../src/domain/query/MessagesQueryHandler";
-import {TestableQueryBus} from "./TestableQueryBus";
+import {MessageController} from "../../../src/application/controller/MessageController";
 import {CommandBus} from "../../../src/core/CommandBus";
 import {QueryBus} from "../../../src/core/QueryBus";
+import {Message} from "../../../src/domain/agregat/Message";
+import {LAISSER_MESSAGE} from "../../../src/domain/command/LaisserMessageCommandHandler";
+import {RECUPERER_MESSAGES} from "../../../src/domain/query/MessagesQueryHandler";
+import {TestableCommandBus} from "./TestableCommandBus";
+import {TestableQueryBus} from "./TestableQueryBus";
 
 chai.should();
 
 describe("MessageController", () => {
     describe("sur l'action laisserMessage", () => {
-        it('doit dispatcher la commande pour laisser un message', function () {
+        it("doit dispatcher la commande pour laisser un message", function () {
             //GIVEN
             const commandBus: TestableCommandBus = new TestableCommandBus();
             const sut = new MessageController(commandBus, {} as QueryBus);
 
             //WHEN
-            sut.laisserMessage({body: {message: "Mon message"}} as Request, {sendStatus: (code: number) => undefined} as Response);
+            sut.laisserMessage(
+                {body: {message: "Mon message"}} as Request,
+                {sendStatus: (code: number) => undefined} as Response
+            );
 
             //THEN
             expect(commandBus.dispatchedCommand).to.not.be.undefined;
             expect(commandBus.dispatchedCommand.type).to.be.equal(LAISSER_MESSAGE);
             // @ts-ignore
-            expect(commandBus.dispatchedCommand.contenu).to.be.equal("Mon message");
+            expect(commandBus.dispatchedCommand.message).to.be.equal("Mon message");
         });
 
-        it("doit renvoyer 200 si l'appel s'est correctement passé", function () {
+        it("doit renvoyer 204 si l'appel s'est correctement passé", function () {
             //GIVEN
             const commandBus: TestableCommandBus = new TestableCommandBus();
             const sut = new MessageController(commandBus, {} as QueryBus);
 
             //WHEN
-            let expectedStatus: number = 0;
-            let res = {
+            let expectedStatus = 0;
+            const res = {
                 sendStatus: (code: number) => {
                     expectedStatus = code;
-                }
+                },
             } as Response;
             sut.laisserMessage({body: {message: "Mon message"}} as Request, res);
 
             //THEN
-            expect(expectedStatus).to.be.equals(200);
+            expect(expectedStatus).to.be.equals(204);
         });
 
         it("doit renvoyer 500 si l'appel est tombé en erreur", function () {
@@ -53,85 +56,69 @@ describe("MessageController", () => {
             const sut = new MessageController(commandBus, {} as QueryBus);
 
             //WHEN
-            let resultStatusCode: number = 0;
-            let res = {
+            let resultStatusCode = 0;
+            const res = {
                 sendStatus: (code: number) => {
                     resultStatusCode = code;
-                }
+                },
             } as Response;
             sut.laisserMessage({body: {message: ""}} as Request, res);
 
             //THEN
             expect(resultStatusCode).to.be.equals(500);
         });
-    })
+    });
     describe("sur l'action recupererMessages", () => {
         it("doit dispatcher la query pour récupérer l'ensemble de messages", function () {
             //GIVEN
-            const queryBus: TestableQueryBus = new TestableQueryBus();
+            const messages = [Message.create("1", "Message 1", 123), Message.create("2", "Message 2", 123)];
+            const queryBus: TestableQueryBus = new TestableQueryBus(false, messages);
             const sut = new MessageController({} as CommandBus, queryBus);
 
             //WHEN
-            sut.recupererMessages({} as Request, {
-                status: (code: number) => ({
-                    send: () => undefined
-                })
-            } as Response);
+            sut.recupererMessages(
+                {} as Request,
+                {
+                    status: (code: number) => ({
+                        send: () => undefined,
+                    }),
+                } as Response
+            );
 
             //THEN
             expect(queryBus.dispatchedQuery).to.not.be.undefined;
             expect(queryBus.dispatchedQuery.type).to.be.equal(RECUPERER_MESSAGES);
         });
-        it("doit renvoyer la liste de messages quand l'opération s'est bien passée", function () {
+        it("doit renvoyer le code http 200 et la liste de messages quand l'opération s'est bien passée", function () {
             //GIVEN
-            let messages = ["Message1", "Message2"];
-            const queryBus: TestableQueryBus = new TestableQueryBus(false, messages);
+
+            const message1 = Message.create("1", "Message 1", 123).getValue();
+            const message2 = Message.create("2", "Message 2", 123).getValue();
+            const queryBus: TestableQueryBus = new TestableQueryBus(false, [message1, message2]);
             const sut = new MessageController({} as CommandBus, queryBus);
 
             //WHEN
-            let messagesRécuperés;
+            let messagesRecuperes;
             let statusEnvoyé;
-            sut.recupererMessages({} as Request, {
+            sut.recupererMessages(undefined, {
                 status: (status: number) => {
-                    statusEnvoyé = status
-                    return ({
+                    statusEnvoyé = status;
+                    return {
                         send: (body: any) => {
-                            messagesRécuperés = body;
-                        }
-                    });
-                }
-            } as Response);
+                            messagesRecuperes = body;
+                        },
+                    };
+                },
+            });
 
             //THEN
-            messagesRécuperés.forEach((messageRécupéré, i) => {
-                expect(messageRécupéré).to.be.equal(messages[i]);
-            })
-            expect(queryBus.dispatchedQuery.type).to.be.equal(RECUPERER_MESSAGES);
+            expect(messagesRecuperes[0].contenu).to.be.equal(message1.contenu);
+            expect(messagesRecuperes[0].contenu).to.be.equal(message1.contenu);
+            expect(messagesRecuperes[1].timestamp).to.be.equal(message2.timestamp);
+            expect(messagesRecuperes[1].timestamp).to.be.equal(message2.timestamp);
             expect(statusEnvoyé).to.be.equal(200);
         });
-        it("doit renvoyer code 200 l'opération s'est bien passée", function () {
-            //GIVEN
-            const queryBus: TestableQueryBus = new TestableQueryBus(false);
-            const sut = new MessageController({} as CommandBus, queryBus);
 
-            //WHEN
-            let messagesRécuperés;
-            let statusEnvoye;
-            sut.recupererMessages({} as Request, {
-                status: (status: number) => {
-                    statusEnvoye = status
-                    return ({
-                        send: (body: any) => {
-                            messagesRécuperés = body;
-                        }
-                    });
-                }
-            } as Response);
-
-            //THEN
-
-            expect(statusEnvoye).to.be.equal(200);
-        });
         it("doit renvoyer code 500 l'opération est tombée en échec", function () {
             //GIVEN
             const queryBus: TestableQueryBus = new TestableQueryBus(true);
@@ -139,19 +126,18 @@ describe("MessageController", () => {
 
             //WHEN
             let statusEnvoyé;
-            sut.recupererMessages({} as Request, {
-                status: (status: number) => {
-                    statusEnvoyé = status
-                    return ({
-                        send: (body: any) => {
-                        }
-                    });
-                }
-            } as Response);
+            sut.recupererMessages(
+                {} as Request,
+                {
+                    sendStatus: (status: number) => {
+                        statusEnvoyé = status;
+                    },
+                } as Response
+            );
 
             //THEN
 
             expect(statusEnvoyé).to.be.equal(500);
         });
-    })
-})
+    });
+});

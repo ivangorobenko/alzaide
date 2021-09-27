@@ -6,12 +6,8 @@ import {QueryBus} from "../../../core/QueryBus";
 const messageRouter = express.Router();
 
 export const configureMessageRoutes = (commandBus: CommandBus, queryBus: QueryBus) => {
-    messageRouter.put("/message", (req: Request, res: Response) => {
-        console.log("ici");
-        new MessageController(commandBus, queryBus).laisserMessage(req, res);
-    });
-    messageRouter.get("/messages", (req: Request, res: Response) =>
-        new MessageController(commandBus, queryBus).recupererMessages(req, res)
-    );
+    const messageController = new MessageController(commandBus, queryBus);
+    messageRouter.put("/message", (req: Request, res: Response) => messageController.laisserMessage(req, res));
+    messageRouter.get("/messages", (req: Request, res: Response) => messageController.recupererMessages(req, res));
     return messageRouter;
 };
