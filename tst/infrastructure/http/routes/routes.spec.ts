@@ -24,4 +24,11 @@ describe("La configuration de routes", () => {
                 expect(res.status).to.be.equal(200);
             });
     });
+    it("doit rendre accessible la route DELETE /messages:id", function () {
+        chai.request(buildApp())
+            .delete("/messages/1")
+            .end((err, res) => {
+                expect(res.status).to.be.equal(204);
+            });
+    });
 });

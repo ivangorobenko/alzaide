@@ -34,5 +34,6 @@ describe("MessageDataMapper", () => {
         //THEN
         expect(messageDTO.contenu).to.be.equal(message.contenu);
         expect(messageDTO.timestamp).to.be.equal(message.timestamp);
+        expect(messageDTO.id).to.be.equal(message.id);
     });
 });

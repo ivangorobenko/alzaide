@@ -6,9 +6,12 @@ import {CommandBus} from "../../../src/core/CommandBus";
 import {QueryBus} from "../../../src/core/QueryBus";
 import {Message} from "../../../src/domain/agregat/Message";
 import {LAISSER_MESSAGE} from "../../../src/domain/command/LaisserMessageCommandHandler";
+import {SUPPRIMER_MESSAGE} from "../../../src/domain/command/SupprimerMessageCommandHandler";
 import {RECUPERER_MESSAGES} from "../../../src/domain/query/MessagesQueryHandler";
 import {TestableCommandBus} from "./TestableCommandBus";
 import {TestableQueryBus} from "./TestableQueryBus";
+import exp = require("constants");
+import {StatusCodes} from "http-status-codes";
 
 chai.should();
 
@@ -139,5 +142,59 @@ describe("MessageController", () => {
 
             expect(statusEnvoyé).to.be.equal(500);
         });
+    });
+    describe("sur l'action supprimerMessage", function () {
+        it("doit dispatcher la commande SupprimerMessage", () => {
+            //GIVEN
+            const commandBus: TestableCommandBus = new TestableCommandBus();
+            const sut = new MessageController(commandBus, {} as QueryBus);
+
+            //WHEN
+            sut.supprimerMessage({params: {id: "1"}} as Request, {sendStatus: (code: number) => undefined} as Response);
+
+            //THEN
+            expect(commandBus.dispatchedCommand).to.not.be.undefined;
+            expect(commandBus.dispatchedCommand.type).to.be.equal(SUPPRIMER_MESSAGE);
+            // @ts-ignore
+            expect(commandBus.dispatchedCommand.id).to.be.equal("1");
+        });
+        it("doit renvoyer 204 si la suppression s'est correctement déroulée", () => {
+            //GIVEN
+            const commandBus: TestableCommandBus = new TestableCommandBus();
+            const sut = new MessageController(commandBus, {} as QueryBus);
+            let responseCode;
+
+            //WHEN
+            sut.supprimerMessage(
+                {params: {id: "1"}} as Request,
+                {
+                    sendStatus: (code: number) => {
+                        responseCode = code;
+                    },
+                } as Response
+            );
+
+            //THEN
+            expect(responseCode).to.be.equal(204);
+        });
+    });
+    it("doit renvoyer Bad request si le traitement de la commande renvoie un échec", () => {
+        //GIVEN
+        const commandBus: TestableCommandBus = new TestableCommandBus(true);
+        const sut = new MessageController(commandBus, {} as QueryBus);
+        let responseCode;
+
+        //WHEN
+        sut.supprimerMessage(
+            {params: {id: "1"}} as Request,
+            {
+                sendStatus: (code: number) => {
+                    responseCode = code;
+                },
+            } as Response
+        );
+
+        //THEN
+        expect(responseCode).to.be.equal(StatusCodes.BAD_REQUEST);
     });
 });

@@ -11,7 +11,7 @@ export class InMemoryMessageRepositoryImpl implements MessageRepository {
     private readonly data: MessagesDB;
 
     constructor() {
-        this.data = {}
+        this.data = {};
     }
 
     findAllMessages(): Message[] {
@@ -22,5 +22,9 @@ export class InMemoryMessageRepositoryImpl implements MessageRepository {
     async save(id: string, value: Message): Promise<void> {
         const messageDB = MessageDataMapper.mapFromDomainToDB(value);
         this.data[id] = messageDB;
+    }
+
+    async delete(id: string): Promise<void> {
+        if (this.data[id]) delete this.data[id];
     }
 }

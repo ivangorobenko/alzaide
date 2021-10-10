@@ -17,7 +17,7 @@ export class CommandBus {
 
     dispatch(command: Command): Result<string> {
         const resultOrError = this.handlers[command.type]?.handle(command);
-        if (resultOrError.isFailure) return Result.fail(resultOrError.error)
-        return Result.ok(resultOrError.getValue().id)
+        if (resultOrError.isFailure) return Result.fail(resultOrError.error);
+        return Result.ok(resultOrError.getValue().id);
     }
 }

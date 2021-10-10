@@ -1,4 +1,5 @@
 import express, {Request, Response} from "express";
+// eslint-disable-next-line no-restricted-imports
 import {MessageController} from "../../../application/controller/MessageController";
 import {CommandBus} from "../../../core/CommandBus";
 import {QueryBus} from "../../../core/QueryBus";
@@ -9,5 +10,8 @@ export const configureMessageRoutes = (commandBus: CommandBus, queryBus: QueryBu
     const messageController = new MessageController(commandBus, queryBus);
     messageRouter.put("/message", (req: Request, res: Response) => messageController.laisserMessage(req, res));
     messageRouter.get("/messages", (req: Request, res: Response) => messageController.recupererMessages(req, res));
+    messageRouter.delete("/messages/:id", (req: Request, res: Response) => {
+        messageController.supprimerMessage(req, res);
+    });
     return messageRouter;
 };

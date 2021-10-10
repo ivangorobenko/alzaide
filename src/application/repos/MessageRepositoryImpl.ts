@@ -25,4 +25,8 @@ export class MessageRepositoryImpl implements MessageRepository {
         const messageDB = MessageDataMapper.mapFromDomainToDB(value);
         this.data[id] = messageDB;
     }
+
+    async delete(id: string): Promise<void> {
+        delete this.data[id];
+    }
 }

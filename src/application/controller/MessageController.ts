@@ -6,6 +6,7 @@ import {Message} from "../../domain/agregat/Message";
 import {LaisserMessage} from "../../domain/command/LaisserMessageCommandHandler";
 import {MessagesQuery} from "../../domain/query/MessagesQueryHandler";
 import {MessageDataMapper} from "../mapper/MessageDataMapper";
+import {SupprimerMessage} from "../../domain/command/SupprimerMessageCommandHandler";
 
 export class MessageController {
     private commandBus: CommandBus;
@@ -28,5 +29,11 @@ export class MessageController {
         const resultOrError = this.queryBus.dispatch(new MessagesQuery());
         if (resultOrError.isFailure) return res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
         res.status(StatusCodes.OK).send(doSend(resultOrError.getValue()));
+    }
+
+    supprimerMessage(req: Request, res: Response) {
+        const resultOrError = this.commandBus.dispatch(new SupprimerMessage(req.params.id));
+        if (resultOrError.isFailure) return res.sendStatus(StatusCodes.BAD_REQUEST);
+        res.sendStatus(StatusCodes.NO_CONTENT);
     }
 }

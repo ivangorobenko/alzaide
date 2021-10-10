@@ -1,3 +1,1 @@
-- Mettre en place une pipeline
-- Ajouter le ReadMe
-- Ajouter un test d'intégration qui test écriture puis la lecture de messages ?
+- Ordonner la query de messages dans l'ordre descendant
