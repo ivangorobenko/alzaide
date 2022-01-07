@@ -12,7 +12,7 @@ import {LAISSER_MESSAGE, LaisserMessageCommandHandler} from "./domain/command/La
 import {SUPPRIMER_MESSAGE, SupprimerMessageCommandHandler} from "./domain/command/SupprimerMessageCommandHandler";
 import {RECUPERER_MESSAGES, RecupererMessagesQueryHandler} from "./domain/query/RecupererMessagesQueryHandler";
 import {configureMessageRoutes} from "./infrastructure/http/routes/messageRoutes";
-import {MessageRepositoryImpl} from "./infrastructure/repository/MessageRepositoryImpl";
+import {FileMessageRepositoryImpl} from "./infrastructure/repository/FileMessageRepositoryImpl";
 
 export const buildApp = (): Application => {
     const app = express();
@@ -26,24 +26,32 @@ export const buildApp = (): Application => {
     app.use(cookieParser());
     app.use(express.static(path.join(__dirname, "public")));
 
+    const repositories = {} as any; //TODO créer type repositories
+    configureRepositories(repositories);
+
     const commandBus = new CommandBus();
-    const messageRepository = new MessageRepositoryImpl();
-    subscribeCommandsToHandlers(commandBus, messageRepository);
+    subscribeCommandsToHandlers(commandBus, repositories);
+
     const queryBus = new QueryBus();
-    subscribeQueriesToHandlers(queryBus, messageRepository);
+    subscribeQueriesToHandlers(queryBus, repositories);
+
     app.use("/", configureMessageRoutes(commandBus, queryBus));
 
     return app;
 };
 
-const subscribeCommandsToHandlers = (commandBus: CommandBus, messageRepository: MessageRepositoryImpl) => {
-    commandBus.subscribe(
-        LAISSER_MESSAGE,
-        new LaisserMessageCommandHandler(messageRepository, new Timer(), new IdGenerator())
-    );
-    commandBus.subscribe(SUPPRIMER_MESSAGE, new SupprimerMessageCommandHandler(messageRepository));
+const configureRepositories = (repositories: any) => {
+    repositories.messageRepository = new FileMessageRepositoryImpl("./storage/messages.json");
 };
 
-const subscribeQueriesToHandlers = (queryBus: QueryBus, messageRepository: MessageRepositoryImpl) => {
-    queryBus.subscribe(RECUPERER_MESSAGES, new RecupererMessagesQueryHandler(messageRepository));
+const subscribeCommandsToHandlers = (commandBus: CommandBus, repositories: any) => {
+    commandBus.subscribe(
+        LAISSER_MESSAGE,
+        new LaisserMessageCommandHandler(repositories.messageRepository, new Timer(), new IdGenerator())
+    );
+    commandBus.subscribe(SUPPRIMER_MESSAGE, new SupprimerMessageCommandHandler(repositories.messageRepository));
+};
+
+const subscribeQueriesToHandlers = (queryBus: QueryBus, repositories: any) => {
+    queryBus.subscribe(RECUPERER_MESSAGES, new RecupererMessagesQueryHandler(repositories.messageRepository));
 };

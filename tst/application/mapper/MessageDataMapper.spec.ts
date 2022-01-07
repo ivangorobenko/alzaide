@@ -5,19 +5,30 @@ import {MessageDB} from "../../../src/application/repos/MessageDB";
 import {Message} from "../../../src/domain/agregat/Message";
 
 describe("MessageDataMapper", () => {
-    it("doit permettre de mapper un objet MessageDB venant de la persistence vers une entité Message", function () {
-        //GIVEN
-        const messageDB: MessageDB = new MessageDB("1", "Message 1", 123);
-        //WHEN
-        const message: Message = MessageDataMapper.mapFromDBToDomain(messageDB);
-        //THEN
-        expect(message.contenu).to.be.equal(messageDB.contenu);
-        expect(message.id).to.be.equal(messageDB.id);
-        expect(message.timestamp).to.be.equal(messageDB.timestamp);
+    describe("objet MessageDB venant de la persistence vers une entité Message", function () {
+        it("doit renvoyer Message si tout se passe bien", function () {
+            //GIVEN
+            const messageDB: MessageDB = new MessageDB("1", "Message 1", 123);
+            //WHEN
+            const message = MessageDataMapper.mapFromDBToDomain(messageDB) as Message;
+            //THEN
+            expect(message.contenu).to.be.equal(messageDB.contenu);
+            expect(message.id).to.be.equal(messageDB.id);
+            expect(message.timestamp).to.be.equal(messageDB.timestamp);
+        });
+
+        it("doit renvoyer undefined si un problème survient", function () {
+            //GIVEN
+            const messageDB: MessageDB = new MessageDB("", "Message 1", 123);
+            //WHEN
+            const message = MessageDataMapper.mapFromDBToDomain(messageDB) as Message;
+            //THEN
+            expect(message).to.be.undefined;
+        });
     });
     it("doit permettre de mapper un objet Message vers MessageDB en direction de la persistance", function () {
         //GIVEN
-        const message: Message = Message.create("1", "Message 1", 123).getValue();
+        const message: Message = Message.create("1", "Message 1", 123).getValue() as Message;
         //WHEN
         const messageDB: MessageDB = MessageDataMapper.mapFromDomainToDB(message);
         //THEN
@@ -28,7 +39,7 @@ describe("MessageDataMapper", () => {
 
     it("doit permettre de mapper un objet Message vers MessageDTO en direction de UI", function () {
         //GIVEN
-        const message: Message = Message.create("1", "Message 1", 123).getValue();
+        const message: Message = Message.create("1", "Message 1", 123).getValue() as Message;
         //WHEN
         const messageDTO: MessageDTO = MessageDataMapper.mapFromDomainToDTO(message);
         //THEN

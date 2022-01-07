@@ -3,8 +3,10 @@ import {MessageDTO} from "../controller/MessageDTO";
 import {MessageDB} from "../repos/MessageDB";
 
 export class MessageDataMapper {
-    static mapFromDBToDomain(messageDB: MessageDB): Message {
-        return Message.create(messageDB.id, messageDB.contenu, messageDB.timestamp).getValue();
+    static mapFromDBToDomain(messageDB: MessageDB): Message | undefined {
+        const result = Message.create(messageDB.id, messageDB.contenu, messageDB.timestamp);
+        if (result.isSuccess) return result.getValue() as Message;
+        return undefined;
     }
 
     static mapFromDomainToDB(message: Message) {
