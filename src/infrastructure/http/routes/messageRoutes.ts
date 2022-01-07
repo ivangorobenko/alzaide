@@ -1,5 +1,4 @@
 import express, {Request, Response} from "express";
-// eslint-disable-next-line no-restricted-imports
 import {MessageController} from "../../../application/controller/MessageController";
 import {CommandBus} from "../../../core/CommandBus";
 import {QueryBus} from "../../../core/QueryBus";

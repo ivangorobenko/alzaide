@@ -1,9 +1,8 @@
-import {Command} from "../../src/core/Command";
 import {expect} from "chai";
+import {Command} from "../../src/core/Command";
 import {CommandBus} from "../../src/core/CommandBus";
-import {Result} from "../../src/core/Result";
 import {Event} from "../../src/core/Event";
-
+import {Result} from "../../src/core/Result";
 
 class MyCommand extends Command {
     constructor(readonly champ1: string) {
@@ -13,13 +12,12 @@ class MyCommand extends Command {
 
 class MyEvent extends Event {
     constructor() {
-        super("id")
+        super("id");
     }
 }
 
-
-describe('Le bus de commande', function () {
-    it('doit permettre de souscrire une type de commande à un handler et de la dispatcher', function () {
+describe("Le bus de commande", function () {
+    it("doit permettre de souscrire une type de commande à un handler et de la dispatcher", function () {
         //GIVEN
         const sut = new CommandBus();
         let called = false;
@@ -28,47 +26,41 @@ describe('Le bus de commande', function () {
         //WHEN
         sut.subscribe("MA_COMMANDE", {
             handle: (command: Command) => {
-                called = true
+                called = true;
                 calledCommand = command;
-                return Result.ok(new MyEvent())
-            }
+                return Result.ok(new MyEvent());
+            },
         });
 
         sut.dispatch(new MyCommand("Une valeur"));
         expect(called).to.be.true;
-        expect(calledCommand.type).to.be.equal("MA_COMMANDE");
-        expect(calledCommand.champ1).to.be.equal("Une valeur");
+        expect(calledCommand).to.deep.equal(new MyCommand("Une valeur"));
     });
-    it('doit renvoyer un erreur si le résultat de la commande dispatché est un erreur', function () {
+
+    it("doit renvoyer un erreur si le résultat de la commande dispatché est un erreur", function () {
         //GIVEN
         const sut = new CommandBus();
 
         //WHEN
         sut.subscribe("MA_COMMANDE", {
-            handle: () => {
-                return Result.fail("Something went bad")
-            }
+            handle: () => Result.fail<string>("Something went bad"),
         });
         const resultOrError = sut.dispatch(new MyCommand("Une valeur"));
-
 
         expect(resultOrError.isFailure).to.be.true;
     });
 
-    it("doit renvoyer id de la ressource impactée par la commande", function () {
+    it("doit renvoyer un événement si le résultat de la commande dispatché est un succès", function () {
         //GIVEN
         const sut = new CommandBus();
 
         //WHEN
+        const expectedEvent = new MyEvent();
         sut.subscribe("MA_COMMANDE", {
-            handle: () => {
-                return Result.ok(new MyEvent())
-            }
+            handle: () => Result.ok<Event>(expectedEvent),
         });
         const resultOrError = sut.dispatch(new MyCommand("Une valeur"));
 
-
-        expect(resultOrError.getValue()).to.be.equal("id");
-
+        expect(resultOrError.getValue()).to.be.deep.equal(expectedEvent);
     });
 });

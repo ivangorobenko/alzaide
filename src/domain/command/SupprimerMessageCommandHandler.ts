@@ -1,5 +1,7 @@
-import {Command} from "../../core/Command";
 import {MessageRepository} from "../../application/repos/MessageRepository";
+import {Command} from "../../core/Command";
+import {CommandHandler} from "../../core/CommandHandler";
+import {CommandResponse} from "../../core/CommandResponse";
 import {Result} from "../../core/Result";
 import {MessageSupprimeEvent} from "../event/MessageSupprimeEvent";
 
@@ -11,14 +13,14 @@ export class SupprimerMessage extends Command {
     }
 }
 
-export class SupprimerMessageCommandHandler {
+export class SupprimerMessageCommandHandler implements CommandHandler {
     private repository: MessageRepository;
 
     constructor(repository: MessageRepository) {
         this.repository = repository;
     }
 
-    handle(command: SupprimerMessage): Result<any> {
+    handle(command: SupprimerMessage): CommandResponse {
         if (!command.id || command.id === "") return Result.fail("Le message n'a pas pu être laissé");
         this.repository.delete(command.id);
         return Result.ok(new MessageSupprimeEvent(command.id));

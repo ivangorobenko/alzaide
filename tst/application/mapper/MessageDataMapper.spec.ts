@@ -1,8 +1,8 @@
 import {expect} from "chai";
+import {MessageDTO} from "../../../src/application/controller/MessageDTO";
 import {MessageDataMapper} from "../../../src/application/mapper/MessageDataMapper";
 import {MessageDB} from "../../../src/application/repos/MessageDB";
 import {Message} from "../../../src/domain/agregat/Message";
-import {MessageDTO} from "../../../src/application/controller/MessageDTO";
 
 describe("MessageDataMapper", () => {
     it("doit permettre de mapper un objet MessageDB venant de la persistence vers une entité Message", function () {

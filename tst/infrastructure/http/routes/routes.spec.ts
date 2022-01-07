@@ -1,9 +1,10 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import chai, {expect} from "chai";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import chaiHttp from "chai-http";
 import {buildApp} from "../../../../src/buildApp";
-import exp = require("constants");
 
 chai.should();
 chai.use(chaiHttp);

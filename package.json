@@ -86,7 +86,7 @@
     "slow": 75,
     "timeout": 2000,
     "ui": "bdd",
-    "spec": "tst/**/*.spec.ts",
+    "spec": "*/**/*.spec.ts",
     "watch-files": [
       "src/**/*.*s",
       "tst/**/*.*s"
@@ -195,25 +195,6 @@
             }
           ],
           "unused-imports/no-unused-imports": 0
-        }
-      },
-      {
-        "files": [
-          "src/infrastructure/**/*.ts",
-          "src/domain/**/*.ts"
-        ],
-        "rules": {
-          "no-restricted-imports": [
-            "error",
-            {
-              "patterns": [
-                "**/application/*",
-                "**/infrastructure/*",
-                "**/boundedContext/*",
-                "!**/core/*"
-              ]
-            }
-          ]
         }
       }
     ],

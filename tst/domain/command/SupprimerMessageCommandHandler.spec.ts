@@ -1,46 +1,35 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
 import chai, {expect} from "chai";
+import {CommandResponse} from "../../../src/core/CommandResponse";
 import {Result} from "../../../src/core/Result";
+import {Message} from "../../../src/domain/agregat/Message";
 import {
     SupprimerMessage,
-    SupprimerMessageCommandHandler
+    SupprimerMessageCommandHandler,
 } from "../../../src/domain/command/SupprimerMessageCommandHandler";
 import {MessageSupprimeEvent} from "../../../src/domain/event/MessageSupprimeEvent";
+import {InMemoryMessageRepositoryImpl} from "../../../src/infrastructure/repository/InMemoryMessageRepositoryImpl";
 
 chai.should();
 
 describe("SupprimerMessageCommandHandler", () => {
     it("doit supprimer un message avec son identifiant", function () {
         //GIVEN
-        let deletedMessageId = undefined;
+        const messageRepository = new InMemoryMessageRepositoryImpl();
+        messageRepository.save("123", Message.create("123", "Mon message", 123).getValue() as Message);
+        expect(messageRepository.findAllMessages().length).to.equal(1);
         const command = new SupprimerMessage("123");
-        const sut = new SupprimerMessageCommandHandler({delete: id => (deletedMessageId = id)});
+        const sut = new SupprimerMessageCommandHandler(messageRepository);
 
         //WHEN
         sut.handle(command);
 
         //THEN
-        deletedMessageId.should.be.equals("123");
+        expect(messageRepository.findAllMessages().length).to.equal(0);
     });
-    it("doit renvoyer un erreur en cas si l'id est vide dans la commande", function () {
+    it("doit renvoyer un erreur si l'id est absent dans la commande", function () {
         //GIVEN
-        let deletedMessageId = undefined;
         const command = new SupprimerMessage("");
-        const sut = new SupprimerMessageCommandHandler(undefined);
-
-        //WHEN
-        const resultOrError: Result<any> = sut.handle(command);
-
-        //THEN
-        expect(resultOrError.isFailure).to.be.true;
-    });
-    it("doit renvoyer un erreur en cas si l'id est absent dans la commande", function () {
-        //GIVEN
-        let deletedMessageId = undefined;
-        // @ts-ignore
-        const command = new SupprimerMessage();
-        const sut = new SupprimerMessageCommandHandler(undefined);
+        const sut = new SupprimerMessageCommandHandler(new InMemoryMessageRepositoryImpl());
 
         //WHEN
         const resultOrError: Result<any> = sut.handle(command);
@@ -51,15 +40,14 @@ describe("SupprimerMessageCommandHandler", () => {
 
     it("doit renvoyer un événement si traitement de la commande a réussi", function () {
         //GIVEN
-        let deletedMessageId = undefined;
         const command = new SupprimerMessage("123");
-        const sut = new SupprimerMessageCommandHandler({delete: id => (deletedMessageId = id)});
+        const sut = new SupprimerMessageCommandHandler(new InMemoryMessageRepositoryImpl());
 
         //WHEN
-        const resultOrError: Result<MessageSupprimeEvent> = sut.handle(command);
+        const resultOrError: CommandResponse = sut.handle(command);
 
         //THEN
-        expect(resultOrError.getValue()).to.be.an.instanceof(MessageSupprimeEvent);
-        expect(resultOrError.getValue().id).to.not.be.undefined;
+        const result = resultOrError.getValue();
+        expect(result).to.deep.equal(new MessageSupprimeEvent("123"));
     });
 });

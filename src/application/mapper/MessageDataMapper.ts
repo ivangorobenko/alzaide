@@ -12,6 +12,6 @@ export class MessageDataMapper {
     }
 
     static mapFromDomainToDTO(message: Message) {
-        return new MessageDTO(message.contenu, message.timestamp, message.id);
+        return new MessageDTO(message.id, message.contenu, message.timestamp);
     }
 }

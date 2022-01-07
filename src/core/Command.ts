@@ -1,4 +1,3 @@
 export abstract class Command {
-    protected constructor(readonly type: string) {
-    }
+    protected constructor(readonly type: string) {}
 }

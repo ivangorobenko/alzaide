@@ -1,7 +1,6 @@
-import {Result} from "./Result";
-import {Event} from "./Event";
 import {Command} from "./Command";
+import {CommandResponse} from "./CommandResponse";
 
-export interface CommandHandler<T> {
-    handle(command: Command): Result<Event>;
+export interface CommandHandler {
+    handle(command: Command): CommandResponse;
 }

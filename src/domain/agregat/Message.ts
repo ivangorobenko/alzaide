@@ -1,4 +1,3 @@
-import {log} from "util";
 import {Result} from "../../core/Result";
 
 export class Message {
@@ -24,10 +23,10 @@ export class Message {
         this._timestamp = timestamp;
     }
 
-    public static create(id: string, contenu: string, timestamp: number): Result<Message> {
+    public static create(id: string, contenu: string, timestamp: number): Result<Message | string> {
         const hasMissingValue = (value: any) => !value;
         const findAParameterWithError = (parameters: any) => {
-            const parameterWithError = Object.entries(parameters).find(([key, value]) => hasMissingValue(value));
+            const parameterWithError = Object.entries(parameters).find(([, value]) => hasMissingValue(value));
             return parameterWithError ? parameterWithError[0] : undefined;
         };
         const parameterNameWithError = findAParameterWithError({id, contenu, timestamp});

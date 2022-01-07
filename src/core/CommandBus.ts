@@ -1,23 +1,21 @@
 import {Command} from "./Command";
-import {CommandHandlers} from "./CommandHandlers";
 import {CommandHandler} from "./CommandHandler";
+import {CommandHandlers} from "./CommandHandlers";
+import {Event} from "./Event";
 import {Result} from "./Result";
-
 
 export class CommandBus {
     private readonly handlers: CommandHandlers;
 
     constructor() {
-        this.handlers = {}
+        this.handlers = {};
     }
 
-    subscribe(type: string, handler: CommandHandler<any>): void {
+    subscribe(type: string, handler: CommandHandler): void {
         this.handlers[type] = handler;
     }
 
-    dispatch(command: Command): Result<string> {
-        const resultOrError = this.handlers[command.type]?.handle(command);
-        if (resultOrError.isFailure) return Result.fail(resultOrError.error);
-        return Result.ok(resultOrError.getValue().id);
+    dispatch(command: Command): Result<Event | string> {
+        return this.handlers[command.type]?.handle(command);
     }
 }

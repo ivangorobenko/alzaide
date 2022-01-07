@@ -4,9 +4,9 @@ import {CommandBus} from "../../core/CommandBus";
 import {QueryBus} from "../../core/QueryBus";
 import {Message} from "../../domain/agregat/Message";
 import {LaisserMessage} from "../../domain/command/LaisserMessageCommandHandler";
-import {MessagesQuery} from "../../domain/query/MessagesQueryHandler";
-import {MessageDataMapper} from "../mapper/MessageDataMapper";
 import {SupprimerMessage} from "../../domain/command/SupprimerMessageCommandHandler";
+import {RecupererMessagesQuery} from "../../domain/query/RecupererMessagesQueryHandler";
+import {MessageDataMapper} from "../mapper/MessageDataMapper";
 
 export class MessageController {
     private commandBus: CommandBus;
@@ -23,10 +23,9 @@ export class MessageController {
     }
 
     recupererMessages(req: Request, res: Response) {
-        const doSend = (resultValue: Message[]) => {
-            return resultValue.map((message: Message) => MessageDataMapper.mapFromDomainToDTO(message));
-        };
-        const resultOrError = this.queryBus.dispatch(new MessagesQuery());
+        const doSend = (resultValue: Message[]) =>
+            resultValue.map((message: Message) => MessageDataMapper.mapFromDomainToDTO(message));
+        const resultOrError = this.queryBus.dispatch(new RecupererMessagesQuery());
         if (resultOrError.isFailure) return res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
         res.status(StatusCodes.OK).send(doSend(resultOrError.getValue()));
     }

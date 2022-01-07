@@ -6,20 +6,20 @@ import {Message} from "../agregat/Message";
 
 export const RECUPERER_MESSAGES = "RECUPERER_MESSAGES";
 
-export class MessagesQueryHandler implements QueryHandler<Message[]> {
+export class RecupererMessagesQueryHandler implements QueryHandler<Message[]> {
     private messageRepository: MessageRepository;
 
     constructor(repository: MessageRepository) {
         this.messageRepository = repository;
     }
 
-    handle(query: MessagesQuery): Result<Message[]> {
+    handle(query: RecupererMessagesQuery): Result<Message[]> {
         const messages = this.messageRepository.findAllMessages();
         return Result.ok(messages);
     }
 }
 
-export class MessagesQuery extends Query {
+export class RecupererMessagesQuery extends Query {
     constructor() {
         super(RECUPERER_MESSAGES);
     }
