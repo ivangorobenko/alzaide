@@ -13,6 +13,7 @@ import {SUPPRIMER_MESSAGE, SupprimerMessageCommandHandler} from "./domain/comman
 import {RECUPERER_MESSAGES, RecupererMessagesQueryHandler} from "./domain/query/RecupererMessagesQueryHandler";
 import {configureMessageRoutes} from "./infrastructure/http/routes/messageRoutes";
 import {FileMessageRepositoryImpl} from "./infrastructure/repository/FileMessageRepositoryImpl";
+import {Repositories} from "./infrastructure/repository/repositories";
 
 export const buildApp = (): Application => {
     const app = express();
@@ -26,8 +27,7 @@ export const buildApp = (): Application => {
     app.use(cookieParser());
     app.use(express.static(path.join(__dirname, "public")));
 
-    const repositories = {} as any; //TODO créer type repositories
-    configureRepositories(repositories);
+    const repositories: Repositories = configureRepositories();
 
     const commandBus = new CommandBus();
     subscribeCommandsToHandlers(commandBus, repositories);
@@ -40,9 +40,7 @@ export const buildApp = (): Application => {
     return app;
 };
 
-const configureRepositories = (repositories: any) => {
-    repositories.messageRepository = new FileMessageRepositoryImpl("./storage/messages.json");
-};
+const configureRepositories = () => ({messageRepository: new FileMessageRepositoryImpl("./storage/messages.json")});
 
 const subscribeCommandsToHandlers = (commandBus: CommandBus, repositories: any) => {
     commandBus.subscribe(
