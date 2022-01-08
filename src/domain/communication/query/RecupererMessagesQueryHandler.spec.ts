@@ -1,11 +1,8 @@
 import {expect} from "chai";
-import {MessageRepository} from "../../../../src/application/repos/MessageRepository";
-import {Message} from "../../../../src/domain/communication/agregat/Message";
-import {
-    RecupererMessagesQuery,
-    RecupererMessagesQueryHandler,
-} from "../../../../src/domain/communication/query/RecupererMessagesQueryHandler";
-import {InMemoryMessageRepositoryImpl} from "../../../../src/infrastructure/repository/InMemoryMessageRepositoryImpl";
+import {MessageRepository} from "../../../application/repos/MessageRepository";
+import {InMemoryMessageRepositoryImpl} from "../../../infrastructure/repository/InMemoryMessageRepositoryImpl";
+import {Message} from "../agregat/Message";
+import {RecupererMessagesQuery, RecupererMessagesQueryHandler} from "./RecupererMessagesQueryHandler";
 
 describe("Query de message", () => {
     it("doit récupérer tous les messages existant de plus récent vers moins récent", function () {

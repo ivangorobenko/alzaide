@@ -1,8 +1,8 @@
 import {expect} from "chai";
-import {Command} from "../../src/core/Command";
-import {CommandBus} from "../../src/core/CommandBus";
-import {Event} from "../../src/core/Event";
-import {Result} from "../../src/core/Result";
+import {Command} from "./Command";
+import {CommandBus} from "./CommandBus";
+import {Event} from "./Event";
+import {Result} from "./Result";
 
 class MyCommand extends Command {
     constructor(readonly champ1: string) {

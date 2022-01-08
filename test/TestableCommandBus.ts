@@ -1,8 +1,8 @@
-import {Command} from "../../../src/core/Command";
-import {CommandBus} from "../../../src/core/CommandBus";
-import {CommandResponse} from "../../../src/core/CommandResponse";
-import {Event} from "../../../src/core/Event";
-import {Result} from "../../../src/core/Result";
+import {Command} from "../src/core/Command";
+import {CommandBus} from "../src/core/CommandBus";
+import {CommandResponse} from "../src/core/CommandResponse";
+import {Event} from "../src/core/Event";
+import {Result} from "../src/core/Result";
 
 class DummyEvent extends Event {
     constructor() {

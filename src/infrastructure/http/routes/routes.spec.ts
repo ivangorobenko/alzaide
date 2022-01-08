@@ -4,7 +4,7 @@ import chai, {expect} from "chai";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import chaiHttp from "chai-http";
-import {buildApp} from "../../../../src/buildApp";
+import {buildApp} from "../../../buildApp";
 
 chai.should();
 chai.use(chaiHttp);

@@ -1,6 +1,6 @@
 import {expect} from "chai";
-import {Result} from "../../../../src/core/Result";
-import {Message} from "../../../../src/domain/communication/agregat/Message";
+import {Result} from "../../../core/Result";
+import {Message} from "./Message";
 
 describe("Agrégat Message", () => {
     it("doit créer un message avec une date, contenu et identifiant", function () {

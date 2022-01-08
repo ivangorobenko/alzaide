@@ -1,13 +1,10 @@
 import chai, {expect} from "chai";
-import {IdGenerator} from "../../../../src/application/IdGenerator";
-import {Result} from "../../../../src/core/Result";
-import {Message} from "../../../../src/domain/communication/agregat/Message";
-import {
-    LaisserMessage,
-    LaisserMessageCommandHandler,
-} from "../../../../src/domain/communication/command/LaisserMessageCommandHandler";
-import {MessageLaisseEvent} from "../../../../src/domain/communication/event/MessageLaisseEvent";
-import {InMemoryMessageRepositoryImpl} from "../../../../src/infrastructure/repository/InMemoryMessageRepositoryImpl";
+import {IdGenerator} from "../../../application/IdGenerator";
+import {Result} from "../../../core/Result";
+import {InMemoryMessageRepositoryImpl} from "../../../infrastructure/repository/InMemoryMessageRepositoryImpl";
+import {Message} from "../agregat/Message";
+import {MessageLaisseEvent} from "../event/MessageLaisseEvent";
+import {LaisserMessage, LaisserMessageCommandHandler} from "./LaisserMessageCommandHandler";
 
 chai.should();
 

@@ -88,8 +88,7 @@
     "ui": "bdd",
     "spec": "*/**/*.spec.ts",
     "watch-files": [
-      "src/**/*.*s",
-      "tst/**/*.*s"
+      "src/**/*.*s"
     ],
     "watch-ignore": [
       "node_modules"

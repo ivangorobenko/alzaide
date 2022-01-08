@@ -1,22 +1,19 @@
 import chai, {expect} from "chai";
 import {Request, Response} from "express";
 import {StatusCodes} from "http-status-codes";
-import {MessageController} from "../../../src/application/controller/MessageController";
-import {MessageDTO} from "../../../src/application/controller/MessageDTO";
-import {CommandBus} from "../../../src/core/CommandBus";
-import {QueryBus} from "../../../src/core/QueryBus";
-import {Message} from "../../../src/domain/communication/agregat/Message";
-import {LAISSER_MESSAGE, LaisserMessage} from "../../../src/domain/communication/command/LaisserMessageCommandHandler";
-import {
-    SUPPRIMER_MESSAGE,
-    SupprimerMessage,
-} from "../../../src/domain/communication/command/SupprimerMessageCommandHandler";
+import {TestableCommandBus} from "../../../test/TestableCommandBus";
+import {TestableQueryBus} from "../../../test/TestableQueryBus";
+import {CommandBus} from "../../core/CommandBus";
+import {QueryBus} from "../../core/QueryBus";
+import {Message} from "../../domain/communication/agregat/Message";
+import {LAISSER_MESSAGE, LaisserMessage} from "../../domain/communication/command/LaisserMessageCommandHandler";
+import {SUPPRIMER_MESSAGE, SupprimerMessage} from "../../domain/communication/command/SupprimerMessageCommandHandler";
 import {
     RECUPERER_MESSAGES,
     RecupererMessagesQuery,
-} from "../../../src/domain/communication/query/RecupererMessagesQueryHandler";
-import {TestableCommandBus} from "./TestableCommandBus";
-import {TestableQueryBus} from "./TestableQueryBus";
+} from "../../domain/communication/query/RecupererMessagesQueryHandler";
+import {MessageController} from "./MessageController";
+import {MessageDTO} from "./MessageDTO";
 
 chai.should();
 

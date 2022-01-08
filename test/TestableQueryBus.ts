@@ -1,6 +1,6 @@
-import {Query} from "../../../src/core/Query";
-import {QueryBus} from "../../../src/core/QueryBus";
-import {Result} from "../../../src/core/Result";
+import {Query} from "../src/core/Query";
+import {QueryBus} from "../src/core/QueryBus";
+import {Result} from "../src/core/Result";
 
 export class TestableQueryBus<T extends Query> extends QueryBus {
     get dispatchedQuery(): T | undefined {
