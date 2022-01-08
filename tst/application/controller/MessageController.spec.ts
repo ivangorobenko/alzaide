@@ -5,10 +5,16 @@ import {MessageController} from "../../../src/application/controller/MessageCont
 import {MessageDTO} from "../../../src/application/controller/MessageDTO";
 import {CommandBus} from "../../../src/core/CommandBus";
 import {QueryBus} from "../../../src/core/QueryBus";
-import {Message} from "../../../src/domain/agregat/Message";
-import {LAISSER_MESSAGE, LaisserMessage} from "../../../src/domain/command/LaisserMessageCommandHandler";
-import {SUPPRIMER_MESSAGE, SupprimerMessage} from "../../../src/domain/command/SupprimerMessageCommandHandler";
-import {RECUPERER_MESSAGES, RecupererMessagesQuery} from "../../../src/domain/query/RecupererMessagesQueryHandler";
+import {Message} from "../../../src/domain/communication/agregat/Message";
+import {LAISSER_MESSAGE, LaisserMessage} from "../../../src/domain/communication/command/LaisserMessageCommandHandler";
+import {
+    SUPPRIMER_MESSAGE,
+    SupprimerMessage,
+} from "../../../src/domain/communication/command/SupprimerMessageCommandHandler";
+import {
+    RECUPERER_MESSAGES,
+    RecupererMessagesQuery,
+} from "../../../src/domain/communication/query/RecupererMessagesQueryHandler";
 import {TestableCommandBus} from "./TestableCommandBus";
 import {TestableQueryBus} from "./TestableQueryBus";
 

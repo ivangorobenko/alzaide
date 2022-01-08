@@ -2,10 +2,10 @@ import {Request, Response} from "express";
 import {StatusCodes} from "http-status-codes";
 import {CommandBus} from "../../core/CommandBus";
 import {QueryBus} from "../../core/QueryBus";
-import {Message} from "../../domain/agregat/Message";
-import {LaisserMessage} from "../../domain/command/LaisserMessageCommandHandler";
-import {SupprimerMessage} from "../../domain/command/SupprimerMessageCommandHandler";
-import {RecupererMessagesQuery} from "../../domain/query/RecupererMessagesQueryHandler";
+import {Message} from "../../domain/communication/agregat/Message";
+import {LaisserMessage} from "../../domain/communication/command/LaisserMessageCommandHandler";
+import {SupprimerMessage} from "../../domain/communication/command/SupprimerMessageCommandHandler";
+import {RecupererMessagesQuery} from "../../domain/communication/query/RecupererMessagesQueryHandler";
 import {MessageDataMapper} from "../mapper/MessageDataMapper";
 
 export class MessageController {

@@ -1,6 +1,6 @@
-import {Message} from "../../domain/agregat/Message";
+import {Message} from "../../domain/communication/agregat/Message";
+import {MessageDB} from "../../infrastructure/repository/MessageDB";
 import {MessageDTO} from "../controller/MessageDTO";
-import {MessageDB} from "../repos/MessageDB";
 
 export class MessageDataMapper {
     static mapFromDBToDomain(messageDB: MessageDB): Message | undefined {

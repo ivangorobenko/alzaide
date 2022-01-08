@@ -1,8 +1,8 @@
 import {MessageDataMapper} from "../../application/mapper/MessageDataMapper";
-import {MessageDB} from "../../application/repos/MessageDB";
 import {MessageRepository} from "../../application/repos/MessageRepository";
-import {Message} from "../../domain/agregat/Message";
+import {Message} from "../../domain/communication/agregat/Message";
 import {copyFileIfNotExist, readFile, writeFile} from "./file";
+import {MessageDB} from "./MessageDB";
 
 export class FileMessageRepositoryImpl implements MessageRepository {
     private readonly filePath: string;

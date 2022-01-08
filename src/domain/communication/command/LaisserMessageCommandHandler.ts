@@ -1,9 +1,9 @@
-import {MessageRepository} from "../../application/repos/MessageRepository";
-import {Command} from "../../core/Command";
-import {CommandHandler} from "../../core/CommandHandler";
-import {CommandResponse} from "../../core/CommandResponse";
-import {Result} from "../../core/Result";
-import {Timer} from "../../core/Timer";
+import {MessageRepository} from "../../../application/repos/MessageRepository";
+import {Command} from "../../../core/Command";
+import {CommandHandler} from "../../../core/CommandHandler";
+import {CommandResponse} from "../../../core/CommandResponse";
+import {Result} from "../../../core/Result";
+import {Timer} from "../../../core/Timer";
 import {Message} from "../agregat/Message";
 import {MessageLaisseEvent} from "../event/MessageLaisseEvent";
 

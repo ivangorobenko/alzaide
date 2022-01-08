@@ -8,9 +8,18 @@ import {IdGenerator} from "./application/IdGenerator";
 import {CommandBus} from "./core/CommandBus";
 import {QueryBus} from "./core/QueryBus";
 import {Timer} from "./core/Timer";
-import {LAISSER_MESSAGE, LaisserMessageCommandHandler} from "./domain/command/LaisserMessageCommandHandler";
-import {SUPPRIMER_MESSAGE, SupprimerMessageCommandHandler} from "./domain/command/SupprimerMessageCommandHandler";
-import {RECUPERER_MESSAGES, RecupererMessagesQueryHandler} from "./domain/query/RecupererMessagesQueryHandler";
+import {
+    LAISSER_MESSAGE,
+    LaisserMessageCommandHandler,
+} from "./domain/communication/command/LaisserMessageCommandHandler";
+import {
+    SUPPRIMER_MESSAGE,
+    SupprimerMessageCommandHandler,
+} from "./domain/communication/command/SupprimerMessageCommandHandler";
+import {
+    RECUPERER_MESSAGES,
+    RecupererMessagesQueryHandler,
+} from "./domain/communication/query/RecupererMessagesQueryHandler";
 import {configureMessageRoutes} from "./infrastructure/http/routes/messageRoutes";
 import {FileMessageRepositoryImpl} from "./infrastructure/repository/FileMessageRepositoryImpl";
 import {Repositories} from "./infrastructure/repository/repositories";

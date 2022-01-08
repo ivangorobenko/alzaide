@@ -1,7 +1,7 @@
 import {MessageDataMapper} from "../../application/mapper/MessageDataMapper";
-import {MessageDB} from "../../application/repos/MessageDB";
 import {MessageRepository} from "../../application/repos/MessageRepository";
-import {Message} from "../../domain/agregat/Message";
+import {Message} from "../../domain/communication/agregat/Message";
+import {MessageDB} from "./MessageDB";
 
 interface MessagesDB {
     [name: string]: MessageDB;
@@ -15,7 +15,9 @@ export class InMemoryMessageRepositoryImpl implements MessageRepository {
     }
 
     findAllMessages(): Message[] {
-        return Object.values(this.data).map(messageDB => MessageDataMapper.mapFromDBToDomain(messageDB));
+        return Object.values(this.data)
+            .map(messageDB => MessageDataMapper.mapFromDBToDomain(messageDB))
+            .filter(message => message !== undefined) as Message[];
     }
 
     async save(id: string, value: Message): Promise<void> {

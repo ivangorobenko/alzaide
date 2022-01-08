@@ -1,8 +1,8 @@
 import {expect} from "chai";
 import {MessageDTO} from "../../../src/application/controller/MessageDTO";
 import {MessageDataMapper} from "../../../src/application/mapper/MessageDataMapper";
-import {MessageDB} from "../../../src/application/repos/MessageDB";
-import {Message} from "../../../src/domain/agregat/Message";
+import {Message} from "../../../src/domain/communication/agregat/Message";
+import {MessageDB} from "../../../src/infrastructure/repository/MessageDB";
 
 describe("MessageDataMapper", () => {
     describe("objet MessageDB venant de la persistence vers une entité Message", function () {
@@ -27,7 +27,7 @@ describe("MessageDataMapper", () => {
         });
     });
     it("doit permettre de mapper un objet Message vers MessageDB en direction de la persistance", function () {
-        //GIVEN
+        //GIVENl
         const message: Message = Message.create("1", "Message 1", 123).getValue() as Message;
         //WHEN
         const messageDB: MessageDB = MessageDataMapper.mapFromDomainToDB(message);

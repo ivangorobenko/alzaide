@@ -1,13 +1,13 @@
 import chai, {expect} from "chai";
-import {CommandResponse} from "../../../src/core/CommandResponse";
-import {Result} from "../../../src/core/Result";
-import {Message} from "../../../src/domain/agregat/Message";
+import {CommandResponse} from "../../../../src/core/CommandResponse";
+import {Result} from "../../../../src/core/Result";
+import {Message} from "../../../../src/domain/communication/agregat/Message";
 import {
     SupprimerMessage,
     SupprimerMessageCommandHandler,
-} from "../../../src/domain/command/SupprimerMessageCommandHandler";
-import {MessageSupprimeEvent} from "../../../src/domain/event/MessageSupprimeEvent";
-import {InMemoryMessageRepositoryImpl} from "../../../src/infrastructure/repository/InMemoryMessageRepositoryImpl";
+} from "../../../../src/domain/communication/command/SupprimerMessageCommandHandler";
+import {MessageSupprimeEvent} from "../../../../src/domain/communication/event/MessageSupprimeEvent";
+import {InMemoryMessageRepositoryImpl} from "../../../../src/infrastructure/repository/InMemoryMessageRepositoryImpl";
 
 chai.should();
 

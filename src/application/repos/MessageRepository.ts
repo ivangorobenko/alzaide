@@ -1,4 +1,4 @@
-import {Message} from "../../domain/agregat/Message";
+import {Message} from "../../domain/communication/agregat/Message";
 import {Repository} from "./Repository";
 
 export interface MessageRepository extends Repository<Message> {

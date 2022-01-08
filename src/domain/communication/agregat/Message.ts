@@ -1,4 +1,4 @@
-import {Result} from "../../core/Result";
+import {Result} from "../../../core/Result";
 
 export class Message {
     get timestamp(): number {

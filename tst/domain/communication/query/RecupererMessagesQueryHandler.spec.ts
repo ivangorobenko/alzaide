@@ -1,14 +1,14 @@
 import {expect} from "chai";
-import {MessageRepository} from "../../../src/application/repos/MessageRepository";
-import {Message} from "../../../src/domain/agregat/Message";
+import {MessageRepository} from "../../../../src/application/repos/MessageRepository";
+import {Message} from "../../../../src/domain/communication/agregat/Message";
 import {
     RecupererMessagesQuery,
     RecupererMessagesQueryHandler,
-} from "../../../src/domain/query/RecupererMessagesQueryHandler";
-import {InMemoryMessageRepositoryImpl} from "../../../src/infrastructure/repository/InMemoryMessageRepositoryImpl";
+} from "../../../../src/domain/communication/query/RecupererMessagesQueryHandler";
+import {InMemoryMessageRepositoryImpl} from "../../../../src/infrastructure/repository/InMemoryMessageRepositoryImpl";
 
 describe("Query de message", () => {
-    it("doit récupérer tous les messages existant", function () {
+    it("doit récupérer tous les messages existant de plus récent vers moins récent", function () {
         //GIVEN
         const repository: MessageRepository = new InMemoryMessageRepositoryImpl();
         const expectedMessage1 = Message.create("1", "Message 1", 123).getValue() as Message;
@@ -24,8 +24,8 @@ describe("Query de message", () => {
         expect(resultOrError.isFailure).to.be.false;
         const messages: Message[] = resultOrError.getValue();
         expect(messages.length).to.be.equals(2);
-        expect(messages[0]).to.deep.equal(expectedMessage1);
-        expect(messages[1]).to.deep.equal(expectedMessage2);
+        expect(messages[0]).to.deep.equal(expectedMessage2);
+        expect(messages[1]).to.deep.equal(expectedMessage1);
     });
     it("doit renvoyer la liste vide s'il n'existe aucun message", function () {
         //GIVEN

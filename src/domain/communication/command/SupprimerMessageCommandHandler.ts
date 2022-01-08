@@ -1,8 +1,8 @@
-import {MessageRepository} from "../../application/repos/MessageRepository";
-import {Command} from "../../core/Command";
-import {CommandHandler} from "../../core/CommandHandler";
-import {CommandResponse} from "../../core/CommandResponse";
-import {Result} from "../../core/Result";
+import {MessageRepository} from "../../../application/repos/MessageRepository";
+import {Command} from "../../../core/Command";
+import {CommandHandler} from "../../../core/CommandHandler";
+import {CommandResponse} from "../../../core/CommandResponse";
+import {Result} from "../../../core/Result";
 import {MessageSupprimeEvent} from "../event/MessageSupprimeEvent";
 
 export const SUPPRIMER_MESSAGE = "SUPPRIMER_MESSAGE";
