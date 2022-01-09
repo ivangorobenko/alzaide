@@ -3,12 +3,14 @@ import {StatusCodes} from "http-status-codes";
 import {CommandBus} from "../../core/CommandBus";
 import {QueryBus} from "../../core/QueryBus";
 import {Message} from "../../domain/communication/agregat/Message";
+import {AlerterAccompagnant} from "../../domain/communication/command/AlerterAccompagnantHandler";
 import {LaisserMessage} from "../../domain/communication/command/LaisserMessageCommandHandler";
 import {SupprimerMessage} from "../../domain/communication/command/SupprimerMessageCommandHandler";
 import {RecupererMessagesQuery} from "../../domain/communication/query/RecupererMessagesQueryHandler";
+import {Lieu} from "../../domain/communication/valueObject/Lieu";
 import {MessageDataMapper} from "../mapper/MessageDataMapper";
 
-export class MessageController {
+export class CommunicationController {
     private commandBus: CommandBus;
     private queryBus: QueryBus;
 
@@ -34,5 +36,13 @@ export class MessageController {
         const resultOrError = this.commandBus.dispatch(new SupprimerMessage(req.params.id));
         if (resultOrError.isFailure) return res.sendStatus(StatusCodes.BAD_REQUEST);
         res.sendStatus(StatusCodes.NO_CONTENT);
+    }
+
+    alerterAccompagnant(req: Request, res: Response) {
+        const alerte = req.body.alerte;
+        const resultOrError = this.commandBus.dispatch(
+            new AlerterAccompagnant(new Lieu(alerte.lieu.latitude, alerte.lieu.longitude), alerte.timestamp)
+        );
+        res.sendStatus(resultOrError.isFailure ? StatusCodes.INTERNAL_SERVER_ERROR : StatusCodes.NO_CONTENT);
     }
 }

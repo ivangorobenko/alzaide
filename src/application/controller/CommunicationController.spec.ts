@@ -6,23 +6,25 @@ import {TestableQueryBus} from "../../../test/TestableQueryBus";
 import {CommandBus} from "../../core/CommandBus";
 import {QueryBus} from "../../core/QueryBus";
 import {Message} from "../../domain/communication/agregat/Message";
+import {ALERTER_ACCOMPAGNANT, AlerterAccompagnant} from "../../domain/communication/command/AlerterAccompagnantHandler";
 import {LAISSER_MESSAGE, LaisserMessage} from "../../domain/communication/command/LaisserMessageCommandHandler";
 import {SUPPRIMER_MESSAGE, SupprimerMessage} from "../../domain/communication/command/SupprimerMessageCommandHandler";
 import {
     RECUPERER_MESSAGES,
     RecupererMessagesQuery,
 } from "../../domain/communication/query/RecupererMessagesQueryHandler";
-import {MessageController} from "./MessageController";
+import {Lieu} from "../../domain/communication/valueObject/Lieu";
+import {CommunicationController} from "./CommunicationController";
 import {MessageDTO} from "./MessageDTO";
 
 chai.should();
 
-describe("MessageController", () => {
+describe("CommunicationController", () => {
     describe("sur l'action laisserMessage", () => {
         it("doit dispatcher la commande pour laisser un message", function () {
             //GIVEN
             const commandBus: TestableCommandBus<LaisserMessage> = new TestableCommandBus();
-            const sut = new MessageController(commandBus, {} as QueryBus);
+            const sut = new CommunicationController(commandBus, {} as QueryBus);
 
             //WHEN
             sut.laisserMessage({body: {message: "Mon message"}} as Request, {sendStatus: () => undefined} as any);
@@ -37,7 +39,7 @@ describe("MessageController", () => {
         it("doit renvoyer 204 si l'appel s'est correctement passé", function () {
             //GIVEN
             const commandBus: TestableCommandBus<LaisserMessage> = new TestableCommandBus();
-            const sut = new MessageController(commandBus, {} as QueryBus);
+            const sut = new CommunicationController(commandBus, {} as QueryBus);
 
             //WHEN
             let expectedStatus = 0;
@@ -55,7 +57,7 @@ describe("MessageController", () => {
         it("doit renvoyer 500 si l'appel est tombé en erreur", function () {
             //GIVEN
             const commandBus: TestableCommandBus<LaisserMessage> = new TestableCommandBus(true);
-            const sut = new MessageController(commandBus, {} as QueryBus);
+            const sut = new CommunicationController(commandBus, {} as QueryBus);
 
             //WHEN
             let resultStatusCode = 0;
@@ -75,7 +77,7 @@ describe("MessageController", () => {
             //GIVEN
             const messages = [Message.create("1", "Message 1", 123), Message.create("2", "Message 2", 123)];
             const queryBus: TestableQueryBus<RecupererMessagesQuery> = new TestableQueryBus(false, messages);
-            const sut = new MessageController({} as CommandBus, queryBus);
+            const sut = new CommunicationController({} as CommandBus, queryBus);
 
             //WHEN
             const dummyResponse = {
@@ -101,7 +103,7 @@ describe("MessageController", () => {
                 message1,
                 message2,
             ]);
-            const sut = new MessageController({} as CommandBus, queryBus);
+            const sut = new CommunicationController({} as CommandBus, queryBus);
 
             //WHEN
             let messagesRecuperes: Message[] = [];
@@ -129,7 +131,7 @@ describe("MessageController", () => {
         it("doit renvoyer code 500 l'opération est tombée en échec", function () {
             //GIVEN
             const queryBus: TestableQueryBus<RecupererMessagesQuery> = new TestableQueryBus(true);
-            const sut = new MessageController({} as CommandBus, queryBus);
+            const sut = new CommunicationController({} as CommandBus, queryBus);
 
             //WHEN
             let statusEnvoye;
@@ -151,7 +153,7 @@ describe("MessageController", () => {
         it("doit dispatcher la commande SupprimerMessage", () => {
             //GIVEN
             const commandBus: TestableCommandBus<SupprimerMessage> = new TestableCommandBus();
-            const sut = new MessageController(commandBus, {} as QueryBus);
+            const sut = new CommunicationController(commandBus, {} as QueryBus);
 
             //WHEN
             sut.supprimerMessage({params: {id: "1"}} as any, {sendStatus: () => undefined} as any);
@@ -165,7 +167,7 @@ describe("MessageController", () => {
         it("doit renvoyer 204 si la suppression s'est correctement déroulée", () => {
             //GIVEN
             const commandBus: TestableCommandBus<SupprimerMessage> = new TestableCommandBus();
-            const sut = new MessageController(commandBus, {} as QueryBus);
+            const sut = new CommunicationController(commandBus, {} as QueryBus);
             let responseCode;
 
             //WHEN
@@ -181,24 +183,85 @@ describe("MessageController", () => {
             //THEN
             expect(responseCode).to.be.equal(204);
         });
+        it("doit renvoyer Bad request si le traitement de la commande renvoie un échec", () => {
+            //GIVEN
+            const commandBus: TestableCommandBus<SupprimerMessage> = new TestableCommandBus(true);
+            const sut = new CommunicationController(commandBus, {} as QueryBus);
+            let responseCode;
+
+            //WHEN
+            sut.supprimerMessage(
+                {params: {id: "1"}} as any,
+                {
+                    sendStatus: (code: number) => {
+                        responseCode = code;
+                    },
+                } as Response
+            );
+
+            //THEN
+            expect(responseCode).to.be.equal(StatusCodes.BAD_REQUEST);
+        });
     });
-    it("doit renvoyer Bad request si le traitement de la commande renvoie un échec", () => {
-        //GIVEN
-        const commandBus: TestableCommandBus<SupprimerMessage> = new TestableCommandBus(true);
-        const sut = new MessageController(commandBus, {} as QueryBus);
-        let responseCode;
+    describe("sur l'action d'alerter l'accompagnant", () => {
+        it("doit dispatcher la commande pour allerte l'accompagnant", function () {
+            //GIVEN
+            const commandBus: TestableCommandBus<AlerterAccompagnant> = new TestableCommandBus();
+            const sut = new CommunicationController(commandBus, {} as QueryBus);
 
-        //WHEN
-        sut.supprimerMessage(
-            {params: {id: "1"}} as any,
-            {
+            //WHEN
+            sut.alerterAccompagnant(
+                {body: {alerte: {lieu: {latitude: 1.3, longitude: 2.4}, timestamp: 12234}}} as Request,
+                {sendStatus: () => undefined} as any
+            );
+
+            //THEN
+            const dispatchedCommand: AlerterAccompagnant | undefined = commandBus.dispatchedCommand;
+            expect(dispatchedCommand).to.not.be.undefined;
+            expect(dispatchedCommand?.type).to.be.equal(ALERTER_ACCOMPAGNANT);
+            expect(dispatchedCommand?.lieu).to.be.deep.equal(new Lieu(1.3, 2.4));
+            expect(dispatchedCommand?.timestamp).to.equal(12234);
+        });
+
+        it("doit renvoyer 204 si l'appel s'est correctement passé", function () {
+            //GIVEN
+            const commandBus: TestableCommandBus<AlerterAccompagnant> = new TestableCommandBus();
+            const sut = new CommunicationController(commandBus, {} as QueryBus);
+
+            //WHEN
+            let expectedStatus = 0;
+            const res = {
                 sendStatus: (code: number) => {
-                    responseCode = code;
+                    expectedStatus = code;
                 },
-            } as Response
-        );
+            } as Response;
+            sut.alerterAccompagnant(
+                {body: {alerte: {lieu: {latitude: 1.3, longitude: 2.4}, timestamp: 12234}}} as Request,
+                res
+            );
+            //THEN
+            expect(expectedStatus).to.be.equals(204);
+        });
 
-        //THEN
-        expect(responseCode).to.be.equal(StatusCodes.BAD_REQUEST);
+        it("doit renvoyer 500 si l'appel est tombé en erreur", function () {
+            //GIVEN
+            const commandBus: TestableCommandBus<AlerterAccompagnant> = new TestableCommandBus(true);
+            const sut = new CommunicationController(commandBus, {} as QueryBus);
+
+            //WHEN
+            let expectedStatus = 0;
+            const res = {
+                sendStatus: (code: number) => {
+                    expectedStatus = code;
+                },
+            } as Response;
+            sut.alerterAccompagnant(
+                {body: {alerte: {lieu: {latitude: 1.3, longitude: 2.4}, timestamp: 12234}}} as Request,
+                res
+            );
+
+            //THEN
+            expect(expectedStatus).to.be.equals(500);
+        });
     });
 });
