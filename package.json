@@ -222,7 +222,7 @@
   },
   "nodemonConfig": {
     "ignore": [
-      "storage/*.json"
+      "storage/dynamic/*.json"
     ]
   }
 }

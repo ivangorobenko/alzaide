@@ -183,15 +183,6 @@ dist
 # TernJS port file
 .tern-port
 
-
-# Local repository json file(s)
-storage/local/*.json
-
-
-# Reports (mochawesome and stryker)
-reports/
-/guidebook/
-
 # stryker temp files
 .stryker-tmp
 .idea/
@@ -201,4 +192,4 @@ reports/
 /storage/
 
 # Repository json file(s)
-storage/*.json
+storage/dynamic/*.json
