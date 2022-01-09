@@ -1,13 +1,12 @@
 import {MessageDataMapper} from "../../application/mapper/MessageDataMapper";
 import {Message} from "../../domain/communication/agregat/Message";
 import {MessageRepository} from "../../domain/communication/repository/MessageRepository";
-import {FileRepository} from "./FileRepository";
+import {InMemoryRepository} from "./InMemoryRepository";
 import {MessageDB} from "./MessageDB";
 
-export class FileMessageRepository extends FileRepository<MessageDB> implements MessageRepository {
+export class InMemoryMessageRepository extends InMemoryRepository<MessageDB> implements MessageRepository {
     async save(id: string, value: Message): Promise<void> {
         this.data[id] = MessageDataMapper.mapFromDomainToDB(value);
-        return this.syncPersistence();
     }
 
     getAll(): Message[] {
@@ -20,8 +19,7 @@ export class FileMessageRepository extends FileRepository<MessageDB> implements 
         return MessageDataMapper.mapFromDBToDomain(this.data[id]) as Message;
     }
 
-    async delete(id: string): Promise<void> {
-        delete this.data[id];
-        return this.syncPersistence();
+    delete(key: string): void {
+        if (this.data[key]) delete this.data[key];
     }
 }

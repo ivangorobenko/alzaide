@@ -1,14 +1,10 @@
 import {Repository} from "../../core/Repository";
 
 export class InMemoryRepository<T> implements Repository<T> {
-    private readonly data: {[name: string]: T};
+    protected readonly data: {[name: string]: T};
 
     constructor() {
         this.data = {};
-    }
-
-    delete(key: string): void {
-        if (this.data[key]) delete this.data[key];
     }
 
     save(key: string, value: T): void {
