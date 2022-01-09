@@ -1,5 +1,5 @@
 import {expect} from "chai";
-import {fakeUuidGenerator} from "../../../../test/FakeUuidGenerator";
+import {FakeUuidGenerator} from "../../../../test/FakeUuidGenerator";
 import {InMemoryRepository} from "../../../infrastructure/repository/InMemoryRepository";
 import {DummyMessagingService} from "../../../infrastructure/service/DummyMessagingService";
 import {Alerte, Lieu} from "../agregat/Alerte";
@@ -11,6 +11,7 @@ import {AlerterAccompagnantHandler} from "./AlerterAccompagnantHandler";
 describe(`Commande d'alerte d'accompagnant`, function () {
     let alerteRepository: InMemoryRepository<Alerte>;
     let dummyMessagingService = new DummyMessagingService(false);
+    const fakeUuidGenerator = new FakeUuidGenerator();
     const informationAccompagnantRepository = new InMemoryRepository<InformationAccompagnant>(fakeUuidGenerator);
     informationAccompagnantRepository.save({telephone: "0611964293"});
 

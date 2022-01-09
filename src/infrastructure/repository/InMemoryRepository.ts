@@ -1,10 +1,11 @@
 import {Repository} from "../../core/Repository";
+import {IdGenerator} from "../../domain/communication/repository/IdGenerator";
 
 export class InMemoryRepository<T> implements Repository<T> {
     protected readonly data: {[name: string]: T};
-    private idGenerator: any;
+    protected idGenerator: any;
 
-    constructor(idGenerator: any) {
+    constructor(idGenerator: IdGenerator) {
         this.idGenerator = idGenerator;
         this.data = {};
     }

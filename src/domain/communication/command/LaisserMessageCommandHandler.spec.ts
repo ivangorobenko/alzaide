@@ -1,15 +1,17 @@
 import chai, {expect} from "chai";
-import {fakeUuidGenerator} from "../../../../test/FakeUuidGenerator";
+import {FakeUuidGenerator} from "../../../../test/FakeUuidGenerator";
 import {Result} from "../../../core/Result";
 import {InMemoryRepository} from "../../../infrastructure/repository/InMemoryRepository";
+import {UuidGenerator} from "../../../infrastructure/repository/UuidGenerator";
 import {Message} from "../agregat/Message";
 import {MessageLaisseEvent} from "../event/MessageLaisseEvent";
-import {UuidGenerator} from "../repository/UuidGenerator";
 import {LaisserMessage, LaisserMessageCommandHandler} from "./LaisserMessageCommandHandler";
 
 chai.should();
 
 describe("LaisserMessageCommandHandler", () => {
+    const fakeUuidGenerator = new FakeUuidGenerator();
+
     it("doit enregistrer un message", function () {
         //GIVEN
         const messageRepository = new InMemoryRepository<Message>(fakeUuidGenerator);
@@ -54,15 +56,19 @@ describe("LaisserMessageCommandHandler", () => {
     });
     it("doit renvoyer un événement si traitement de la commande a réussi", function () {
         //GIVEN
-        const messageRepository = new InMemoryRepository<Message>(fakeUuidGenerator);
+        const messageRepository = new InMemoryRepository<Message>(new FakeUuidGenerator("dbId"));
         const command = new LaisserMessage("Mon message");
-        const sut = new LaisserMessageCommandHandler(messageRepository, {now: () => 123}, fakeUuidGenerator);
+        const sut = new LaisserMessageCommandHandler(
+            messageRepository,
+            {now: () => 123},
+            new FakeUuidGenerator("messageId")
+        );
 
         //WHEN
         const resultOrError: Result<MessageLaisseEvent | string> = sut.handle(command);
 
         //THEN
         const result = resultOrError.getValue();
-        expect(result).to.deep.equal(new MessageLaisseEvent("myId"));
+        expect(result).to.deep.equal(new MessageLaisseEvent("messageId"));
     });
 });

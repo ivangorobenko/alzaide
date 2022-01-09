@@ -4,6 +4,7 @@ import {Result} from "../../../core/Result";
 import {Alerte} from "../agregat/Alerte";
 import {AccompagnantAlerte} from "../event/AccompagnantAlerte";
 import {AlerteRepository} from "../repository/AlerteRepository";
+import {IdGenerator} from "../repository/IdGenerator";
 import {InformationAccompagnantRepository} from "../repository/InformationAccompagnantRepository";
 import {MessagingService} from "../service/MessagingService";
 import {InformationAccompagnant} from "../valueObject/InformationAccompagnant";
@@ -13,7 +14,7 @@ export class AlerterAccompagnantHandler implements CommandHandler {
     private messagingService: MessagingService;
     private configRepository: InformationAccompagnantRepository;
     private alertRepository: AlerteRepository;
-    private idGenerator: any;
+    private idGenerator: IdGenerator;
     constructor(
         messagingService: MessagingService,
         configRepository: InformationAccompagnantRepository,

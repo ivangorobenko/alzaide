@@ -6,15 +6,16 @@ import {Result} from "../../../core/Result";
 import {Timer} from "../../../core/Timer";
 import {Message} from "../agregat/Message";
 import {MessageLaisseEvent} from "../event/MessageLaisseEvent";
+import {IdGenerator} from "../repository/IdGenerator";
 
 export const LAISSER_MESSAGE = "LAISSER_MESSAGE";
 
 export class LaisserMessageCommandHandler implements CommandHandler {
     private repository: Repository<Message>;
     private timer: Timer;
-    private idGenerator;
+    private idGenerator: IdGenerator;
 
-    constructor(repository: Repository<Message>, timer: Timer, idGenerator: any) {
+    constructor(repository: Repository<Message>, timer: Timer, idGenerator: IdGenerator) {
         this.repository = repository;
         this.timer = timer;
         this.idGenerator = idGenerator;

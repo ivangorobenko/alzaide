@@ -1,10 +1,11 @@
 import {Repository} from "../../core/Repository";
+import {IdGenerator} from "../../domain/communication/repository/IdGenerator";
 import {readFile, writeFile} from "./file";
 
 export class FileRepository<T> implements Repository<T> {
     private readonly filePath: string;
     protected readonly data: {[name: string]: T};
-    protected idGenerator: any;
+    protected idGenerator: IdGenerator;
 
     constructor(path: string, idGenerator: any) {
         this.idGenerator = idGenerator;

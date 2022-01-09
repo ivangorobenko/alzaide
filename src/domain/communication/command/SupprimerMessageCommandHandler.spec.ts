@@ -1,4 +1,5 @@
 import chai, {expect} from "chai";
+import {FakeUuidGenerator} from "../../../../test/FakeUuidGenerator";
 import {CommandResponse} from "../../../core/CommandResponse";
 import {Result} from "../../../core/Result";
 import {InMemoryMessageRepository} from "../../../infrastructure/repository/InMemoryMessageRepository";
@@ -9,10 +10,11 @@ import {SupprimerMessage, SupprimerMessageCommandHandler} from "./SupprimerMessa
 chai.should();
 
 describe("SupprimerMessageCommandHandler", () => {
+    const fakeIdGenerator = new FakeUuidGenerator();
     it("doit supprimer un message avec son identifiant", function () {
         //GIVEN
-        const messageRepository = new InMemoryMessageRepository();
-        messageRepository.save("123", Message.create("123", "Mon message", 123).getValue() as Message);
+        const messageRepository = new InMemoryMessageRepository(fakeIdGenerator);
+        messageRepository.save(Message.create("123", "Mon message", 123).getValue() as Message);
         expect(messageRepository.getAll().length).to.equal(1);
         const command = new SupprimerMessage("123");
         const sut = new SupprimerMessageCommandHandler(messageRepository);
@@ -26,7 +28,7 @@ describe("SupprimerMessageCommandHandler", () => {
     it("doit renvoyer un erreur si l'id est absent dans la commande", function () {
         //GIVEN
         const command = new SupprimerMessage("");
-        const sut = new SupprimerMessageCommandHandler(new InMemoryMessageRepository());
+        const sut = new SupprimerMessageCommandHandler(new InMemoryMessageRepository(fakeIdGenerator));
 
         //WHEN
         const resultOrError: Result<any> = sut.handle(command);
@@ -38,7 +40,7 @@ describe("SupprimerMessageCommandHandler", () => {
     it("doit renvoyer un événement si traitement de la commande a réussi", function () {
         //GIVEN
         const command = new SupprimerMessage("123");
-        const sut = new SupprimerMessageCommandHandler(new InMemoryMessageRepository());
+        const sut = new SupprimerMessageCommandHandler(new InMemoryMessageRepository(fakeIdGenerator));
 
         //WHEN
         const resultOrError: CommandResponse = sut.handle(command);

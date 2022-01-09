@@ -20,8 +20,9 @@ export class FileMessageRepository extends FileRepository<MessageDB> implements 
         return MessageDataMapper.mapFromDBToDomain(this.data[id]) as Message;
     }
 
-    async delete(id: string): Promise<void> {
-        delete this.data[id];
+    async delete(messageId: string): Promise<void> {
+        const record = Object.entries(this.data).find(([, message]) => message.id === messageId);
+        if (record) delete this.data[record[0]];
         return this.syncPersistence();
     }
 }

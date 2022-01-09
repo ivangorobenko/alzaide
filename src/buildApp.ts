@@ -19,10 +19,10 @@ import {
     RECUPERER_MESSAGES,
     RecupererMessagesQueryHandler,
 } from "./domain/communication/query/RecupererMessagesQueryHandler";
-import {UuidGenerator} from "./domain/communication/repository/UuidGenerator";
 import {configureMessageRoutes} from "./infrastructure/http/routes/messageRoutes";
 import {FileMessageRepository} from "./infrastructure/repository/FileMessageRepository";
 import {Repositories} from "./infrastructure/repository/repositories";
+import {UuidGenerator} from "./infrastructure/repository/UuidGenerator";
 
 export const buildApp = (): Application => {
     const app = express();

@@ -1,14 +1,14 @@
 import {expect} from "chai";
-import {fakeUuidGenerator} from "../../../../test/FakeUuidGenerator";
 import {InMemoryRepository} from "../../../infrastructure/repository/InMemoryRepository";
+import {UuidGenerator} from "../../../infrastructure/repository/UuidGenerator";
 import {Message} from "../agregat/Message";
-import {UuidGenerator} from "../repository/UuidGenerator";
 import {RecupererMessagesQuery, RecupererMessagesQueryHandler} from "./RecupererMessagesQueryHandler";
 
 describe("Query de message", () => {
+    const fakeUuidGenerator = new UuidGenerator();
     it("doit récupérer tous les messages existant de plus récent vers moins récent", function () {
         //GIVEN
-        const messageRepository = new InMemoryRepository<Message>(new UuidGenerator());
+        const messageRepository = new InMemoryRepository<Message>(fakeUuidGenerator);
         const expectedMessage1 = Message.create("1", "Message 1", 123).getValue() as Message;
         const expectedMessage2 = Message.create("2", "Message 2", 124).getValue() as Message;
 

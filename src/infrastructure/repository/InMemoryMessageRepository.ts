@@ -5,8 +5,8 @@ import {InMemoryRepository} from "./InMemoryRepository";
 import {MessageDB} from "./MessageDB";
 
 export class InMemoryMessageRepository extends InMemoryRepository<MessageDB> implements MessageRepository {
-    async save(id: string, value: Message): Promise<void> {
-        this.data[id] = MessageDataMapper.mapFromDomainToDB(value);
+    save(value: Message): void {
+        this.data[this.idGenerator.generate()] = MessageDataMapper.mapFromDomainToDB(value);
     }
 
     getAll(): Message[] {
@@ -19,7 +19,8 @@ export class InMemoryMessageRepository extends InMemoryRepository<MessageDB> imp
         return MessageDataMapper.mapFromDBToDomain(this.data[id]) as Message;
     }
 
-    delete(key: string): void {
-        if (this.data[key]) delete this.data[key];
+    delete(messageId: string): void {
+        const record = Object.entries(this.data).find(([, message]) => message.id === messageId);
+        if (record) delete this.data[record[0]];
     }
 }
