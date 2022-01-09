@@ -2,11 +2,11 @@ import {expect} from "chai";
 import {FakeUuidGenerator} from "../../../../test/FakeUuidGenerator";
 import {InMemoryRepository} from "../../../infrastructure/repository/InMemoryRepository";
 import {DummyMessagingService} from "../../../infrastructure/service/DummyMessagingService";
-import {Alerte, Lieu} from "../agregat/Alerte";
+import {Alerte} from "../agregat/Alerte";
 import {AccompagnantAlerte} from "../event/AccompagnantAlerte";
 import {InformationAccompagnant} from "../valueObject/InformationAccompagnant";
-import {AlerterAccompagnant} from "./AlerterAccompagnant";
-import {AlerterAccompagnantHandler} from "./AlerterAccompagnantHandler";
+import {Lieu} from "../valueObject/Lieu";
+import {AlerterAccompagnant, AlerterAccompagnantHandler} from "./AlerterAccompagnantHandler";
 
 describe(`Commande d'alerte d'accompagnant`, function () {
     let alerteRepository: InMemoryRepository<Alerte>;

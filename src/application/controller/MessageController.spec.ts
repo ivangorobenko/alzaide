@@ -64,7 +64,7 @@ describe("MessageController", () => {
                     resultStatusCode = code;
                 },
             } as Response;
-            sut.laisserMessage({body: {message: ""}} as Request, res);
+            sut.laisserMessage({body: {message: "Mon message"}} as Request, res);
 
             //THEN
             expect(resultStatusCode).to.be.equals(500);

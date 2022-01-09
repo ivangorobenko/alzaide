@@ -1,5 +1,6 @@
 import {expect} from "chai";
-import {Alerte, Lieu} from "./Alerte";
+import {Lieu} from "../valueObject/Lieu";
+import {Alerte} from "./Alerte";
 
 describe("Alerte", () => {
     it("doit pouvoir être lancée avec l'id, lieu et l'heure", function () {
