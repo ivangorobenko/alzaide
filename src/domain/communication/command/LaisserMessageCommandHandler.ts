@@ -24,7 +24,7 @@ export class LaisserMessageCommandHandler implements CommandHandler {
         const messageOrError = Message.create(this.idGenerator.generate(), command.message, this.timer.now());
         if (messageOrError.isFailure) return Result.fail("Le message n'a pas pu être laisser");
         const message = messageOrError.getValue() as Message;
-        this.repository.save(message.id, message);
+        this.repository.save(message);
         return Result.ok(new MessageLaisseEvent(message.id));
     }
 }

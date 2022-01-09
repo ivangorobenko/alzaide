@@ -5,8 +5,8 @@ import {FileRepository} from "./FileRepository";
 import {MessageDB} from "./MessageDB";
 
 export class FileMessageRepository extends FileRepository<MessageDB> implements MessageRepository {
-    async save(id: string, value: Message): Promise<void> {
-        this.data[id] = MessageDataMapper.mapFromDomainToDB(value);
+    async save(value: Message): Promise<void> {
+        this.data[this.idGenerator.generate()] = MessageDataMapper.mapFromDomainToDB(value);
         return this.syncPersistence();
     }
 

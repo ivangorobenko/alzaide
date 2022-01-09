@@ -1,5 +1,5 @@
-import {MessageRepository} from "../../domain/communication/repository/MessageRepository";
+import {FileMessageRepository} from "./FileMessageRepository";
 
 export type Repositories = {
-    messageRepository: MessageRepository;
+    messageRepository: FileMessageRepository;
 };

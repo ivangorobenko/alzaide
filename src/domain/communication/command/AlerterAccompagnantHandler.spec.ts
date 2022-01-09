@@ -1,5 +1,5 @@
 import {expect} from "chai";
-import {idGenerator} from "../../../../test/FakeIdGenerator";
+import {fakeUuidGenerator} from "../../../../test/FakeUuidGenerator";
 import {InMemoryRepository} from "../../../infrastructure/repository/InMemoryRepository";
 import {DummyMessagingService} from "../../../infrastructure/service/DummyMessagingService";
 import {Alerte, Lieu} from "../agregat/Alerte";
@@ -11,11 +11,11 @@ import {AlerterAccompagnantHandler} from "./AlerterAccompagnantHandler";
 describe(`Commande d'alerte d'accompagnant`, function () {
     let alerteRepository: InMemoryRepository<Alerte>;
     let dummyMessagingService = new DummyMessagingService(false);
-    const informationAccompagnantRepository = new InMemoryRepository<InformationAccompagnant>();
-    informationAccompagnantRepository.save("id", {telephone: "0611964293"});
+    const informationAccompagnantRepository = new InMemoryRepository<InformationAccompagnant>(fakeUuidGenerator);
+    informationAccompagnantRepository.save({telephone: "0611964293"});
 
     beforeEach(() => {
-        alerteRepository = new InMemoryRepository();
+        alerteRepository = new InMemoryRepository(fakeUuidGenerator);
     });
 
     it(`doit lancer une alerte et l'enregistrer`, function () {
@@ -24,7 +24,7 @@ describe(`Commande d'alerte d'accompagnant`, function () {
             dummyMessagingService,
             informationAccompagnantRepository,
             alerteRepository,
-            idGenerator
+            fakeUuidGenerator
         );
         const lieu = new Lieu(1, 2);
         const timestamp = 123;
@@ -36,7 +36,7 @@ describe(`Commande d'alerte d'accompagnant`, function () {
         //THEN
         const alerts = alerteRepository.getAll();
         expect(alerts.length).to.equal(1);
-        expect(alerts[0]).to.deep.equal(Alerte.lancer(idGenerator.generate(), lieu, timestamp));
+        expect(alerts[0]).to.deep.equal(Alerte.lancer(fakeUuidGenerator.generate(), lieu, timestamp));
     });
 
     it(`doit envoyer un sms d'alerte à l'accompagnant`, function () {
@@ -45,7 +45,7 @@ describe(`Commande d'alerte d'accompagnant`, function () {
             dummyMessagingService,
             informationAccompagnantRepository,
             alerteRepository,
-            idGenerator
+            fakeUuidGenerator
         );
         const command = new AlerterAccompagnant(new Lieu(1, 2), 123);
 
@@ -62,7 +62,7 @@ describe(`Commande d'alerte d'accompagnant`, function () {
             dummyMessagingService,
             informationAccompagnantRepository,
             alerteRepository,
-            idGenerator
+            fakeUuidGenerator
         );
         const command = new AlerterAccompagnant(new Lieu(1, 2), 123);
 
@@ -81,7 +81,7 @@ describe(`Commande d'alerte d'accompagnant`, function () {
             dummyMessagingService,
             informationAccompagnantRepository,
             alerteRepository,
-            idGenerator
+            fakeUuidGenerator
         );
         const command = new AlerterAccompagnant(new Lieu(1, 2), 123);
 

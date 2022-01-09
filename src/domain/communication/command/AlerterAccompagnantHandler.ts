@@ -1,4 +1,3 @@
-import {idGenerator} from "../../../../test/FakeIdGenerator";
 import {CommandHandler} from "../../../core/CommandHandler";
 import {CommandResponse} from "../../../core/CommandResponse";
 import {Result} from "../../../core/Result";
@@ -27,9 +26,9 @@ export class AlerterAccompagnantHandler implements CommandHandler {
         this.idGenerator = idGenerator;
     }
     handle(command: AlerterAccompagnant): CommandResponse {
-        const alerte = Alerte.lancer(idGenerator.generate(), command.lieu, command.timestamp);
+        const alerte = Alerte.lancer(this.idGenerator.generate(), command.lieu, command.timestamp);
 
-        this.alertRepository.save(alerte.alerteId, alerte); // TODO : refactor pour sauvegarder juste alerte sans id. Id doit être géré côté repository
+        this.alertRepository.save(alerte);
 
         const informationAccompagnant: InformationAccompagnant = this.configRepository.getAll()[0];
         const isSMSSent = this.messagingService.sendSMS(informationAccompagnant.telephone, "Alerte !!!");

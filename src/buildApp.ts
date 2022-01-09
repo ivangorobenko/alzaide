@@ -19,7 +19,7 @@ import {
     RECUPERER_MESSAGES,
     RecupererMessagesQueryHandler,
 } from "./domain/communication/query/RecupererMessagesQueryHandler";
-import {IdGenerator} from "./domain/communication/repository/IdGenerator";
+import {UuidGenerator} from "./domain/communication/repository/UuidGenerator";
 import {configureMessageRoutes} from "./infrastructure/http/routes/messageRoutes";
 import {FileMessageRepository} from "./infrastructure/repository/FileMessageRepository";
 import {Repositories} from "./infrastructure/repository/repositories";
@@ -49,12 +49,14 @@ export const buildApp = (): Application => {
     return app;
 };
 
-const configureRepositories = () => ({messageRepository: new FileMessageRepository("./storage/messages.json")});
+const configureRepositories = () => ({
+    messageRepository: new FileMessageRepository("./storage/messages.json", new UuidGenerator()),
+});
 
 const subscribeCommandsToHandlers = (commandBus: CommandBus, repositories: any) => {
     commandBus.subscribe(
         LAISSER_MESSAGE,
-        new LaisserMessageCommandHandler(repositories.messageRepository, new Timer(), new IdGenerator())
+        new LaisserMessageCommandHandler(repositories.messageRepository, new Timer(), new UuidGenerator())
     );
     commandBus.subscribe(SUPPRIMER_MESSAGE, new SupprimerMessageCommandHandler(repositories.messageRepository));
 };

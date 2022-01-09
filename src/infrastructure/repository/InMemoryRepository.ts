@@ -2,20 +2,22 @@ import {Repository} from "../../core/Repository";
 
 export class InMemoryRepository<T> implements Repository<T> {
     protected readonly data: {[name: string]: T};
+    private idGenerator: any;
 
-    constructor() {
+    constructor(idGenerator: any) {
+        this.idGenerator = idGenerator;
         this.data = {};
     }
 
-    save(key: string, value: T): void {
-        this.data[key] = value;
+    save(value: T): void {
+        this.data[this.idGenerator.generate()] = value;
     }
 
     getAll(): T[] {
         return Object.values(this.data);
     }
 
-    get(key: string): T {
-        return this.data[key];
+    get(id: string): T {
+        return this.data[id];
     }
 }

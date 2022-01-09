@@ -1,18 +1,19 @@
 import {Repository} from "../../core/Repository";
-import {copyFileIfNotExist, readFile, writeFile} from "./file";
+import {readFile, writeFile} from "./file";
 
 export class FileRepository<T> implements Repository<T> {
     private readonly filePath: string;
     protected readonly data: {[name: string]: T};
+    protected idGenerator: any;
 
-    constructor(path: string, defaultPath = "") {
-        copyFileIfNotExist(defaultPath, path);
+    constructor(path: string, idGenerator: any) {
+        this.idGenerator = idGenerator;
         this.filePath = path;
         this.data = readFile(path) || {};
     }
 
-    async save(id: string, value: T): Promise<void> {
-        this.data[id] = value;
+    async save(value: T): Promise<void> {
+        this.data[this.idGenerator.generate()] = value;
         return this.syncPersistence();
     }
 

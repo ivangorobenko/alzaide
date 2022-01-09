@@ -1,10 +1,10 @@
 import chai, {expect} from "chai";
-import {idGenerator} from "../../../../test/FakeIdGenerator";
+import {fakeUuidGenerator} from "../../../../test/FakeUuidGenerator";
 import {Result} from "../../../core/Result";
 import {InMemoryRepository} from "../../../infrastructure/repository/InMemoryRepository";
 import {Message} from "../agregat/Message";
 import {MessageLaisseEvent} from "../event/MessageLaisseEvent";
-import {IdGenerator} from "../repository/IdGenerator";
+import {UuidGenerator} from "../repository/UuidGenerator";
 import {LaisserMessage, LaisserMessageCommandHandler} from "./LaisserMessageCommandHandler";
 
 chai.should();
@@ -12,10 +12,10 @@ chai.should();
 describe("LaisserMessageCommandHandler", () => {
     it("doit enregistrer un message", function () {
         //GIVEN
-        const messageRepository = new InMemoryRepository<Message>();
+        const messageRepository = new InMemoryRepository<Message>(fakeUuidGenerator);
         const command = new LaisserMessage("Mon message");
-        const expectedMessage = Message.create(idGenerator.generate(), "Mon message", 123).getValue();
-        const sut = new LaisserMessageCommandHandler(messageRepository, {now: () => 123}, idGenerator);
+        const expectedMessage = Message.create(fakeUuidGenerator.generate(), "Mon message", 123).getValue();
+        const sut = new LaisserMessageCommandHandler(messageRepository, {now: () => 123}, fakeUuidGenerator);
 
         //WHEN
         sut.handle(command);
@@ -26,10 +26,10 @@ describe("LaisserMessageCommandHandler", () => {
     });
     it("doit enregistrer un agrégat Message avec un identifiant unique", function () {
         //GIVEN
-        const messageRepository = new InMemoryRepository<Message>();
+        const messageRepository = new InMemoryRepository<Message>(fakeUuidGenerator);
         const command1 = new LaisserMessage("Mon message 1");
         const command2 = new LaisserMessage("Mon message 2");
-        const sut = new LaisserMessageCommandHandler(messageRepository, {now: () => 123}, new IdGenerator());
+        const sut = new LaisserMessageCommandHandler(messageRepository, {now: () => 123}, new UuidGenerator());
 
         //WHEN
         const messageLaisseEvent1: Result<MessageLaisseEvent | string> = sut.handle(command1);
@@ -42,9 +42,9 @@ describe("LaisserMessageCommandHandler", () => {
     });
     it("doit renvoyer un erreur en cas d echec de traitement de la commande", function () {
         //GIVEN
-        const messageRepository = new InMemoryRepository<Message>();
+        const messageRepository = new InMemoryRepository<Message>(fakeUuidGenerator);
         const command = new LaisserMessage("");
-        const sut = new LaisserMessageCommandHandler(messageRepository, {now: () => 123}, idGenerator);
+        const sut = new LaisserMessageCommandHandler(messageRepository, {now: () => 123}, fakeUuidGenerator);
 
         //WHEN
         const resultOrError: Result<any> = sut.handle(command);
@@ -54,9 +54,9 @@ describe("LaisserMessageCommandHandler", () => {
     });
     it("doit renvoyer un événement si traitement de la commande a réussi", function () {
         //GIVEN
-        const messageRepository = new InMemoryRepository<Message>();
+        const messageRepository = new InMemoryRepository<Message>(fakeUuidGenerator);
         const command = new LaisserMessage("Mon message");
-        const sut = new LaisserMessageCommandHandler(messageRepository, {now: () => 123}, idGenerator);
+        const sut = new LaisserMessageCommandHandler(messageRepository, {now: () => 123}, fakeUuidGenerator);
 
         //WHEN
         const resultOrError: Result<MessageLaisseEvent | string> = sut.handle(command);
