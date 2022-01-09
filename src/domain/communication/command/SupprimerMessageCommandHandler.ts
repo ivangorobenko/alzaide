@@ -1,8 +1,9 @@
-import {MessageRepository} from "../../../application/repos/MessageRepository";
 import {Command} from "../../../core/Command";
 import {CommandHandler} from "../../../core/CommandHandler";
 import {CommandResponse} from "../../../core/CommandResponse";
+import {Repository} from "../../../core/Repository";
 import {Result} from "../../../core/Result";
+import {Message} from "../agregat/Message";
 import {MessageSupprimeEvent} from "../event/MessageSupprimeEvent";
 
 export const SUPPRIMER_MESSAGE = "SUPPRIMER_MESSAGE";
@@ -14,9 +15,9 @@ export class SupprimerMessage extends Command {
 }
 
 export class SupprimerMessageCommandHandler implements CommandHandler {
-    private repository: MessageRepository;
+    private repository: Repository<Message>;
 
-    constructor(repository: MessageRepository) {
+    constructor(repository: Repository<Message>) {
         this.repository = repository;
     }
 

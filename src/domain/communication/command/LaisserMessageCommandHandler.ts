@@ -1,7 +1,7 @@
-import {MessageRepository} from "../../../application/repos/MessageRepository";
 import {Command} from "../../../core/Command";
 import {CommandHandler} from "../../../core/CommandHandler";
 import {CommandResponse} from "../../../core/CommandResponse";
+import {Repository} from "../../../core/Repository";
 import {Result} from "../../../core/Result";
 import {Timer} from "../../../core/Timer";
 import {Message} from "../agregat/Message";
@@ -10,11 +10,11 @@ import {MessageLaisseEvent} from "../event/MessageLaisseEvent";
 export const LAISSER_MESSAGE = "LAISSER_MESSAGE";
 
 export class LaisserMessageCommandHandler implements CommandHandler {
-    private repository: MessageRepository;
+    private repository: Repository<Message>;
     private timer: Timer;
     private idGenerator;
 
-    constructor(repository: MessageRepository, timer: Timer, idGenerator: any) {
+    constructor(repository: Repository<Message>, timer: Timer, idGenerator: any) {
         this.repository = repository;
         this.timer = timer;
         this.idGenerator = idGenerator;

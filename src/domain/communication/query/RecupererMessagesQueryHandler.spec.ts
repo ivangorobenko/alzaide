@@ -1,19 +1,18 @@
 import {expect} from "chai";
-import {MessageRepository} from "../../../application/repos/MessageRepository";
-import {InMemoryMessageRepositoryImpl} from "../../../infrastructure/repository/InMemoryMessageRepositoryImpl";
+import {InMemoryRepository} from "../../../infrastructure/repository/InMemoryRepository";
 import {Message} from "../agregat/Message";
 import {RecupererMessagesQuery, RecupererMessagesQueryHandler} from "./RecupererMessagesQueryHandler";
 
 describe("Query de message", () => {
     it("doit récupérer tous les messages existant de plus récent vers moins récent", function () {
         //GIVEN
-        const repository: MessageRepository = new InMemoryMessageRepositoryImpl();
+        const messageRepository = new InMemoryRepository<Message>();
         const expectedMessage1 = Message.create("1", "Message 1", 123).getValue() as Message;
         const expectedMessage2 = Message.create("2", "Message 2", 124).getValue() as Message;
 
-        repository.save("1", expectedMessage1);
-        repository.save("2", expectedMessage2);
-        const messagesQueryHandler = new RecupererMessagesQueryHandler(repository);
+        messageRepository.save("1", expectedMessage1);
+        messageRepository.save("2", expectedMessage2);
+        const messagesQueryHandler = new RecupererMessagesQueryHandler(messageRepository);
         //WHEN
         const resultOrError = messagesQueryHandler.handle(new RecupererMessagesQuery());
 
@@ -26,9 +25,9 @@ describe("Query de message", () => {
     });
     it("doit renvoyer la liste vide s'il n'existe aucun message", function () {
         //GIVEN
-        const repository: MessageRepository = new InMemoryMessageRepositoryImpl();
+        const messageRepository = new InMemoryRepository<Message>();
 
-        const messagesQueryHandler = new RecupererMessagesQueryHandler(repository);
+        const messagesQueryHandler = new RecupererMessagesQueryHandler(messageRepository);
         //WHEN
         const resultOrError = messagesQueryHandler.handle(new RecupererMessagesQuery());
 

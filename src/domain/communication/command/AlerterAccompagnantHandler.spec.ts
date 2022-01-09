@@ -1,18 +1,53 @@
 import {expect} from "chai";
-import {InMemoryConfigRepository} from "../../../infrastructure/repository/InMemoryConfigRepository";
+import {idGenerator} from "../../../../test/FakeIdGenerator";
+import {InMemoryRepository} from "../../../infrastructure/repository/InMemoryRepository";
 import {DummyMessagingService} from "../../../infrastructure/service/DummyMessagingService";
+import {Alerte, Lieu} from "../agregat/Alerte";
 import {AccompagnantAlerte} from "../event/AccompagnantAlerte";
+import {InformationAccompagnant} from "../valueObject/InformationAccompagnant";
 import {AlerterAccompagnant} from "./AlerterAccompagnant";
 import {AlerterAccompagnantHandler} from "./AlerterAccompagnantHandler";
 
 describe(`Commande d'alerte d'accompagnant`, function () {
+    let alerteRepository: InMemoryRepository<Alerte>;
+    let dummyMessagingService = new DummyMessagingService(false);
+    const informationAccompagnantRepository = new InMemoryRepository<InformationAccompagnant>();
+    informationAccompagnantRepository.save("id", {telephone: "0611964293"});
+
+    beforeEach(() => {
+        alerteRepository = new InMemoryRepository();
+    });
+
+    it(`doit lancer une alerte et l'enregistrer`, function () {
+        //GIVEN
+        const sut = new AlerterAccompagnantHandler(
+            dummyMessagingService,
+            informationAccompagnantRepository,
+            alerteRepository,
+            idGenerator
+        );
+        const lieu = new Lieu(1, 2);
+        const timestamp = 123;
+        const command = new AlerterAccompagnant(lieu, timestamp);
+
+        //WHEN
+        sut.handle(command);
+
+        //THEN
+        const alerts = alerteRepository.getAll();
+        expect(alerts.length).to.equal(1);
+        expect(alerts[0]).to.deep.equal(Alerte.lancer(idGenerator.generate(), lieu, timestamp));
+    });
+
     it(`doit envoyer un sms d'alerte à l'accompagnant`, function () {
         //GIVEN
-        const dummyMessagingService = new DummyMessagingService(false);
-        const configRepository = new InMemoryConfigRepository();
-        configRepository.save("telephone", "0611964293");
-        const sut = new AlerterAccompagnantHandler(dummyMessagingService, configRepository);
-        const command = new AlerterAccompagnant();
+        const sut = new AlerterAccompagnantHandler(
+            dummyMessagingService,
+            informationAccompagnantRepository,
+            alerteRepository,
+            idGenerator
+        );
+        const command = new AlerterAccompagnant(new Lieu(1, 2), 123);
 
         //WHEN
         sut.handle(command);
@@ -23,27 +58,32 @@ describe(`Commande d'alerte d'accompagnant`, function () {
     });
     it(`doit retourner un événement que l'alerte a été lancée`, function () {
         //GIVEN
-        const dummyMessagingService = new DummyMessagingService(false);
-        const configRepository = new InMemoryConfigRepository();
-        configRepository.save("telephone", "0611964293");
-        const sut = new AlerterAccompagnantHandler(dummyMessagingService, configRepository);
-        const command = new AlerterAccompagnant();
+        const sut = new AlerterAccompagnantHandler(
+            dummyMessagingService,
+            informationAccompagnantRepository,
+            alerteRepository,
+            idGenerator
+        );
+        const command = new AlerterAccompagnant(new Lieu(1, 2), 123);
 
         //WHEN
         const result = sut.handle(command);
 
         //THEN
         expect(result.isSuccess).to.be.true;
-        expect(result.getValue()).to.be.deep.equal(new AccompagnantAlerte("12223344"));
+        expect(result.getValue()).to.be.deep.equal(new AccompagnantAlerte("myId"));
         expect(dummyMessagingService.telephone).to.equal("0611964293");
     });
-    it(`doit retourner un erreur si l'alerte n'a pas pu être envoyée`, function () {
+    it(`doit retourner un erreur si l'alerte n'a pas pu être envoyer`, function () {
         //GIVEN
-        const dummyMessagingService = new DummyMessagingService(true);
-        const configRepository = new InMemoryConfigRepository();
-        configRepository.save("telephone", "0611964293");
-        const sut = new AlerterAccompagnantHandler(dummyMessagingService, configRepository);
-        const command = new AlerterAccompagnant();
+        dummyMessagingService = new DummyMessagingService(true);
+        const sut = new AlerterAccompagnantHandler(
+            dummyMessagingService,
+            informationAccompagnantRepository,
+            alerteRepository,
+            idGenerator
+        );
+        const command = new AlerterAccompagnant(new Lieu(1, 2), 123);
 
         //WHEN
         const result = sut.handle(command);

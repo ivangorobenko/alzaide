@@ -11,10 +11,10 @@ export class DummyMessagingService implements MessagingService {
         this.message = "";
     }
 
-    sendSMS(telephone: string, message: string): string | undefined {
-        if (this.echoue) return undefined;
+    sendSMS(telephone: string, message: string): boolean {
+        if (this.echoue) return false;
         this.telephone = telephone;
         this.message = message;
-        return "12223344";
+        return true;
     }
 }

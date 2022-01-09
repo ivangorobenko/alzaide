@@ -1,10 +1,10 @@
 import {MessageDataMapper} from "../../application/mapper/MessageDataMapper";
-import {MessageRepository} from "../../application/repos/MessageRepository";
 import {Message} from "../../domain/communication/agregat/Message";
+import {MessageRepository} from "../../domain/communication/repository/MessageRepository";
 import {copyFileIfNotExist, readFile, writeFile} from "./file";
 import {MessageDB} from "./MessageDB";
 
-export class FileMessageRepositoryImpl implements MessageRepository {
+export class FileMessageRepository implements MessageRepository {
     private readonly filePath: string;
     private readonly data: {[name: string]: MessageDB};
 
@@ -28,9 +28,13 @@ export class FileMessageRepositoryImpl implements MessageRepository {
         writeFile(this.filePath, this.data);
     }
 
-    findAllMessages(): Message[] {
+    getAll(): Message[] {
         return Object.values(this.data)
             .map(messageDB => MessageDataMapper.mapFromDBToDomain(messageDB))
             .filter(message => message !== undefined) as Message[];
+    }
+
+    get(id: string): Message {
+        return MessageDataMapper.mapFromDBToDomain(this.data[id]) as Message;
     }
 }

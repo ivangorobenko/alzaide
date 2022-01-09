@@ -4,7 +4,6 @@ import cors from "cors";
 import express, {Application} from "express";
 import logger from "morgan";
 import path from "path";
-import {IdGenerator} from "./application/IdGenerator";
 import {CommandBus} from "./core/CommandBus";
 import {QueryBus} from "./core/QueryBus";
 import {Timer} from "./core/Timer";
@@ -20,8 +19,9 @@ import {
     RECUPERER_MESSAGES,
     RecupererMessagesQueryHandler,
 } from "./domain/communication/query/RecupererMessagesQueryHandler";
+import {IdGenerator} from "./domain/communication/repository/IdGenerator";
 import {configureMessageRoutes} from "./infrastructure/http/routes/messageRoutes";
-import {FileMessageRepositoryImpl} from "./infrastructure/repository/FileMessageRepositoryImpl";
+import {FileMessageRepository} from "./infrastructure/repository/FileMessageRepository";
 import {Repositories} from "./infrastructure/repository/repositories";
 
 export const buildApp = (): Application => {
@@ -49,7 +49,7 @@ export const buildApp = (): Application => {
     return app;
 };
 
-const configureRepositories = () => ({messageRepository: new FileMessageRepositoryImpl("./storage/messages.json")});
+const configureRepositories = () => ({messageRepository: new FileMessageRepository("./storage/messages.json")});
 
 const subscribeCommandsToHandlers = (commandBus: CommandBus, repositories: any) => {
     commandBus.subscribe(
