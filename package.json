@@ -219,5 +219,10 @@
     "hooks": {
       "pre-commit": "echo '#### TEST start..' && yarn test > /dev/null && echo '..end'"
     }
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "storage/*.json"
+    ]
   }
 }
