@@ -24,7 +24,7 @@ import {
     RecupererMessagesQueryHandler,
 } from "./domain/communication/query/RecupererMessagesQueryHandler";
 import {configureMessageRoutes} from "./infrastructure/http/routes/communicationRoutes";
-import {Repositories} from "./infrastructure/repository/fileRepositories";
+import {Repositories} from "./infrastructure/repository/Repositories";
 import {UuidGenerator} from "./infrastructure/repository/UuidGenerator";
 import {DummyMessagingService} from "./infrastructure/service/DummyMessagingService";
 

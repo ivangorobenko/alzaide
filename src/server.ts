@@ -1,6 +1,6 @@
 import {buildApp} from "./buildApp";
 import {configureRepositories} from "./configureRepositories";
-import {FileRepositories} from "./infrastructure/repository/fileRepositories";
+import {FileRepositories} from "./infrastructure/repository/Repositories";
 
 const port = process.env.PORT || 8082;
 const repositories: FileRepositories = configureRepositories();

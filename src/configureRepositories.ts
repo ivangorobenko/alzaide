@@ -1,8 +1,8 @@
 import {Alerte} from "./domain/communication/agregat/Alerte";
 import {InformationAccompagnant} from "./domain/communication/valueObject/InformationAccompagnant";
 import {FileMessageRepository} from "./infrastructure/repository/FileMessageRepository";
-import {FileRepositories} from "./infrastructure/repository/fileRepositories";
 import {FileRepository} from "./infrastructure/repository/FileRepository";
+import {FileRepositories} from "./infrastructure/repository/Repositories";
 import {UuidGenerator} from "./infrastructure/repository/UuidGenerator";
 
 export const configureRepositories = (): FileRepositories => ({
