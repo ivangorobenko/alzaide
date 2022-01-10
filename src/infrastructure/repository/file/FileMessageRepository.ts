@@ -27,10 +27,6 @@ export class FileMessageRepository implements MessageRepository {
             .filter(message => message !== undefined) as Message[];
     }
 
-    get(id: string): Message {
-        return MessageDataMapper.mapFromDBToDomain(this.data[id]) as Message;
-    }
-
     async delete(messageId: string): Promise<void> {
         const record = Object.entries(this.data).find(([, message]) => message.id === messageId);
         if (record) delete this.data[record[0]];

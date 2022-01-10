@@ -25,10 +25,6 @@ export class FileAlerteRepository implements AlerteRepository {
         return Object.values(this.data).map(alerteDB => AlerteDataMapper.mapFromDBToDomain(alerteDB)) as Alerte[];
     }
 
-    get(id: string): Alerte {
-        return AlerteDataMapper.mapFromDBToDomain(this.data[id]) as Alerte;
-    }
-
     recupererAlerteActive(): Alerte | undefined {
         const alerteDBTrouvee = Object.values(this.data).find(alerte =>
             alerte.active ? Alerte.create(alerte.alerteId, alerte.lieu, alerte.timestamp, alerte.active) : undefined

@@ -17,8 +17,4 @@ export class InMemoryRepository<T> implements Repository<T> {
     getAll(): T[] {
         return Object.values(this.data);
     }
-
-    get(id: string): T {
-        return this.data[id];
-    }
 }
