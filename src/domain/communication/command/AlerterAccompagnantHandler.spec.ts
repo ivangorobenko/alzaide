@@ -39,6 +39,30 @@ describe(`Commande d'alerte d'accompagnant`, function () {
         expect(alerts[0]).to.deep.equal(Alerte.lancer(fakeUuidGenerator.generate(), lieu, timestamp));
     });
 
+    it(`ne doit pas lancer  d'alerte s'il y a déjà une alerte active`, function () {
+        //GIVEN
+        const sut = new AlerterAccompagnantHandler(
+            dummyMessagingService,
+            informationAccompagnantRepository,
+            alerteRepository,
+            fakeUuidGenerator
+        );
+        const lieu = new Lieu(1, 2);
+        const timestamp = 123;
+        const command = new AlerterAccompagnant(lieu, timestamp);
+        alerteRepository.save(Alerte.create("2", new Lieu(1, 3), 123, true));
+        expect(alerteRepository.getAll().length).to.equal(1);
+
+        //WHEN
+        const result = sut.handle(command);
+
+        //THEN
+        expect(result.isFailure).to.be.true;
+        expect(result.getValue()).to.equal("Il y a déjà une alerte active");
+        const alerts = alerteRepository.getAll();
+        expect(alerts.length).to.equal(1);
+    });
+
     it(`doit envoyer un sms d'alerte à l'accompagnant`, function () {
         //GIVEN
         const sut = new AlerterAccompagnantHandler(
