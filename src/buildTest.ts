@@ -1,15 +1,14 @@
 import {buildApp} from "./buildApp";
-import {Alerte} from "./domain/communication/agregat/Alerte";
-import {InformationAccompagnant} from "./domain/communication/valueObject/InformationAccompagnant";
-import {InMemoryMessageRepository} from "./infrastructure/repository/InMemoryMessageRepository";
-import {InMemoryRepository} from "./infrastructure/repository/InMemoryRepository";
+import {InMemoryAlerteRepository} from "./infrastructure/repository/inMemory/InMemoryAlerteRepository";
+import {InMemoryInformationAccompagnantRepository} from "./infrastructure/repository/inMemory/InMemoryInformationAccompagnantRepository";
+import {InMemoryMessageRepository} from "./infrastructure/repository/inMemory/InMemoryMessageRepository";
 import {InMemoryRepositories} from "./infrastructure/repository/Repositories";
 import {UuidGenerator} from "./infrastructure/repository/UuidGenerator";
 
 const configureTestRepositories = (): InMemoryRepositories => ({
     messageRepository: new InMemoryMessageRepository(new UuidGenerator()),
-    alerteRepository: new InMemoryRepository<Alerte>(new UuidGenerator()),
-    informationAccompagnantRepository: new InMemoryRepository<InformationAccompagnant>(new UuidGenerator()),
+    alerteRepository: new InMemoryAlerteRepository(new UuidGenerator()),
+    informationAccompagnantRepository: new InMemoryInformationAccompagnantRepository(),
 });
 
 export const buildTest = () => {

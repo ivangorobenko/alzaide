@@ -5,3 +5,7 @@ export const readFile = <T>(filePath: string): T => existsSync(filePath) && JSON
 export const writeFile = (filePath: string, data: Record<string, unknown>): void => {
     writeFileSync(filePath, JSON.stringify(data));
 };
+
+export const syncPersistence = (filePath: string, data: Record<string, unknown>): void => {
+    writeFile(filePath, data);
+};

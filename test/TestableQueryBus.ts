@@ -16,8 +16,8 @@ export class TestableQueryBus<T extends Query> extends QueryBus {
         this._dispatchedQuery = undefined;
     }
 
-    dispatch(query: T): Result<string> {
+    dispatch(query: T): Result<any> {
         this._dispatchedQuery = query;
-        return this.failDispatch ? Result.fail("Echec") : Result.ok(this.mockedResult);
+        return this.failDispatch ? Result.fail(this.mockedResult) : Result.ok(this.mockedResult);
     }
 }

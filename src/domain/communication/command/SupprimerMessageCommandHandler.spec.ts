@@ -2,7 +2,7 @@ import chai, {expect} from "chai";
 import {FakeUuidGenerator} from "../../../../test/FakeUuidGenerator";
 import {CommandResponse} from "../../../core/CommandResponse";
 import {Result} from "../../../core/Result";
-import {InMemoryMessageRepository} from "../../../infrastructure/repository/InMemoryMessageRepository";
+import {InMemoryMessageRepository} from "../../../infrastructure/repository/inMemory/InMemoryMessageRepository";
 import {Message} from "../agregat/Message";
 import {MessageSupprimeEvent} from "../event/MessageSupprimeEvent";
 import {SupprimerMessage, SupprimerMessageCommandHandler} from "./SupprimerMessageCommandHandler";

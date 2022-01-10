@@ -1,11 +1,10 @@
 import {expect} from "chai";
 import {FakeUuidGenerator} from "../../../../test/FakeUuidGenerator";
-import {InMemoryAlerteRepository} from "../../../infrastructure/repository/InMemoryAlerteRepository";
-import {InMemoryRepository} from "../../../infrastructure/repository/InMemoryRepository";
+import {InMemoryAlerteRepository} from "../../../infrastructure/repository/inMemory/InMemoryAlerteRepository";
+import {InMemoryInformationAccompagnantRepository} from "../../../infrastructure/repository/inMemory/InMemoryInformationAccompagnantRepository";
 import {DummyMessagingService} from "../../../infrastructure/service/DummyMessagingService";
 import {Alerte} from "../agregat/Alerte";
 import {AccompagnantAlerte} from "../event/AccompagnantAlerte";
-import {InformationAccompagnant} from "../valueObject/InformationAccompagnant";
 import {Lieu} from "../valueObject/Lieu";
 import {AlerterAccompagnant, AlerterAccompagnantHandler} from "./AlerterAccompagnantHandler";
 
@@ -13,8 +12,7 @@ describe(`Commande d'alerte d'accompagnant`, function () {
     let alerteRepository: InMemoryAlerteRepository;
     let dummyMessagingService = new DummyMessagingService(false);
     const fakeUuidGenerator = new FakeUuidGenerator();
-    const informationAccompagnantRepository = new InMemoryRepository<InformationAccompagnant>(fakeUuidGenerator);
-    informationAccompagnantRepository.save({telephone: "0611964293"});
+    const informationAccompagnantRepository = new InMemoryInformationAccompagnantRepository("0611964293");
 
     beforeEach(() => {
         alerteRepository = new InMemoryAlerteRepository(fakeUuidGenerator);

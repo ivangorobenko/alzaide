@@ -6,6 +6,7 @@ import {Message} from "../../domain/communication/agregat/Message";
 import {AlerterAccompagnant} from "../../domain/communication/command/AlerterAccompagnantHandler";
 import {LaisserMessage} from "../../domain/communication/command/LaisserMessageCommandHandler";
 import {SupprimerMessage} from "../../domain/communication/command/SupprimerMessageCommandHandler";
+import {RecupererAlerteActive} from "../../domain/communication/query/RecupererAlerteActiveQueryHandler";
 import {RecupererMessagesQuery} from "../../domain/communication/query/RecupererMessagesQueryHandler";
 import {Lieu} from "../../domain/communication/valueObject/Lieu";
 import {MessageDataMapper} from "../mapper/MessageDataMapper";
@@ -44,5 +45,11 @@ export class CommunicationController {
             new AlerterAccompagnant(new Lieu(alerte.lieu.latitude, alerte.lieu.longitude), alerte.timestamp)
         );
         res.sendStatus(resultOrError.isFailure ? StatusCodes.INTERNAL_SERVER_ERROR : StatusCodes.NO_CONTENT);
+    }
+
+    recupererAlerteActive(req: Request, res: Response) {
+        const resultOrError = this.queryBus.dispatch(new RecupererAlerteActive());
+        if (resultOrError.isFailure) return res.sendStatus(StatusCodes.NOT_FOUND);
+        res.status(StatusCodes.OK).send(resultOrError.getValue());
     }
 }

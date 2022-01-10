@@ -8,7 +8,6 @@ import {AlerteRepository} from "../repository/AlerteRepository";
 import {IdGenerator} from "../repository/IdGenerator";
 import {InformationAccompagnantRepository} from "../repository/InformationAccompagnantRepository";
 import {MessagingService} from "../service/MessagingService";
-import {InformationAccompagnant} from "../valueObject/InformationAccompagnant";
 import {Lieu} from "../valueObject/Lieu";
 
 export const ALERTER_ACCOMPAGNANT = "ALERTER_ACCOMPAGNANT";
@@ -36,8 +35,9 @@ export class AlerterAccompagnantHandler implements CommandHandler {
 
         this.alertRepository.save(alerte);
 
-        const informationAccompagnant: InformationAccompagnant = this.informationAccompagnantRepository.getAll()[0];
-        const isSMSSent = this.messagingService.sendSMS(informationAccompagnant.telephone, "Alerte !!!");
+        const telephoneAccompagnant: string =
+            this.informationAccompagnantRepository.recupererNumeroTelephoneAccompagnant();
+        const isSMSSent = this.messagingService.sendSMS(telephoneAccompagnant, "Alerte !!!");
         if (isSMSSent) return Result.ok(new AccompagnantAlerte(alerte.alerteId));
         return Result.fail("Alerte n'a pas pu être envoyée");
     }

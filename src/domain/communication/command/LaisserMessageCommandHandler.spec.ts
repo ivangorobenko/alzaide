@@ -1,7 +1,7 @@
 import chai, {expect} from "chai";
 import {FakeUuidGenerator} from "../../../../test/FakeUuidGenerator";
 import {Result} from "../../../core/Result";
-import {InMemoryRepository} from "../../../infrastructure/repository/InMemoryRepository";
+import {InMemoryRepository} from "../../../infrastructure/repository/inMemory/InMemoryRepository";
 import {UuidGenerator} from "../../../infrastructure/repository/UuidGenerator";
 import {Message} from "../agregat/Message";
 import {MessageLaisseEvent} from "../event/MessageLaisseEvent";

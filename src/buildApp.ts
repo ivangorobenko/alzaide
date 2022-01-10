@@ -20,6 +20,10 @@ import {
     SupprimerMessageCommandHandler,
 } from "./domain/communication/command/SupprimerMessageCommandHandler";
 import {
+    RECUPERER_ALERTE_ACTIVE,
+    RecupererAlerteActiveQueryHandler,
+} from "./domain/communication/query/RecupererAlerteActiveQueryHandler";
+import {
     RECUPERER_MESSAGES,
     RecupererMessagesQueryHandler,
 } from "./domain/communication/query/RecupererMessagesQueryHandler";
@@ -70,4 +74,5 @@ const subscribeCommandsToHandlers = (commandBus: CommandBus, repositories: any) 
 
 const subscribeQueriesToHandlers = (queryBus: QueryBus, repositories: any) => {
     queryBus.subscribe(RECUPERER_MESSAGES, new RecupererMessagesQueryHandler(repositories.messageRepository));
+    queryBus.subscribe(RECUPERER_ALERTE_ACTIVE, new RecupererAlerteActiveQueryHandler(repositories.alerteRepository));
 };

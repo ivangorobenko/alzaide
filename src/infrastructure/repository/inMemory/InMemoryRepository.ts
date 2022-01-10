@@ -1,5 +1,5 @@
-import {Repository} from "../../core/Repository";
-import {IdGenerator} from "../../domain/communication/repository/IdGenerator";
+import {Repository} from "../../../core/Repository";
+import {IdGenerator} from "../../../domain/communication/repository/IdGenerator";
 
 export class InMemoryRepository<T> implements Repository<T> {
     protected readonly data: {[name: string]: T};

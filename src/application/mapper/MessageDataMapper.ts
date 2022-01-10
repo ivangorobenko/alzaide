@@ -1,5 +1,5 @@
 import {Message} from "../../domain/communication/agregat/Message";
-import {MessageDB} from "../../infrastructure/repository/MessageDB";
+import {MessageDB} from "../../infrastructure/repository/dto/MessageDB";
 import {MessageDTO} from "../controller/MessageDTO";
 
 export class MessageDataMapper {

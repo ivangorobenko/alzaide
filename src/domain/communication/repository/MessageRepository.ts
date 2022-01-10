@@ -1,6 +1,6 @@
 import {Repository} from "../../../core/Repository";
-import {MessageDB} from "../../../infrastructure/repository/MessageDB";
+import {Message} from "../agregat/Message";
 
-export interface MessageRepository extends Repository<MessageDB> {
+export interface MessageRepository extends Repository<Message> {
     delete(id: string): void;
 }

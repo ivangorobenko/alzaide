@@ -4,7 +4,7 @@ import {Result} from "../../../core/Result";
 import {Alerte} from "../agregat/Alerte";
 import {AlerteRepository} from "../repository/AlerteRepository";
 
-export const RECUPERER_ALERTES = "RECUPERER_ALERTES";
+export const RECUPERER_ALERTE_ACTIVE = "RECUPERER_ALERTE_ACTIVE";
 
 export class RecupererAlerteActiveQueryHandler implements QueryHandler<Alerte | string> {
     private alerteRepository: AlerteRepository;
@@ -13,15 +13,15 @@ export class RecupererAlerteActiveQueryHandler implements QueryHandler<Alerte | 
         this.alerteRepository = repository;
     }
 
-    handle(query: RecupererAlerteActiveQuery): Result<Alerte | string> {
+    handle(query: RecupererAlerteActive): Result<Alerte | string> {
         const alerte = this.alerteRepository.recupererAlerteActive();
         if (alerte) return Result.ok(alerte);
         return Result.fail("Aucune alerte active");
     }
 }
 
-export class RecupererAlerteActiveQuery extends Query {
+export class RecupererAlerteActive extends Query {
     constructor() {
-        super(RECUPERER_ALERTES);
+        super(RECUPERER_ALERTE_ACTIVE);
     }
 }

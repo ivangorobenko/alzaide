@@ -5,10 +5,15 @@ import {TestableCommandBus} from "../../../test/TestableCommandBus";
 import {TestableQueryBus} from "../../../test/TestableQueryBus";
 import {CommandBus} from "../../core/CommandBus";
 import {QueryBus} from "../../core/QueryBus";
+import {Alerte} from "../../domain/communication/agregat/Alerte";
 import {Message} from "../../domain/communication/agregat/Message";
 import {ALERTER_ACCOMPAGNANT, AlerterAccompagnant} from "../../domain/communication/command/AlerterAccompagnantHandler";
 import {LAISSER_MESSAGE, LaisserMessage} from "../../domain/communication/command/LaisserMessageCommandHandler";
 import {SUPPRIMER_MESSAGE, SupprimerMessage} from "../../domain/communication/command/SupprimerMessageCommandHandler";
+import {
+    RECUPERER_ALERTE_ACTIVE,
+    RecupererAlerteActive,
+} from "../../domain/communication/query/RecupererAlerteActiveQueryHandler";
 import {
     RECUPERER_MESSAGES,
     RecupererMessagesQuery,
@@ -92,7 +97,7 @@ describe("CommunicationController", () => {
             expect(dispatchedQuery).to.not.be.undefined;
             expect(dispatchedQuery?.type).to.be.equal(RECUPERER_MESSAGES);
         });
-        it("doit renvoyer le code http 200 et la liste de messages quand l'opération s'est bien passée", function () {
+        it("doit renvoyer 200 et la liste de messages quand l'opération s'est bien passée", function () {
             //GIVEN
 
             const message1 = Message.create("1", "Message 1", 123).getValue();
@@ -204,7 +209,7 @@ describe("CommunicationController", () => {
         });
     });
     describe("sur l'action d'alerter l'accompagnant", () => {
-        it("doit dispatcher la commande pour allerte l'accompagnant", function () {
+        it("doit dispatcher la commande pour alerte l'accompagnant", function () {
             //GIVEN
             const commandBus: TestableCommandBus<AlerterAccompagnant> = new TestableCommandBus();
             const sut = new CommunicationController(commandBus, {} as QueryBus);
@@ -262,6 +267,68 @@ describe("CommunicationController", () => {
 
             //THEN
             expect(expectedStatus).to.be.equals(500);
+        });
+    });
+    describe("sur l'action de recuperer l'alerte active", () => {
+        it("doit dispatcher la query pour de récupération de l'alerte active", function () {
+            //GIVEN
+            const queryBus = new TestableQueryBus<RecupererAlerteActive>();
+            const sut = new CommunicationController({} as CommandBus, queryBus);
+
+            //WHEN
+            sut.recupererAlerteActive({} as Request, {status: () => ({send: () => ({})})} as any);
+
+            //THEN
+            const dispatchedQuery: RecupererAlerteActive | undefined = queryBus.dispatchedQuery;
+            expect(dispatchedQuery).to.not.be.undefined;
+            expect(dispatchedQuery?.type).to.be.equal(RECUPERER_ALERTE_ACTIVE);
+        });
+
+        it("doit renvoyer 200 et l'alerte dans la réponse si l'appel s'est correctement passé", function () {
+            //GIVEN
+            const alerte = Alerte.lancer("id", new Lieu(1.2, 3.2), 123);
+            const queryBus = new TestableQueryBus<RecupererAlerteActive>(false, alerte);
+            const sut = new CommunicationController({} as CommandBus, queryBus);
+
+            //WHEN
+            let statusEnvoye;
+            let sendBody;
+            sut.recupererAlerteActive(
+                {} as Request,
+                {
+                    status: (status: number) => {
+                        statusEnvoye = status;
+                        return {
+                            send: (body: any) => {
+                                sendBody = body;
+                            },
+                        };
+                    },
+                } as any
+            );
+            //THEN
+            expect(statusEnvoye).to.equal(StatusCodes.OK);
+            expect(sendBody).to.deep.equal(alerte);
+        });
+
+        it("doit renvoyer 404 aucune alerte active n'a été trouvée", function () {
+            //GIVEN
+            const errorMessage = "Aucune alerte active";
+            const queryBus = new TestableQueryBus<RecupererAlerteActive>(true, errorMessage);
+            const sut = new CommunicationController({} as CommandBus, queryBus);
+
+            //WHEN
+            let statusEnvoye;
+            sut.recupererAlerteActive(
+                {} as Request,
+                {
+                    sendStatus: (status: number) => {
+                        statusEnvoye = status;
+                    },
+                } as any
+            );
+            //THEN
+            expect(statusEnvoye).to.equal(StatusCodes.NOT_FOUND);
         });
     });
 });

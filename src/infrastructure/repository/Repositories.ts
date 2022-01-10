@@ -1,20 +1,21 @@
 import {Alerte} from "../../domain/communication/agregat/Alerte";
-import {InformationAccompagnant} from "../../domain/communication/valueObject/InformationAccompagnant";
-import {FileMessageRepository} from "./FileMessageRepository";
-import {FileRepository} from "./FileRepository";
-import {InMemoryMessageRepository} from "./InMemoryMessageRepository";
-import {InMemoryRepository} from "./InMemoryRepository";
+import {FileAlerteRepository} from "./file/FileAlerteRepository";
+import {FileInformationAccompagnantRepository} from "./file/FileInformationAccompagnantRepository";
+import {FileMessageRepository} from "./file/FileMessageRepository";
+import {InMemoryInformationAccompagnantRepository} from "./inMemory/InMemoryInformationAccompagnantRepository";
+import {InMemoryMessageRepository} from "./inMemory/InMemoryMessageRepository";
+import {InMemoryRepository} from "./inMemory/InMemoryRepository";
 
 export type Repositories = FileRepositories | InMemoryRepositories;
 
 export type FileRepositories = {
     messageRepository: FileMessageRepository;
-    alerteRepository: FileRepository<Alerte>;
-    informationAccompagnantRepository: FileRepository<InformationAccompagnant>;
+    alerteRepository: FileAlerteRepository;
+    informationAccompagnantRepository: FileInformationAccompagnantRepository;
 };
 
 export type InMemoryRepositories = {
     messageRepository: InMemoryMessageRepository;
     alerteRepository: InMemoryRepository<Alerte>;
-    informationAccompagnantRepository: InMemoryRepository<InformationAccompagnant>;
+    informationAccompagnantRepository: InMemoryInformationAccompagnantRepository;
 };

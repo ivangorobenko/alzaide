@@ -5,6 +5,9 @@ import chai, {expect} from "chai";
 // @ts-ignore
 import chaiHttp from "chai-http";
 import {buildTest} from "../../../buildTest";
+import {Alerte} from "../../../domain/communication/agregat/Alerte";
+import {Lieu} from "../../../domain/communication/valueObject/Lieu";
+
 chai.should();
 chai.use(chaiHttp);
 
@@ -44,15 +47,25 @@ describe("La configuration de routes de communication", () => {
         });
     });
     //FIXME: il y a un souci avec le contexte de tests en enlevant le describe de messages le test plante
-    it("doit rendre accessible la route PUT /alerte", done => {
-        const informationAccompagnantRepository = testContext.repositories.informationAccompagnantRepository;
-        informationAccompagnantRepository.save({telephone: "0611964293"});
-        chai.request(testContext.app)
-            .put("/alerte")
-            .send({alerte: {lieu: {latitude: 1.2, longitude: 2.3}, timestamp: 123}})
-            .end((err, res) => {
-                expect(res.status).to.be.equal(204);
-                done();
-            });
+    describe(`dans le contexte d'alertes`, () => {
+        it("doit rendre accessible la route PUT /alerte", done => {
+            chai.request(testContext.app)
+                .put("/alerte")
+                .send({alerte: {lieu: {latitude: 1.2, longitude: 2.3}, timestamp: 123}})
+                .end((err, res) => {
+                    expect(res.status).to.be.equal(204);
+                    done();
+                });
+        });
+        it("doit rendre accessible la route GET /alerte-active", done => {
+            const alerteRepository = testContext.repositories.alerteRepository;
+            alerteRepository.save(Alerte.lancer("123", new Lieu(1, 2), 123));
+            chai.request(testContext.app)
+                .get("/alerte-active")
+                .end((err, res) => {
+                    expect(res.status).to.be.equal(200);
+                    done();
+                });
+        });
     });
 });

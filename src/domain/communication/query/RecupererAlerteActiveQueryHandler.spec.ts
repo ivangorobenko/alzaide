@@ -1,9 +1,9 @@
 import {expect} from "chai";
-import {InMemoryAlerteRepository} from "../../../infrastructure/repository/InMemoryAlerteRepository";
+import {InMemoryAlerteRepository} from "../../../infrastructure/repository/inMemory/InMemoryAlerteRepository";
 import {UuidGenerator} from "../../../infrastructure/repository/UuidGenerator";
 import {Alerte} from "../agregat/Alerte";
 import {Lieu} from "../valueObject/Lieu";
-import {RecupererAlerteActiveQuery, RecupererAlerteActiveQueryHandler} from "./RecupererAlerteActiveQueryHandler";
+import {RecupererAlerteActive, RecupererAlerteActiveQueryHandler} from "./RecupererAlerteActiveQueryHandler";
 
 describe("Query de l'alerte active", () => {
     const fakeUuidGenerator = new UuidGenerator();
@@ -18,7 +18,7 @@ describe("Query de l'alerte active", () => {
         alerteRepository.save(alerteActive);
         const alerteActiveQueryHandler = new RecupererAlerteActiveQueryHandler(alerteRepository);
         //WHEN
-        const resultOrError = alerteActiveQueryHandler.handle(new RecupererAlerteActiveQuery());
+        const resultOrError = alerteActiveQueryHandler.handle(new RecupererAlerteActive());
 
         //THEN
         expect(resultOrError.isFailure).to.be.false;
@@ -34,7 +34,7 @@ describe("Query de l'alerte active", () => {
         alerteRepository.save(ancienneAlerte);
         const alerteActiveQueryHandler = new RecupererAlerteActiveQueryHandler(alerteRepository);
         //WHEN
-        const resultOrError = alerteActiveQueryHandler.handle(new RecupererAlerteActiveQuery());
+        const resultOrError = alerteActiveQueryHandler.handle(new RecupererAlerteActive());
 
         //THEN
         expect(resultOrError.isFailure).to.be.true;
