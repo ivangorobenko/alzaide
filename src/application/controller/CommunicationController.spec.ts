@@ -19,6 +19,7 @@ import {
     RecupererMessagesQuery,
 } from "../../domain/communication/query/RecupererMessagesQueryHandler";
 import {Lieu} from "../../domain/communication/valueObject/Lieu";
+import {AlerteDTO} from "./AlerteDTO";
 import {CommunicationController} from "./CommunicationController";
 import {MessageDTO} from "./MessageDTO";
 
@@ -286,7 +287,11 @@ describe("CommunicationController", () => {
 
         it("doit renvoyer 200 et l'alerte dans la réponse si l'appel s'est correctement passé", function () {
             //GIVEN
-            const alerte = Alerte.lancer("id", new Lieu(1.2, 3.2), 123);
+            const alerteId = "id";
+            const lieu = new Lieu(1.2, 3.2);
+            const timestamp = 123;
+            const alerte = Alerte.lancer(alerteId, lieu, timestamp);
+            const expectedAlerteDTO = new AlerteDTO(alerteId, lieu, timestamp);
             const queryBus = new TestableQueryBus<RecupererAlerteActive>(false, alerte);
             const sut = new CommunicationController({} as CommandBus, queryBus);
 
@@ -308,7 +313,7 @@ describe("CommunicationController", () => {
             );
             //THEN
             expect(statusEnvoye).to.equal(StatusCodes.OK);
-            expect(sendBody).to.deep.equal(alerte);
+            expect(sendBody).to.deep.equal(expectedAlerteDTO);
         });
 
         it("doit renvoyer 404 aucune alerte active n'a été trouvée", function () {

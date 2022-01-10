@@ -2,7 +2,7 @@ import {MessageDataMapper} from "../../../application/mapper/MessageDataMapper";
 import {Message} from "../../../domain/communication/agregat/Message";
 import {IdGenerator} from "../../../domain/communication/repository/IdGenerator";
 import {MessageRepository} from "../../../domain/communication/repository/MessageRepository";
-import {MessageDB} from "../dto/MessageDB";
+import {MessageDB} from "../collection/MessageDB";
 import {readFile, syncPersistence} from "./file";
 
 export class FileMessageRepository implements MessageRepository {

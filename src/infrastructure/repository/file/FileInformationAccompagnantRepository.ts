@@ -1,5 +1,5 @@
 import {InformationAccompagnantRepository} from "../../../domain/communication/repository/InformationAccompagnantRepository";
-import {InformationAccompagnantDB} from "../dto/InformationAccompagnantDB";
+import {InformationAccompagnantDB} from "../collection/InformationAccompagnantDB";
 import {readFile} from "./file";
 
 export class FileInformationAccompagnantRepository implements InformationAccompagnantRepository {

@@ -1,7 +1,8 @@
 import {expect} from "chai";
 import {Alerte} from "../../domain/communication/agregat/Alerte";
 import {Lieu} from "../../domain/communication/valueObject/Lieu";
-import {AlerteDB} from "../../infrastructure/repository/dto/AlerteDB";
+import {AlerteDB} from "../../infrastructure/repository/collection/AlerteDB";
+import {AlerteDTO} from "../controller/AlerteDTO";
 import {AlerteDataMapper} from "./AlerteDataMapper";
 
 describe("AlerteDataMapper", () => {
@@ -29,5 +30,16 @@ describe("AlerteDataMapper", () => {
         expect(alerteDB.lieu).to.deep.equal(lieu);
         expect(alerteDB.timestamp).to.be.equal(alerte.timestamp);
         expect(alerteDB.active).to.be.equal(alerte.isActive());
+    });
+    it("doit mapper objet Alerte venant du domaine vers l'objet AlerteDTO et direction de UI", () => {
+        //GIVEN
+        const lieu = new Lieu(1.2, 3.2);
+        const alerte: Alerte = Alerte.create("1", lieu, 123, false);
+        //WHEN
+        const alerteDTO: AlerteDTO = AlerteDataMapper.mapFromDomainToDTO(alerte);
+        //THEN
+        expect(alerteDTO.alerteId).to.be.equal(alerte.alerteId);
+        expect(alerteDTO.lieu).to.deep.equal(lieu);
+        expect(alerteDTO.timestamp).to.be.equal(alerte.timestamp);
     });
 });

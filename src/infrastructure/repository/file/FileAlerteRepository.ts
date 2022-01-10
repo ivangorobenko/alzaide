@@ -2,7 +2,7 @@ import {AlerteDataMapper} from "../../../application/mapper/AlerteDataMapper";
 import {Alerte} from "../../../domain/communication/agregat/Alerte";
 import {AlerteRepository} from "../../../domain/communication/repository/AlerteRepository";
 import {IdGenerator} from "../../../domain/communication/repository/IdGenerator";
-import {AlerteDB} from "../dto/AlerteDB";
+import {AlerteDB} from "../collection/AlerteDB";
 import {readFile, syncPersistence} from "./file";
 
 export class FileAlerteRepository implements AlerteRepository {

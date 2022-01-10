@@ -1,7 +1,7 @@
 import {MessageDataMapper} from "../../../application/mapper/MessageDataMapper";
 import {Message} from "../../../domain/communication/agregat/Message";
 import {MessageRepository} from "../../../domain/communication/repository/MessageRepository";
-import {MessageDB} from "../dto/MessageDB";
+import {MessageDB} from "../collection/MessageDB";
 import {InMemoryRepository} from "./InMemoryRepository";
 
 export class InMemoryMessageRepository extends InMemoryRepository<MessageDB> implements MessageRepository {

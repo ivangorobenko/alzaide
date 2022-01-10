@@ -9,6 +9,7 @@ import {SupprimerMessage} from "../../domain/communication/command/SupprimerMess
 import {RecupererAlerteActive} from "../../domain/communication/query/RecupererAlerteActiveQueryHandler";
 import {RecupererMessagesQuery} from "../../domain/communication/query/RecupererMessagesQueryHandler";
 import {Lieu} from "../../domain/communication/valueObject/Lieu";
+import {AlerteDataMapper} from "../mapper/AlerteDataMapper";
 import {MessageDataMapper} from "../mapper/MessageDataMapper";
 
 export class CommunicationController {
@@ -50,6 +51,6 @@ export class CommunicationController {
     recupererAlerteActive(req: Request, res: Response) {
         const resultOrError = this.queryBus.dispatch(new RecupererAlerteActive());
         if (resultOrError.isFailure) return res.sendStatus(StatusCodes.NOT_FOUND);
-        res.status(StatusCodes.OK).send(resultOrError.getValue());
+        res.status(StatusCodes.OK).send(AlerteDataMapper.mapFromDomainToDTO(resultOrError.getValue()));
     }
 }
