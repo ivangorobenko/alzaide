@@ -21,13 +21,9 @@ export class FileAlerteRepository implements AlerteRepository {
         return syncPersistence(this.filePath, this.data);
     }
 
-    getAll(): Alerte[] {
-        return Object.values(this.data).map(alerteDB => AlerteDataMapper.mapFromDBToDomain(alerteDB)) as Alerte[];
-    }
-
     recupererAlerteLancee(): Alerte | undefined {
         const alerteDBTrouvee = Object.values(this.data).find(alerte =>
-            alerte.active ? Alerte.create(alerte.alerteId, alerte.lieu, alerte.timestamp, alerte.active) : undefined
+            alerte.lancee ? Alerte.create(alerte.alerteId, alerte.lieu, alerte.timestamp, alerte.lancee) : undefined
         );
         if (alerteDBTrouvee) return AlerteDataMapper.mapFromDBToDomain(alerteDBTrouvee) as Alerte;
         return undefined;

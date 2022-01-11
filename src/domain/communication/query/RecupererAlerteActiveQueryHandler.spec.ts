@@ -11,10 +11,9 @@ describe("Query de l'alerte active", () => {
         //GIVEN
         const alerteRepository = new InMemoryAlerteRepository(fakeUuidGenerator);
         const ancienneAlerte: Alerte = Alerte.lancer("uniqueAlerteId", new Lieu(43.604663, 1.44511), 123);
-        ancienneAlerte.arreter();
         const alerteActive: Alerte = Alerte.lancer("uniqueAlerteId2", new Lieu(13.604663, 2.44511), 222);
 
-        alerteRepository.save(ancienneAlerte);
+        alerteRepository.save(ancienneAlerte.arreter());
         alerteRepository.save(alerteActive);
         const alerteActiveQueryHandler = new RecupererAlerteLanceeQueryHandler(alerteRepository);
         //WHEN
@@ -28,10 +27,8 @@ describe("Query de l'alerte active", () => {
     it("doit renvoyer undefined s'il n'y a pas d'alertes actives", function () {
         //GIVEN
         const alerteRepository = new InMemoryAlerteRepository(fakeUuidGenerator);
-        const ancienneAlerte: Alerte = Alerte.lancer("uniqueAlerteId", new Lieu(43.604663, 1.44511), 123);
-        ancienneAlerte.arreter();
-
-        alerteRepository.save(ancienneAlerte);
+        const alerte: Alerte = Alerte.lancer("uniqueAlerteId", new Lieu(43.604663, 1.44511), 123);
+        alerteRepository.save(alerte.arreter());
         const alerteActiveQueryHandler = new RecupererAlerteLanceeQueryHandler(alerteRepository);
         //WHEN
         const resultOrError = alerteActiveQueryHandler.handle(new RecupererAlerteLancee());

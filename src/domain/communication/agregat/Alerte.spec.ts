@@ -17,16 +17,6 @@ describe("Alerte", () => {
         expect(alerte.lieu).to.deep.equal(lieu);
         expect(alerte.timestamp).to.deep.equal(timestamp);
     });
-    it("doit permettre de savoir si une alerte est lancee", function () {
-        //GIVEN
-        const alerte: Alerte = Alerte.lancer("uniqueAlerteId", new Lieu(43.604663, 1.44511), 123);
-
-        //WHEN
-        alerte.arreter();
-
-        //THEN
-        expect(alerte.estLancee()).to.be.false;
-    });
     it("doit être marquée comme lancée à son lancement", function () {
         //GIVEN
         const alerteId = "uniqueAlerteId";

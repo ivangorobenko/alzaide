@@ -4,7 +4,7 @@ import {InMemoryRepository} from "./InMemoryRepository";
 
 export class InMemoryAlerteRepository extends InMemoryRepository<Alerte> implements AlerteRepository {
     recupererAlerteLancee(): Alerte | undefined {
-        return Object.values(this.data).find(alerte => alerte.isActive());
+        return Object.values(this.data).find(alerte => alerte.estLancee());
     }
 
     getAll(): Alerte[] {
