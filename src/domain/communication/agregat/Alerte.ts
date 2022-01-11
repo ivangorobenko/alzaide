@@ -33,8 +33,8 @@ export class Alerte {
         return new Alerte(alerteId, lieu, timestamp, active);
     }
 
-    public desactiver() {
-        this._active = false;
+    public desactiver(): Alerte {
+        return new Alerte(this._alerteId, this._lieu, this._timestamp, false);
     }
 
     isActive() {

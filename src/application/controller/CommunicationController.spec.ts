@@ -7,7 +7,10 @@ import {CommandBus} from "../../core/CommandBus";
 import {QueryBus} from "../../core/QueryBus";
 import {Alerte} from "../../domain/communication/agregat/Alerte";
 import {Message} from "../../domain/communication/agregat/Message";
-import {ALERTER_ACCOMPAGNANT, AlerterAccompagnant} from "../../domain/communication/command/AlerterAccompagnantHandler";
+import {
+    ALERTER_ACCOMPAGNANT,
+    AlerterAccompagnant,
+} from "../../domain/communication/command/AlerterAccompagnantCommandHandler";
 import {LAISSER_MESSAGE, LaisserMessage} from "../../domain/communication/command/LaisserMessageCommandHandler";
 import {SUPPRIMER_MESSAGE, SupprimerMessage} from "../../domain/communication/command/SupprimerMessageCommandHandler";
 import {

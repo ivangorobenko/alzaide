@@ -12,7 +12,7 @@ import {Lieu} from "../valueObject/Lieu";
 
 export const ALERTER_ACCOMPAGNANT = "ALERTER_ACCOMPAGNANT";
 
-export class AlerterAccompagnantHandler implements CommandHandler {
+export class AlerterAccompagnantCommandHandler implements CommandHandler {
     private messagingService: MessagingService;
     private informationAccompagnantRepository: InformationAccompagnantRepository;
     private alertRepository: AlerteRepository;
@@ -43,6 +43,10 @@ export class AlerterAccompagnantHandler implements CommandHandler {
         const isSMSSent = this.messagingService.sendSMS(telephoneAccompagnant, "Alerte !!!");
         if (isSMSSent) return Result.ok(new AccompagnantAlerte(alerte.alerteId));
         return Result.fail("Alerte n'a pas pu être envoyée");
+    }
+
+    typeOf(): string {
+        return ALERTER_ACCOMPAGNANT;
     }
 }
 

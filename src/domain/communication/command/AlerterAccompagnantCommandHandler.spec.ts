@@ -6,7 +6,7 @@ import {DummyMessagingService} from "../../../infrastructure/service/DummyMessag
 import {Alerte} from "../agregat/Alerte";
 import {AccompagnantAlerte} from "../event/AccompagnantAlerte";
 import {Lieu} from "../valueObject/Lieu";
-import {AlerterAccompagnant, AlerterAccompagnantHandler} from "./AlerterAccompagnantHandler";
+import {AlerterAccompagnant, AlerterAccompagnantCommandHandler} from "./AlerterAccompagnantCommandHandler";
 
 describe(`Commande d'alerte d'accompagnant`, function () {
     let alerteRepository: InMemoryAlerteRepository;
@@ -20,7 +20,7 @@ describe(`Commande d'alerte d'accompagnant`, function () {
 
     it(`doit lancer une alerte et l'enregistrer`, function () {
         //GIVEN
-        const sut = new AlerterAccompagnantHandler(
+        const sut = new AlerterAccompagnantCommandHandler(
             dummyMessagingService,
             informationAccompagnantRepository,
             alerteRepository,
@@ -41,7 +41,7 @@ describe(`Commande d'alerte d'accompagnant`, function () {
 
     it(`ne doit pas lancer  d'alerte s'il y a déjà une alerte active`, function () {
         //GIVEN
-        const sut = new AlerterAccompagnantHandler(
+        const sut = new AlerterAccompagnantCommandHandler(
             dummyMessagingService,
             informationAccompagnantRepository,
             alerteRepository,
@@ -65,7 +65,7 @@ describe(`Commande d'alerte d'accompagnant`, function () {
 
     it(`doit envoyer un sms d'alerte à l'accompagnant`, function () {
         //GIVEN
-        const sut = new AlerterAccompagnantHandler(
+        const sut = new AlerterAccompagnantCommandHandler(
             dummyMessagingService,
             informationAccompagnantRepository,
             alerteRepository,
@@ -82,7 +82,7 @@ describe(`Commande d'alerte d'accompagnant`, function () {
     });
     it(`doit retourner un événement que l'alerte a été lancée`, function () {
         //GIVEN
-        const sut = new AlerterAccompagnantHandler(
+        const sut = new AlerterAccompagnantCommandHandler(
             dummyMessagingService,
             informationAccompagnantRepository,
             alerteRepository,
@@ -101,7 +101,7 @@ describe(`Commande d'alerte d'accompagnant`, function () {
     it(`doit retourner un erreur si l'alerte n'a pas pu être envoyer`, function () {
         //GIVEN
         dummyMessagingService = new DummyMessagingService(true);
-        const sut = new AlerterAccompagnantHandler(
+        const sut = new AlerterAccompagnantCommandHandler(
             dummyMessagingService,
             informationAccompagnantRepository,
             alerteRepository,

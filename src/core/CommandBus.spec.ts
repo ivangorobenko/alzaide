@@ -24,12 +24,13 @@ describe("Le bus de commande", function () {
         let calledCommand = undefined;
 
         //WHEN
-        sut.subscribe("MA_COMMANDE", {
+        sut.subscribe({
             handle: (command: Command) => {
                 called = true;
                 calledCommand = command;
                 return Result.ok(new MyEvent());
             },
+            typeOf: () => "MA_COMMANDE",
         });
 
         sut.dispatch(new MyCommand("Une valeur"));
@@ -42,8 +43,9 @@ describe("Le bus de commande", function () {
         const sut = new CommandBus();
 
         //WHEN
-        sut.subscribe("MA_COMMANDE", {
+        sut.subscribe({
             handle: () => Result.fail<string>("Something went bad"),
+            typeOf: () => "MA_COMMANDE",
         });
         const resultOrError = sut.dispatch(new MyCommand("Une valeur"));
 
@@ -56,8 +58,9 @@ describe("Le bus de commande", function () {
 
         //WHEN
         const expectedEvent = new MyEvent();
-        sut.subscribe("MA_COMMANDE", {
+        sut.subscribe({
             handle: () => Result.ok<Event>(expectedEvent),
+            typeOf: () => "MA_COMMANDE",
         });
         const resultOrError = sut.dispatch(new MyCommand("Une valeur"));
 

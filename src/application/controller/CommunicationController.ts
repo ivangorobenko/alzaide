@@ -3,7 +3,7 @@ import {StatusCodes} from "http-status-codes";
 import {CommandBus} from "../../core/CommandBus";
 import {QueryBus} from "../../core/QueryBus";
 import {Message} from "../../domain/communication/agregat/Message";
-import {AlerterAccompagnant} from "../../domain/communication/command/AlerterAccompagnantHandler";
+import {AlerterAccompagnant} from "../../domain/communication/command/AlerterAccompagnantCommandHandler";
 import {LaisserMessage} from "../../domain/communication/command/LaisserMessageCommandHandler";
 import {SupprimerMessage} from "../../domain/communication/command/SupprimerMessageCommandHandler";
 import {RecupererAlerteActive} from "../../domain/communication/query/RecupererAlerteActiveQueryHandler";

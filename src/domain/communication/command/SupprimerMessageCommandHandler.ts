@@ -25,4 +25,8 @@ export class SupprimerMessageCommandHandler implements CommandHandler {
         this.repository.delete(command.id);
         return Result.ok(new MessageSupprimeEvent(command.id));
     }
+
+    typeOf(): string {
+        return SUPPRIMER_MESSAGE;
+    }
 }

@@ -28,6 +28,10 @@ export class LaisserMessageCommandHandler implements CommandHandler {
         this.repository.save(message);
         return Result.ok(new MessageLaisseEvent(message.id));
     }
+
+    typeOf(): string {
+        return LAISSER_MESSAGE;
+    }
 }
 
 export class LaisserMessage extends Command {

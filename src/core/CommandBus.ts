@@ -11,8 +11,8 @@ export class CommandBus {
         this.handlers = {};
     }
 
-    subscribe(type: string, handler: CommandHandler): void {
-        this.handlers[type] = handler;
+    subscribe(handler: CommandHandler): void {
+        this.handlers[handler.typeOf()] = handler;
     }
 
     dispatch(command: Command): Result<Event | string> {

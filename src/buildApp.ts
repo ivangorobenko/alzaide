@@ -7,18 +7,9 @@ import path from "path";
 import {CommandBus} from "./core/CommandBus";
 import {QueryBus} from "./core/QueryBus";
 import {Timer} from "./core/Timer";
-import {
-    ALERTER_ACCOMPAGNANT,
-    AlerterAccompagnantHandler,
-} from "./domain/communication/command/AlerterAccompagnantHandler";
-import {
-    LAISSER_MESSAGE,
-    LaisserMessageCommandHandler,
-} from "./domain/communication/command/LaisserMessageCommandHandler";
-import {
-    SUPPRIMER_MESSAGE,
-    SupprimerMessageCommandHandler,
-} from "./domain/communication/command/SupprimerMessageCommandHandler";
+import {AlerterAccompagnantCommandHandler} from "./domain/communication/command/AlerterAccompagnantCommandHandler";
+import {LaisserMessageCommandHandler} from "./domain/communication/command/LaisserMessageCommandHandler";
+import {SupprimerMessageCommandHandler} from "./domain/communication/command/SupprimerMessageCommandHandler";
 import {
     RECUPERER_ALERTE_ACTIVE,
     RecupererAlerteActiveQueryHandler,
@@ -57,13 +48,11 @@ export const buildApp = (repositories: Repositories): Application => {
 
 const subscribeCommandsToHandlers = (commandBus: CommandBus, repositories: any) => {
     commandBus.subscribe(
-        LAISSER_MESSAGE,
         new LaisserMessageCommandHandler(repositories.messageRepository, new Timer(), new UuidGenerator())
     );
-    commandBus.subscribe(SUPPRIMER_MESSAGE, new SupprimerMessageCommandHandler(repositories.messageRepository));
+    commandBus.subscribe(new SupprimerMessageCommandHandler(repositories.messageRepository));
     commandBus.subscribe(
-        ALERTER_ACCOMPAGNANT,
-        new AlerterAccompagnantHandler(
+        new AlerterAccompagnantCommandHandler(
             new DummyMessagingService(false),
             repositories.informationAccompagnantRepository,
             repositories.alerteRepository,
