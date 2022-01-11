@@ -13,8 +13,4 @@ export class InMemoryRepository<T> implements Repository<T> {
     save(value: T): void {
         this.data[this.idGenerator.generate()] = value;
     }
-
-    getAll(): T[] {
-        return Object.values(this.data);
-    }
 }

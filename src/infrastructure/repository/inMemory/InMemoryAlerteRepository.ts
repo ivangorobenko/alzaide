@@ -6,4 +6,8 @@ export class InMemoryAlerteRepository extends InMemoryRepository<Alerte> impleme
     recupererAlerteActive(): Alerte | undefined {
         return Object.values(this.data).find(alerte => alerte.isActive());
     }
+
+    getAll(): Alerte[] {
+        return Object.values(this.data);
+    }
 }

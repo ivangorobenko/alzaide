@@ -1,15 +1,15 @@
 import {Query} from "../../../core/Query";
 import {QueryHandler} from "../../../core/QueryHandler";
-import {Repository} from "../../../core/Repository";
 import {Result} from "../../../core/Result";
 import {Message} from "../agregat/Message";
+import {MessageRepository} from "../repository/MessageRepository";
 
 export const RECUPERER_MESSAGES = "RECUPERER_MESSAGES";
 
 export class RecupererMessagesQueryHandler implements QueryHandler<Message[]> {
-    private messageRepository: Repository<Message>;
+    private messageRepository: MessageRepository;
 
-    constructor(repository: Repository<Message>) {
+    constructor(repository: MessageRepository) {
         this.messageRepository = repository;
     }
 

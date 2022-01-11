@@ -1,5 +1,5 @@
 import {expect} from "chai";
-import {InMemoryRepository} from "../../../infrastructure/repository/inMemory/InMemoryRepository";
+import {InMemoryMessageRepository} from "../../../infrastructure/repository/inMemory/InMemoryMessageRepository";
 import {UuidGenerator} from "../../../infrastructure/repository/UuidGenerator";
 import {Message} from "../agregat/Message";
 import {RecupererMessagesQuery, RecupererMessagesQueryHandler} from "./RecupererMessagesQueryHandler";
@@ -8,7 +8,7 @@ describe("Query de message", () => {
     const fakeUuidGenerator = new UuidGenerator();
     it("doit récupérer tous les messages existant de plus récent vers moins récent", function () {
         //GIVEN
-        const messageRepository = new InMemoryRepository<Message>(fakeUuidGenerator);
+        const messageRepository = new InMemoryMessageRepository(fakeUuidGenerator);
         const expectedMessage1 = Message.create("1", "Message 1", 123).getValue() as Message;
         const expectedMessage2 = Message.create("2", "Message 2", 124).getValue() as Message;
 
@@ -27,7 +27,7 @@ describe("Query de message", () => {
     });
     it("doit renvoyer la liste vide s'il n'existe aucun message", function () {
         //GIVEN
-        const messageRepository = new InMemoryRepository<Message>(fakeUuidGenerator);
+        const messageRepository = new InMemoryMessageRepository(fakeUuidGenerator);
 
         const messagesQueryHandler = new RecupererMessagesQueryHandler(messageRepository);
         //WHEN
