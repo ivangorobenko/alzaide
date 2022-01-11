@@ -11,9 +11,9 @@ import {AlerterAccompagnantCommandHandler} from "./domain/communication/command/
 import {LaisserMessageCommandHandler} from "./domain/communication/command/LaisserMessageCommandHandler";
 import {SupprimerMessageCommandHandler} from "./domain/communication/command/SupprimerMessageCommandHandler";
 import {
-    RECUPERER_ALERTE_ACTIVE,
-    RecupererAlerteActiveQueryHandler,
-} from "./domain/communication/query/RecupererAlerteActiveQueryHandler";
+    RECUPERER_ALERTE_LANCEE,
+    RecupererAlerteLanceeQueryHandler,
+} from "./domain/communication/query/RecupererAlerteLanceeQueryHandler";
 import {
     RECUPERER_MESSAGES,
     RecupererMessagesQueryHandler,
@@ -63,5 +63,5 @@ const subscribeCommandsToHandlers = (commandBus: CommandBus, repositories: any) 
 
 const subscribeQueriesToHandlers = (queryBus: QueryBus, repositories: any) => {
     queryBus.subscribe(RECUPERER_MESSAGES, new RecupererMessagesQueryHandler(repositories.messageRepository));
-    queryBus.subscribe(RECUPERER_ALERTE_ACTIVE, new RecupererAlerteActiveQueryHandler(repositories.alerteRepository));
+    queryBus.subscribe(RECUPERER_ALERTE_LANCEE, new RecupererAlerteLanceeQueryHandler(repositories.alerteRepository));
 };

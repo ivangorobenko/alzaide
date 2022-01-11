@@ -18,7 +18,7 @@ export const configureMessageRoutes = (commandBus: CommandBus, queryBus: QueryBu
         messageController.alerterAccompagnant(req, res)
     );
     communicationRouter.get("/alerte", (req: Request, res: Response) =>
-        messageController.recupererAlerteActive(req, res)
+        messageController.recupererAlerteLancee(req, res)
     );
     return communicationRouter;
 };

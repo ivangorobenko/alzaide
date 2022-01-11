@@ -4,12 +4,12 @@ export class AlerteDB {
     public alerteId: string;
     public lieu: Lieu;
     public timestamp: number;
-    public active: boolean;
+    public lancee: boolean;
 
-    constructor(alerteId: string, lieu: Lieu, timestamp: number, active: boolean) {
+    constructor(alerteId: string, lieu: Lieu, timestamp: number, lancee: boolean) {
         this.alerteId = alerteId;
         this.lieu = lieu;
         this.timestamp = timestamp;
-        this.active = active;
+        this.lancee = lancee;
     }
 }

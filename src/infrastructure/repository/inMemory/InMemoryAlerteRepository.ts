@@ -3,7 +3,7 @@ import {AlerteRepository} from "../../../domain/communication/repository/AlerteR
 import {InMemoryRepository} from "./InMemoryRepository";
 
 export class InMemoryAlerteRepository extends InMemoryRepository<Alerte> implements AlerteRepository {
-    recupererAlerteActive(): Alerte | undefined {
+    recupererAlerteLancee(): Alerte | undefined {
         return Object.values(this.data).find(alerte => alerte.isActive());
     }
 

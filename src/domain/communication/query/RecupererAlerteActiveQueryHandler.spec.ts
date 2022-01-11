@@ -3,7 +3,7 @@ import {InMemoryAlerteRepository} from "../../../infrastructure/repository/inMem
 import {UuidGenerator} from "../../../infrastructure/repository/UuidGenerator";
 import {Alerte} from "../agregat/Alerte";
 import {Lieu} from "../valueObject/Lieu";
-import {RecupererAlerteActive, RecupererAlerteActiveQueryHandler} from "./RecupererAlerteActiveQueryHandler";
+import {RecupererAlerteLancee, RecupererAlerteLanceeQueryHandler} from "./RecupererAlerteLanceeQueryHandler";
 
 describe("Query de l'alerte active", () => {
     const fakeUuidGenerator = new UuidGenerator();
@@ -11,14 +11,14 @@ describe("Query de l'alerte active", () => {
         //GIVEN
         const alerteRepository = new InMemoryAlerteRepository(fakeUuidGenerator);
         const ancienneAlerte: Alerte = Alerte.lancer("uniqueAlerteId", new Lieu(43.604663, 1.44511), 123);
-        ancienneAlerte.desactiver();
+        ancienneAlerte.arreter();
         const alerteActive: Alerte = Alerte.lancer("uniqueAlerteId2", new Lieu(13.604663, 2.44511), 222);
 
         alerteRepository.save(ancienneAlerte);
         alerteRepository.save(alerteActive);
-        const alerteActiveQueryHandler = new RecupererAlerteActiveQueryHandler(alerteRepository);
+        const alerteActiveQueryHandler = new RecupererAlerteLanceeQueryHandler(alerteRepository);
         //WHEN
-        const resultOrError = alerteActiveQueryHandler.handle(new RecupererAlerteActive());
+        const resultOrError = alerteActiveQueryHandler.handle(new RecupererAlerteLancee());
 
         //THEN
         expect(resultOrError.isFailure).to.be.false;
@@ -29,12 +29,12 @@ describe("Query de l'alerte active", () => {
         //GIVEN
         const alerteRepository = new InMemoryAlerteRepository(fakeUuidGenerator);
         const ancienneAlerte: Alerte = Alerte.lancer("uniqueAlerteId", new Lieu(43.604663, 1.44511), 123);
-        ancienneAlerte.desactiver();
+        ancienneAlerte.arreter();
 
         alerteRepository.save(ancienneAlerte);
-        const alerteActiveQueryHandler = new RecupererAlerteActiveQueryHandler(alerteRepository);
+        const alerteActiveQueryHandler = new RecupererAlerteLanceeQueryHandler(alerteRepository);
         //WHEN
-        const resultOrError = alerteActiveQueryHandler.handle(new RecupererAlerteActive());
+        const resultOrError = alerteActiveQueryHandler.handle(new RecupererAlerteLancee());
 
         //THEN
         expect(resultOrError.isFailure).to.be.true;

@@ -31,8 +31,8 @@ export class AlerterAccompagnantCommandHandler implements CommandHandler {
     }
 
     handle(command: AlerterAccompagnant): CommandResponse {
-        const alerteActive = this.alertRepository.recupererAlerteActive();
-        if (alerteActive) return Result.fail("Il y a déjà une alerte active");
+        const alerteLancee = this.alertRepository.recupererAlerteLancee();
+        if (alerteLancee) return Result.fail("Il y a déjà une alerte active");
 
         const alerte = Alerte.lancer(this.idGenerator.generate(), command.lieu, command.timestamp);
 

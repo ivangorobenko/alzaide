@@ -16,28 +16,28 @@ export class Alerte {
     private readonly _lieu: Lieu;
     private readonly _timestamp: number;
     private readonly _alerteId: string;
-    private _active: boolean;
+    private _lancee: boolean;
 
-    private constructor(alerteId: string, lieu: Lieu, timestamp: number, active = true) {
+    private constructor(alerteId: string, lieu: Lieu, timestamp: number, lancee = true) {
         this._alerteId = alerteId;
         this._lieu = lieu;
         this._timestamp = timestamp;
-        this._active = active;
+        this._lancee = lancee;
     }
 
     public static lancer(alerteId: string, lieu: Lieu, timestamp: number) {
         return new Alerte(alerteId, lieu, timestamp);
     }
 
-    public static create(alerteId: string, lieu: Lieu, timestamp: number, active: boolean) {
-        return new Alerte(alerteId, lieu, timestamp, active);
+    public static create(alerteId: string, lieu: Lieu, timestamp: number, lancee: boolean) {
+        return new Alerte(alerteId, lieu, timestamp, lancee);
     }
 
-    public desactiver(): Alerte {
+    public arreter(): Alerte {
         return new Alerte(this._alerteId, this._lieu, this._timestamp, false);
     }
 
-    isActive() {
-        return this._active;
+    public estLancee() {
+        return this._lancee;
     }
 }

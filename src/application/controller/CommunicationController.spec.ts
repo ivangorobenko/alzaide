@@ -14,9 +14,9 @@ import {
 import {LAISSER_MESSAGE, LaisserMessage} from "../../domain/communication/command/LaisserMessageCommandHandler";
 import {SUPPRIMER_MESSAGE, SupprimerMessage} from "../../domain/communication/command/SupprimerMessageCommandHandler";
 import {
-    RECUPERER_ALERTE_ACTIVE,
-    RecupererAlerteActive,
-} from "../../domain/communication/query/RecupererAlerteActiveQueryHandler";
+    RECUPERER_ALERTE_LANCEE,
+    RecupererAlerteLancee,
+} from "../../domain/communication/query/RecupererAlerteLanceeQueryHandler";
 import {
     RECUPERER_MESSAGES,
     RecupererMessagesQuery,
@@ -273,19 +273,19 @@ describe("CommunicationController", () => {
             expect(expectedStatus).to.be.equals(500);
         });
     });
-    describe("sur l'action de recuperer l'alerte active", () => {
+    describe("sur l'action de recuperer l'alerte lancee", () => {
         it("doit dispatcher la query pour de récupération de l'alerte active", function () {
             //GIVEN
-            const queryBus = new TestableQueryBus<RecupererAlerteActive>();
+            const queryBus = new TestableQueryBus<RecupererAlerteLancee>();
             const sut = new CommunicationController({} as CommandBus, queryBus);
 
             //WHEN
-            sut.recupererAlerteActive({} as Request, {status: () => ({send: () => ({})})} as any);
+            sut.recupererAlerteLancee({} as Request, {status: () => ({send: () => ({})})} as any);
 
             //THEN
-            const dispatchedQuery: RecupererAlerteActive | undefined = queryBus.dispatchedQuery;
+            const dispatchedQuery: RecupererAlerteLancee | undefined = queryBus.dispatchedQuery;
             expect(dispatchedQuery).to.not.be.undefined;
-            expect(dispatchedQuery?.type).to.be.equal(RECUPERER_ALERTE_ACTIVE);
+            expect(dispatchedQuery?.type).to.be.equal(RECUPERER_ALERTE_LANCEE);
         });
 
         it("doit renvoyer 200 et l'alerte dans la réponse si l'appel s'est correctement passé", function () {
@@ -295,13 +295,13 @@ describe("CommunicationController", () => {
             const timestamp = 123;
             const alerte = Alerte.lancer(alerteId, lieu, timestamp);
             const expectedAlerteDTO = new AlerteDTO(alerteId, lieu, timestamp);
-            const queryBus = new TestableQueryBus<RecupererAlerteActive>(false, alerte);
+            const queryBus = new TestableQueryBus<RecupererAlerteLancee>(false, alerte);
             const sut = new CommunicationController({} as CommandBus, queryBus);
 
             //WHEN
             let statusEnvoye;
             let sendBody;
-            sut.recupererAlerteActive(
+            sut.recupererAlerteLancee(
                 {} as Request,
                 {
                     status: (status: number) => {
@@ -319,15 +319,15 @@ describe("CommunicationController", () => {
             expect(sendBody).to.deep.equal(expectedAlerteDTO);
         });
 
-        it("doit renvoyer 404 aucune alerte active n'a été trouvée", function () {
+        it("doit renvoyer 404 aucune alerte lancée n'a été trouvée", function () {
             //GIVEN
-            const errorMessage = "Aucune alerte active";
-            const queryBus = new TestableQueryBus<RecupererAlerteActive>(true, errorMessage);
+            const errorMessage = "Aucune alerte lancée";
+            const queryBus = new TestableQueryBus<RecupererAlerteLancee>(true, errorMessage);
             const sut = new CommunicationController({} as CommandBus, queryBus);
 
             //WHEN
             let statusEnvoye;
-            sut.recupererAlerteActive(
+            sut.recupererAlerteLancee(
                 {} as Request,
                 {
                     sendStatus: (status: number) => {

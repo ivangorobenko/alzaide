@@ -4,24 +4,24 @@ import {Result} from "../../../core/Result";
 import {Alerte} from "../agregat/Alerte";
 import {AlerteRepository} from "../repository/AlerteRepository";
 
-export const RECUPERER_ALERTE_ACTIVE = "RECUPERER_ALERTE_ACTIVE";
+export const RECUPERER_ALERTE_LANCEE = "RECUPERER_ALERTE_LANCEE";
 
-export class RecupererAlerteActiveQueryHandler implements QueryHandler<Alerte | string> {
+export class RecupererAlerteLanceeQueryHandler implements QueryHandler<Alerte | string> {
     private alerteRepository: AlerteRepository;
 
     constructor(repository: AlerteRepository) {
         this.alerteRepository = repository;
     }
 
-    handle(query: RecupererAlerteActive): Result<Alerte | string> {
-        const alerte = this.alerteRepository.recupererAlerteActive();
+    handle(query: RecupererAlerteLancee): Result<Alerte | string> {
+        const alerte = this.alerteRepository.recupererAlerteLancee();
         if (alerte) return Result.ok(alerte);
         return Result.fail("Aucune alerte active");
     }
 }
 
-export class RecupererAlerteActive extends Query {
+export class RecupererAlerteLancee extends Query {
     constructor() {
-        super(RECUPERER_ALERTE_ACTIVE);
+        super(RECUPERER_ALERTE_LANCEE);
     }
 }

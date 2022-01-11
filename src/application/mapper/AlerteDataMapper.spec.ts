@@ -16,7 +16,7 @@ describe("AlerteDataMapper", () => {
         expect(alerte.alerteId).to.be.equal(alerteDB.alerteId);
         expect(alerte.lieu).to.deep.equal(lieu);
         expect(alerte.timestamp).to.be.equal(alerteDB.timestamp);
-        expect(alerte.isActive()).to.be.equal(alerteDB.active);
+        expect(alerte.estLancee()).to.be.equal(alerteDB.lancee);
     });
 
     it("doit mapper objet Alerte venant du domaine vers l'objet de la persistance ", () => {
@@ -29,7 +29,7 @@ describe("AlerteDataMapper", () => {
         expect(alerteDB.alerteId).to.be.equal(alerte.alerteId);
         expect(alerteDB.lieu).to.deep.equal(lieu);
         expect(alerteDB.timestamp).to.be.equal(alerte.timestamp);
-        expect(alerteDB.active).to.be.equal(alerte.isActive());
+        expect(alerteDB.lancee).to.be.equal(alerte.estLancee());
     });
     it("doit mapper objet Alerte venant du domaine vers l'objet AlerteDTO et direction de UI", () => {
         //GIVEN

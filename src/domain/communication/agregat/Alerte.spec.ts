@@ -17,17 +17,17 @@ describe("Alerte", () => {
         expect(alerte.lieu).to.deep.equal(lieu);
         expect(alerte.timestamp).to.deep.equal(timestamp);
     });
-    it("doit permettre de savoir si une alerte est active", function () {
+    it("doit permettre de savoir si une alerte est lancee", function () {
         //GIVEN
         const alerte: Alerte = Alerte.lancer("uniqueAlerteId", new Lieu(43.604663, 1.44511), 123);
 
         //WHEN
-        alerte.desactiver();
+        alerte.arreter();
 
         //THEN
-        expect(alerte.isActive()).to.be.false;
+        expect(alerte.estLancee()).to.be.false;
     });
-    it("doit être active à son lancement", function () {
+    it("doit être marquée comme lancée à son lancement", function () {
         //GIVEN
         const alerteId = "uniqueAlerteId";
         const lieu = new Lieu(43.604663, 1.44511);
@@ -37,16 +37,16 @@ describe("Alerte", () => {
         const alerte: Alerte = Alerte.lancer(alerteId, lieu, timestamp);
 
         //THEN
-        expect(alerte.isActive()).to.be.true;
+        expect(alerte.estLancee()).to.be.true;
     });
-    it("doit pouvoir être passée en non-active", function () {
+    it("doit pouvoir arrêter alerte lancée", function () {
         //GIVEN
         const alerte: Alerte = Alerte.lancer("uniqueAlerteId", new Lieu(43.604663, 1.44511), 123);
 
         //WHEN
-        alerte.desactiver();
+        const alerteArretee = alerte.arreter();
 
         //THEN
-        expect(alerte.isActive()).to.be.false;
+        expect(alerteArretee.estLancee()).to.be.false;
     });
 });
