@@ -1,16 +1,10 @@
 import {expect} from "chai";
 import {FakeUuidGenerator} from "../../../../test/FakeUuidGenerator";
-import {Event} from "../../../core/Event";
 import {InMemoryAlerteRepository} from "../../../infrastructure/repository/inMemory/InMemoryAlerteRepository";
 import {Alerte} from "../agregat/Alerte";
+import {AlerteLanceeArretee} from "../event/AlerteLanceeArretee";
 import {Lieu} from "../valueObject/Lieu";
 import {ArreterAlerteLancee, ArreterAlerteLanceeCommandHandler} from "./ArreterAlerteLanceeCommandHandler";
-
-export class AlerteLanceeArretee extends Event {
-    constructor(alerteId: string) {
-        super(alerteId);
-    }
-}
 
 describe("ArreterAlerteLanceeCommandHandler", function () {
     it("doit arreter alerte lancee", function () {

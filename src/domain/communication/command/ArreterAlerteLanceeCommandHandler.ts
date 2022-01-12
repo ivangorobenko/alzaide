@@ -2,8 +2,8 @@ import {Command} from "../../../core/Command";
 import {CommandHandler} from "../../../core/CommandHandler";
 import {CommandResponse} from "../../../core/CommandResponse";
 import {Result} from "../../../core/Result";
+import {AlerteLanceeArretee} from "../event/AlerteLanceeArretee";
 import {AlerteRepository} from "../repository/AlerteRepository";
-import {AlerteLanceeArretee} from "./ArreterAlerteLanceeCommandHandler.spec";
 
 const ARRETER_ALERTE_LANCEE = "ARRETER_ALERTE_LANCEE";
 
