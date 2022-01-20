@@ -11,6 +11,10 @@ import {
     ALERTER_ACCOMPAGNANT,
     AlerterAccompagnant,
 } from "../../domain/communication/command/AlerterAccompagnantCommandHandler";
+import {
+    ARRETER_ALERTE_LANCEE,
+    ArreterAlerteLancee,
+} from "../../domain/communication/command/ArreterAlerteLanceeCommandHandler";
 import {LAISSER_MESSAGE, LaisserMessage} from "../../domain/communication/command/LaisserMessageCommandHandler";
 import {SUPPRIMER_MESSAGE, SupprimerMessage} from "../../domain/communication/command/SupprimerMessageCommandHandler";
 import {
@@ -318,25 +322,56 @@ describe("CommunicationController", () => {
             expect(statusEnvoye).to.equal(StatusCodes.OK);
             expect(sendBody).to.deep.equal(expectedAlerteDTO);
         });
-
-        it("doit renvoyer 404 aucune alerte lancée n'a été trouvée", function () {
+    });
+    describe("sur l'action d'arrêter l'alerte", () => {
+        it("doit dispatcher la commande pour arrêter l'alerte", function () {
             //GIVEN
-            const errorMessage = "Aucune alerte lancée";
-            const queryBus = new TestableQueryBus<RecupererAlerteLancee>(true, errorMessage);
-            const sut = new CommunicationController({} as CommandBus, queryBus);
+            const commandBus: TestableCommandBus<ArreterAlerteLancee> = new TestableCommandBus();
+            const sut = new CommunicationController(commandBus, {} as QueryBus);
 
             //WHEN
-            let statusEnvoye;
-            sut.recupererAlerteLancee(
+            sut.arreterAlerteLancee({} as Request, {sendStatus: () => undefined} as any);
+
+            //THEN
+            const dispatchedCommand: ArreterAlerteLancee | undefined = commandBus.dispatchedCommand;
+            expect(dispatchedCommand).to.not.be.undefined;
+            expect(dispatchedCommand?.type).to.be.equal(ARRETER_ALERTE_LANCEE);
+        });
+        it("doit renvoyer 204 si tout s'est bien passé", () => {
+            //GIVEN
+            let responseCode = 0;
+            const commandBus: TestableCommandBus<ArreterAlerteLancee> = new TestableCommandBus();
+            const sut = new CommunicationController(commandBus, {} as QueryBus);
+
+            //WHEN
+            sut.arreterAlerteLancee(
                 {} as Request,
                 {
                     sendStatus: (status: number) => {
-                        statusEnvoye = status;
+                        responseCode = status;
                     },
                 } as any
             );
-            //THEN
-            expect(statusEnvoye).to.equal(StatusCodes.NOT_FOUND);
+
+            expect(responseCode).to.equal(StatusCodes.NO_CONTENT);
+        });
+        it("doit renvoyer 500 si tout si l'opération a échoué", () => {
+            //GIVEN
+            let responseCode = 0;
+            const commandBus: TestableCommandBus<ArreterAlerteLancee> = new TestableCommandBus(true);
+            const sut = new CommunicationController(commandBus, {} as QueryBus);
+
+            //WHEN
+            sut.arreterAlerteLancee(
+                {} as Request,
+                {
+                    sendStatus: (status: number) => {
+                        responseCode = status;
+                    },
+                } as any
+            );
+
+            expect(responseCode).to.equal(StatusCodes.INTERNAL_SERVER_ERROR);
         });
     });
 });

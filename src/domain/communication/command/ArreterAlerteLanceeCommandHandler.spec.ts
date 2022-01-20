@@ -1,6 +1,6 @@
 import {expect} from "chai";
-import {FakeUuidGenerator} from "../../../../test/FakeUuidGenerator";
 import {InMemoryAlerteRepository} from "../../../infrastructure/repository/inMemory/InMemoryAlerteRepository";
+import {UuidGenerator} from "../../../infrastructure/repository/UuidGenerator";
 import {Alerte} from "../agregat/Alerte";
 import {AlerteLanceeArretee} from "../event/AlerteLanceeArretee";
 import {Lieu} from "../valueObject/Lieu";
@@ -9,7 +9,7 @@ import {ArreterAlerteLancee, ArreterAlerteLanceeCommandHandler} from "./ArreterA
 describe("ArreterAlerteLanceeCommandHandler", function () {
     it("doit arreter alerte lancee", function () {
         //GIVEN
-        const alerteRepository = new InMemoryAlerteRepository(new FakeUuidGenerator());
+        const alerteRepository = new InMemoryAlerteRepository(new UuidGenerator());
         const sut = new ArreterAlerteLanceeCommandHandler(alerteRepository);
         alerteRepository.save(Alerte.lancer("alerteId", new Lieu(1, 2), 123));
 
@@ -22,7 +22,7 @@ describe("ArreterAlerteLanceeCommandHandler", function () {
     });
     it("doit renvoyer un erreur si aucune alerte lancee", () => {
         //GIVEN
-        const alerteRepository = new InMemoryAlerteRepository(new FakeUuidGenerator());
+        const alerteRepository = new InMemoryAlerteRepository(new UuidGenerator());
         const sut = new ArreterAlerteLanceeCommandHandler(alerteRepository);
         alerteRepository.save(Alerte.create("alerteId", new Lieu(1, 2), 123, false));
 
@@ -35,7 +35,7 @@ describe("ArreterAlerteLanceeCommandHandler", function () {
     });
     it("doit renvoyer un événement si alerte est bien arrêtée", function () {
         //GIVEN
-        const alerteRepository = new InMemoryAlerteRepository(new FakeUuidGenerator());
+        const alerteRepository = new InMemoryAlerteRepository(new UuidGenerator());
         const sut = new ArreterAlerteLanceeCommandHandler(alerteRepository);
         alerteRepository.save(Alerte.lancer("alerteId", new Lieu(1, 2), 123));
 

@@ -41,7 +41,7 @@ export class AlerterAccompagnantCommandHandler implements CommandHandler {
         const telephoneAccompagnant: string =
             this.informationAccompagnantRepository.recupererNumeroTelephoneAccompagnant();
         const isSMSSent = this.messagingService.sendSMS(telephoneAccompagnant, "Alerte !!!");
-        if (isSMSSent) return Result.ok(new AccompagnantAlerte(alerte.alerteId));
+        if (isSMSSent) return Result.ok(new AccompagnantAlerte(alerte.id));
         return Result.fail("Alerte n'a pas pu être envoyée");
     }
 

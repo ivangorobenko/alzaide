@@ -8,6 +8,7 @@ import {CommandBus} from "./core/CommandBus";
 import {QueryBus} from "./core/QueryBus";
 import {Timer} from "./core/Timer";
 import {AlerterAccompagnantCommandHandler} from "./domain/communication/command/AlerterAccompagnantCommandHandler";
+import {ArreterAlerteLanceeCommandHandler} from "./domain/communication/command/ArreterAlerteLanceeCommandHandler";
 import {LaisserMessageCommandHandler} from "./domain/communication/command/LaisserMessageCommandHandler";
 import {SupprimerMessageCommandHandler} from "./domain/communication/command/SupprimerMessageCommandHandler";
 import {
@@ -59,6 +60,7 @@ const subscribeCommandsToHandlers = (commandBus: CommandBus, repositories: any) 
             new UuidGenerator()
         )
     );
+    commandBus.subscribe(new ArreterAlerteLanceeCommandHandler(repositories.alerteRepository));
 };
 
 const subscribeQueriesToHandlers = (queryBus: QueryBus, repositories: any) => {

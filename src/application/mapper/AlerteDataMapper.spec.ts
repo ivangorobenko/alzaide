@@ -13,7 +13,7 @@ describe("AlerteDataMapper", () => {
         //WHEN
         const alerte: Alerte = AlerteDataMapper.mapFromDBToDomain(alerteDB);
         //THEN
-        expect(alerte.alerteId).to.be.equal(alerteDB.alerteId);
+        expect(alerte.id).to.be.equal(alerteDB.id);
         expect(alerte.lieu).to.deep.equal(lieu);
         expect(alerte.timestamp).to.be.equal(alerteDB.timestamp);
         expect(alerte.estLancee()).to.be.equal(alerteDB.lancee);
@@ -26,7 +26,7 @@ describe("AlerteDataMapper", () => {
         //WHEN
         const alerteDB: AlerteDB = AlerteDataMapper.mapFromDomainToDB(alerte);
         //THEN
-        expect(alerteDB.alerteId).to.be.equal(alerte.alerteId);
+        expect(alerteDB.id).to.be.equal(alerte.id);
         expect(alerteDB.lieu).to.deep.equal(lieu);
         expect(alerteDB.timestamp).to.be.equal(alerte.timestamp);
         expect(alerteDB.lancee).to.be.equal(alerte.estLancee());
@@ -38,7 +38,7 @@ describe("AlerteDataMapper", () => {
         //WHEN
         const alerteDTO: AlerteDTO = AlerteDataMapper.mapFromDomainToDTO(alerte);
         //THEN
-        expect(alerteDTO.alerteId).to.be.equal(alerte.alerteId);
+        expect(alerteDTO.alerteId).to.be.equal(alerte.id);
         expect(alerteDTO.lieu).to.deep.equal(lieu);
         expect(alerteDTO.timestamp).to.be.equal(alerte.timestamp);
     });

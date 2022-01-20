@@ -4,6 +4,7 @@ import {CommandBus} from "../../core/CommandBus";
 import {QueryBus} from "../../core/QueryBus";
 import {Message} from "../../domain/communication/agregat/Message";
 import {AlerterAccompagnant} from "../../domain/communication/command/AlerterAccompagnantCommandHandler";
+import {ArreterAlerteLancee} from "../../domain/communication/command/ArreterAlerteLanceeCommandHandler";
 import {LaisserMessage} from "../../domain/communication/command/LaisserMessageCommandHandler";
 import {SupprimerMessage} from "../../domain/communication/command/SupprimerMessageCommandHandler";
 import {RecupererAlerteLancee} from "../../domain/communication/query/RecupererAlerteLanceeQueryHandler";
@@ -50,7 +51,12 @@ export class CommunicationController {
 
     recupererAlerteLancee(req: Request, res: Response) {
         const resultOrError = this.queryBus.dispatch(new RecupererAlerteLancee());
-        if (resultOrError.isFailure) return res.sendStatus(StatusCodes.NOT_FOUND);
         res.status(StatusCodes.OK).send(AlerteDataMapper.mapFromDomainToDTO(resultOrError.getValue()));
+    }
+
+    arreterAlerteLancee(req: Request, res: Response) {
+        const result = this.commandBus.dispatch(new ArreterAlerteLancee());
+        if (result.isFailure) return res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
+        res.sendStatus(StatusCodes.NO_CONTENT);
     }
 }

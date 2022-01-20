@@ -63,4 +63,14 @@ describe("La configuration de routes de communication", () => {
                 done();
             });
     });
+    it("doit rendre accessible la route DELETE /alerte", done => {
+        const alerteRepository = testContext.repositories.alerteRepository;
+        alerteRepository.save(Alerte.lancer("123", new Lieu(1, 2), 123));
+        chai.request(testContext.app)
+            .delete("/alerte")
+            .end((err, res) => {
+                expect(res.status).to.be.equal(204);
+                done();
+            });
+    });
 });

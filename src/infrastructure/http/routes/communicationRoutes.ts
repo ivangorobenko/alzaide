@@ -20,5 +20,8 @@ export const configureMessageRoutes = (commandBus: CommandBus, queryBus: QueryBu
     communicationRouter.get("/alerte", (req: Request, res: Response) =>
         messageController.recupererAlerteLancee(req, res)
     );
+    communicationRouter.delete("/alerte", (req: Request, res: Response) =>
+        messageController.arreterAlerteLancee(req, res)
+    );
     return communicationRouter;
 };

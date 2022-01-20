@@ -1,8 +1,8 @@
 import {Lieu} from "../valueObject/Lieu";
 
 export class Alerte {
-    get alerteId(): string {
-        return this._alerteId;
+    get id(): string {
+        return this._id;
     }
 
     get timestamp(): number {
@@ -15,26 +15,26 @@ export class Alerte {
 
     private readonly _lieu: Lieu;
     private readonly _timestamp: number;
-    private readonly _alerteId: string;
+    private readonly _id: string;
     private _lancee: boolean;
 
-    private constructor(alerteId: string, lieu: Lieu, timestamp: number, lancee = true) {
-        this._alerteId = alerteId;
+    private constructor(id: string, lieu: Lieu, timestamp: number, lancee = true) {
+        this._id = id;
         this._lieu = lieu;
         this._timestamp = timestamp;
         this._lancee = lancee;
     }
 
-    public static lancer(alerteId: string, lieu: Lieu, timestamp: number) {
-        return new Alerte(alerteId, lieu, timestamp);
+    public static lancer(id: string, lieu: Lieu, timestamp: number) {
+        return new Alerte(id, lieu, timestamp);
     }
 
-    public static create(alerteId: string, lieu: Lieu, timestamp: number, lancee: boolean) {
-        return new Alerte(alerteId, lieu, timestamp, lancee);
+    public static create(id: string, lieu: Lieu, timestamp: number, lancee: boolean) {
+        return new Alerte(id, lieu, timestamp, lancee);
     }
 
     public arreter(): Alerte {
-        return new Alerte(this._alerteId, this._lieu, this._timestamp, false);
+        return new Alerte(this._id, this._lieu, this._timestamp, false);
     }
 
     public estLancee() {

@@ -13,7 +13,7 @@ describe("Alerte", () => {
         const alerte: Alerte = Alerte.lancer(alerteId, lieu, timestamp);
 
         //THEN
-        expect(alerte.alerteId).to.deep.equal(alerteId);
+        expect(alerte.id).to.deep.equal(alerteId);
         expect(alerte.lieu).to.deep.equal(lieu);
         expect(alerte.timestamp).to.deep.equal(timestamp);
     });

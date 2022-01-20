@@ -5,7 +5,7 @@ import {Result} from "../../../core/Result";
 import {AlerteLanceeArretee} from "../event/AlerteLanceeArretee";
 import {AlerteRepository} from "../repository/AlerteRepository";
 
-const ARRETER_ALERTE_LANCEE = "ARRETER_ALERTE_LANCEE";
+export const ARRETER_ALERTE_LANCEE = "ARRETER_ALERTE_LANCEE";
 
 export class ArreterAlerteLanceeCommandHandler implements CommandHandler {
     private alerteRepository: AlerteRepository;
@@ -19,7 +19,7 @@ export class ArreterAlerteLanceeCommandHandler implements CommandHandler {
         if (alerteLancee === undefined) return Result.fail("Aucune alerte lancee");
         const alerteLanceeArretee = alerteLancee?.arreter();
         this.alerteRepository.save(alerteLanceeArretee);
-        return Result.ok(new AlerteLanceeArretee(alerteLanceeArretee.alerteId));
+        return Result.ok(new AlerteLanceeArretee(alerteLanceeArretee.id));
     }
 
     typeOf(): string {

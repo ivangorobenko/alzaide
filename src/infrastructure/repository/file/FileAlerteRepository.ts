@@ -17,13 +17,18 @@ export class FileAlerteRepository implements AlerteRepository {
     }
 
     async save(value: Alerte): Promise<void> {
-        this.data[this.idGenerator.generate()] = AlerteDataMapper.mapFromDomainToDB(value);
+        const alerteExistante = Object.entries(this.data).find(([, item]) => item.id === value.id);
+        if (alerteExistante === undefined) {
+            this.data[this.idGenerator.generate()] = AlerteDataMapper.mapFromDomainToDB(value);
+        } else {
+            this.data[alerteExistante[0]] = AlerteDataMapper.mapFromDomainToDB(value);
+        }
         return syncPersistence(this.filePath, this.data);
     }
 
     recupererAlerteLancee(): Alerte | undefined {
         const alerteDBTrouvee = Object.values(this.data).find(alerte =>
-            alerte.lancee ? Alerte.create(alerte.alerteId, alerte.lieu, alerte.timestamp, alerte.lancee) : undefined
+            alerte.lancee ? Alerte.create(alerte.id, alerte.lieu, alerte.timestamp, alerte.lancee) : undefined
         );
         if (alerteDBTrouvee) return AlerteDataMapper.mapFromDBToDomain(alerteDBTrouvee) as Alerte;
         return undefined;
