@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "babel-node ./src/server.ts --extensions '.ts,.js'",
+    "start": "node ./dist/server.js",
     "dev": "nodemon --exec babel-node ./src/server.ts --extensions '.ts,.js'",
     "test": "ts-mocha"
   },
