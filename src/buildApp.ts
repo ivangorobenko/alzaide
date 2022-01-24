@@ -31,7 +31,7 @@ export const buildApp = (repositories: Repositories): Application => {
     app.use(bodyParser.json());
     app.use(express.json());
     app.use(express.urlencoded({extended: false}));
-    app.use(cors({origin: false}));
+    app.use(cors({origin: "https://alzaide.herokuapp.com/"}));
 
     app.use(cookieParser());
     app.use(express.static(path.join(__dirname, "public")));
