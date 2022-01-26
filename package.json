@@ -1,7 +1,10 @@
 {
   "name": "alzaide",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "private": true,
+  "engines": {
+    "node": "17.4.0"
+  },
   "scripts": {
     "start": "node ./dist/server.js",
     "build": "rm -rf dist && babel src --out-dir dist --extensions '.ts,.js'",
@@ -72,7 +75,7 @@
         "@babel/env",
         {
           "targets": {
-            "node": "14"
+            "node": "17"
           }
         }
       ],
