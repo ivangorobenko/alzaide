@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node ./dist/server.js",
+    "build": "rm -rf dist && babel src --out-dir dist --extensions '.ts,.js'",
     "dev": "nodemon --exec babel-node ./src/server.ts --extensions '.ts,.js'",
     "test": "ts-mocha"
   },
