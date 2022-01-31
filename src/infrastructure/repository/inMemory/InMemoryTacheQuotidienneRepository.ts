@@ -14,4 +14,8 @@ export class InMemoryTacheQuotidienneRepository {
     save(tache: string, value: TacheQuotidienne): void {
         this.data[tache] = value;
     }
+
+    getAll() {
+        return Object.values(this.data);
+    }
 }

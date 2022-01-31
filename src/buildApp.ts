@@ -11,14 +11,10 @@ import {AlerterAccompagnantCommandHandler} from "./domain/communication/command/
 import {ArreterAlerteLanceeCommandHandler} from "./domain/communication/command/ArreterAlerteLanceeCommandHandler";
 import {LaisserMessageCommandHandler} from "./domain/communication/command/LaisserMessageCommandHandler";
 import {SupprimerMessageCommandHandler} from "./domain/communication/command/SupprimerMessageCommandHandler";
-import {
-    RECUPERER_ALERTE_LANCEE,
-    RecupererAlerteLanceeQueryHandler,
-} from "./domain/communication/query/RecupererAlerteLanceeQueryHandler";
-import {
-    RECUPERER_MESSAGES,
-    RecupererMessagesQueryHandler,
-} from "./domain/communication/query/RecupererMessagesQueryHandler";
+import {ValiderTacheQuotidienneCommandHandler} from "./domain/communication/command/ValiderTacheQuotidienneCommandHandler";
+import {RecupererAlerteLanceeQueryHandler} from "./domain/communication/query/RecupererAlerteLanceeQueryHandler";
+import {RecupererMessagesQueryHandler} from "./domain/communication/query/RecupererMessagesQueryHandler";
+import {RecupererTachesQuotidiennesQueryHandler} from "./domain/communication/query/RecupererTachesQuotidiennesQueryHandler";
 import {configureMessageRoutes} from "./infrastructure/http/routes/communicationRoutes";
 import {Repositories} from "./infrastructure/repository/Repositories";
 import {UuidGenerator} from "./infrastructure/repository/UuidGenerator";
@@ -61,9 +57,13 @@ const subscribeCommandsToHandlers = (commandBus: CommandBus, repositories: any) 
         )
     );
     commandBus.subscribe(new ArreterAlerteLanceeCommandHandler(repositories.alerteRepository));
+    commandBus.subscribe(
+        new ValiderTacheQuotidienneCommandHandler(repositories.tacheQuotidienneRepository, new Timer())
+    );
 };
 
 const subscribeQueriesToHandlers = (queryBus: QueryBus, repositories: any) => {
-    queryBus.subscribe(RECUPERER_MESSAGES, new RecupererMessagesQueryHandler(repositories.messageRepository));
-    queryBus.subscribe(RECUPERER_ALERTE_LANCEE, new RecupererAlerteLanceeQueryHandler(repositories.alerteRepository));
+    queryBus.subscribe(new RecupererMessagesQueryHandler(repositories.messageRepository));
+    queryBus.subscribe(new RecupererAlerteLanceeQueryHandler(repositories.alerteRepository));
+    queryBus.subscribe(new RecupererTachesQuotidiennesQueryHandler(repositories.tacheQuotidienneRepository));
 };

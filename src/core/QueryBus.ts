@@ -9,8 +9,8 @@ export interface QueryHandlers {
 export class QueryBus {
     constructor(private handlers: QueryHandlers = {}) {}
 
-    subscribe(type: string, handler: QueryHandler<any>): void {
-        this.handlers[type] = handler;
+    subscribe(handler: QueryHandler<any>): void {
+        this.handlers[handler.typeOf()] = handler;
     }
 
     dispatch(query: Query): Result<any> {

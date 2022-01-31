@@ -18,6 +18,10 @@ export class RecupererAlerteLanceeQueryHandler implements QueryHandler<Alerte | 
         if (alerte) return Result.ok(alerte);
         return Result.fail("Aucune alerte active");
     }
+
+    typeOf(): string {
+        return RECUPERER_ALERTE_LANCEE;
+    }
 }
 
 export class RecupererAlerteLancee extends Query {

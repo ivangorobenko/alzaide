@@ -26,4 +26,23 @@ describe("Valider tache command quotidienne handler", () => {
         expect(result.isSuccess).to.be.true;
         expect(result.getValue()).to.be.deep.equal(new TacheQuotidienneValidee(typeTache));
     });
+    it("doit retourner un échec si la tâche qutotidienne n'a pas été trouvée", () => {
+        //GIVEN
+        const tacheNonExistante = "TACHE_NON_EXISTANTE";
+        const tacheValide = "RECEVOIR_JOURNAL";
+        const tacheQuotidienneRepository = new InMemoryTacheQuotidienneRepository();
+        const commandHandler = new ValiderTacheQuotidienneCommandHandler(tacheQuotidienneRepository, {now: () => 222});
+        tacheQuotidienneRepository.save(tacheValide, {
+            type: tacheValide,
+            valide: false,
+            timestampMiseAJour: 123,
+        });
+
+        //WHEN
+        const result = commandHandler.handle(new ValiderTacheQuotidienne(tacheNonExistante));
+
+        //THEN
+        expect(result.isFailure).to.be.true;
+        expect(result.getValue()).to.be.deep.equal("TACHE_N_EXISTE_PAS");
+    });
 });

@@ -3,7 +3,7 @@ export class TacheQuotidienne {
     valide: boolean;
     timestampMiseAJour: number;
 
-    constructor(type: string, valide: boolean, timestampMiseAJour: number) {
+    private constructor(type: string, valide: boolean, timestampMiseAJour: number) {
         this.type = type;
         this.valide = valide;
         this.timestampMiseAJour = timestampMiseAJour;
@@ -11,5 +11,9 @@ export class TacheQuotidienne {
 
     public static valider(tache: TacheQuotidienne, timestampMiseAJour: number): TacheQuotidienne {
         return new TacheQuotidienne(tache.type, true, timestampMiseAJour);
+    }
+
+    public static create(typeTache: string, timestampMiseAJour: number): TacheQuotidienne {
+        return new TacheQuotidienne(typeTache, false, timestampMiseAJour);
     }
 }

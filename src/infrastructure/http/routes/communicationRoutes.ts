@@ -6,22 +6,30 @@ import {QueryBus} from "../../../core/QueryBus";
 const communicationRouter = express.Router();
 
 export const configureMessageRoutes = (commandBus: CommandBus, queryBus: QueryBus) => {
-    const messageController = new CommunicationController(commandBus, queryBus);
-    communicationRouter.put("/message", (req: Request, res: Response) => messageController.laisserMessage(req, res));
+    const communicationController = new CommunicationController(commandBus, queryBus);
+    communicationRouter.put("/message", (req: Request, res: Response) =>
+        communicationController.laisserMessage(req, res)
+    );
     communicationRouter.get("/messages", (req: Request, res: Response) =>
-        messageController.recupererMessages(req, res)
+        communicationController.recupererMessages(req, res)
     );
     communicationRouter.delete("/messages/:id", (req: Request, res: Response) => {
-        messageController.supprimerMessage(req, res);
+        communicationController.supprimerMessage(req, res);
     });
     communicationRouter.put("/alerte", (req: Request, res: Response) =>
-        messageController.alerterAccompagnant(req, res)
+        communicationController.alerterAccompagnant(req, res)
     );
     communicationRouter.get("/alerte", (req: Request, res: Response) =>
-        messageController.recupererAlerteLancee(req, res)
+        communicationController.recupererAlerteLancee(req, res)
     );
     communicationRouter.delete("/alerte", (req: Request, res: Response) =>
-        messageController.arreterAlerteLancee(req, res)
+        communicationController.arreterAlerteLancee(req, res)
+    );
+    communicationRouter.post("/tache-quotidienne", (req: Request, res: Response) =>
+        communicationController.validerTacheQuotidienne(req, res)
+    );
+    communicationRouter.get("/tache-quotidienne", (req: Request, res: Response) =>
+        communicationController.recupererTachesQuotidiennes(req, res)
     );
     return communicationRouter;
 };

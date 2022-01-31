@@ -18,6 +18,10 @@ import {
 import {LAISSER_MESSAGE, LaisserMessage} from "../../domain/communication/command/LaisserMessageCommandHandler";
 import {SUPPRIMER_MESSAGE, SupprimerMessage} from "../../domain/communication/command/SupprimerMessageCommandHandler";
 import {
+    VALIDER_TACHE_QUOTIDIENNE,
+    ValiderTacheQuotidienne,
+} from "../../domain/communication/command/ValiderTacheQuotidienneCommandHandler";
+import {
     RECUPERER_ALERTE_LANCEE,
     RecupererAlerteLancee,
 } from "../../domain/communication/query/RecupererAlerteLanceeQueryHandler";
@@ -372,6 +376,61 @@ describe("CommunicationController", () => {
             );
 
             expect(responseCode).to.equal(StatusCodes.INTERNAL_SERVER_ERROR);
+        });
+    });
+    describe("sur l'action de valider la tache quotidienne", () => {
+        it("doit dispatcher la commande pour valider la tache quotidienne", function () {
+            //GIVEN
+            const commandBus: TestableCommandBus<ValiderTacheQuotidienne> = new TestableCommandBus();
+            const sut = new CommunicationController(commandBus, {} as QueryBus);
+
+            //WHEN
+            sut.validerTacheQuotidienne(
+                {body: {typeTache: "RECEVOIR_JOURNAL"}} as Request,
+                {sendStatus: () => undefined} as any
+            );
+
+            //THEN
+            const dispatchedCommand: ValiderTacheQuotidienne | undefined = commandBus.dispatchedCommand;
+            expect(dispatchedCommand).to.not.be.undefined;
+            expect(dispatchedCommand?.type).to.be.equal(VALIDER_TACHE_QUOTIDIENNE);
+            expect(dispatchedCommand?.typeTache).to.be.equal("RECEVOIR_JOURNAL");
+        });
+        it("doit renvoyer 204 si tout s'est bien passé", () => {
+            //GIVEN
+            let responseCode = 0;
+            const commandBus: TestableCommandBus<ValiderTacheQuotidienne> = new TestableCommandBus();
+            const sut = new CommunicationController(commandBus, {} as QueryBus);
+
+            //WHEN
+            sut.validerTacheQuotidienne(
+                {body: {typeTache: "RECEVOIR_JOURNAL"}} as Request,
+                {
+                    sendStatus: (status: number) => {
+                        responseCode = status;
+                    },
+                } as any
+            );
+
+            expect(responseCode).to.equal(StatusCodes.NO_CONTENT);
+        });
+        it("doit renvoyer 404 si tout si l'opération a échoué", () => {
+            //GIVEN
+            let responseCode = 0;
+            const commandBus: TestableCommandBus<ValiderTacheQuotidienne> = new TestableCommandBus(true);
+            const sut = new CommunicationController(commandBus, {} as QueryBus);
+
+            //WHEN
+            sut.validerTacheQuotidienne(
+                {body: {typeTache: "TACHE_NON_EXISTANTE"}} as Request,
+                {
+                    sendStatus: (status: number) => {
+                        responseCode = status;
+                    },
+                } as any
+            );
+
+            expect(responseCode).to.equal(StatusCodes.NOT_FOUND);
         });
     });
 });

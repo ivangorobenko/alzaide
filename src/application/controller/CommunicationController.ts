@@ -7,8 +7,10 @@ import {AlerterAccompagnant} from "../../domain/communication/command/AlerterAcc
 import {ArreterAlerteLancee} from "../../domain/communication/command/ArreterAlerteLanceeCommandHandler";
 import {LaisserMessage} from "../../domain/communication/command/LaisserMessageCommandHandler";
 import {SupprimerMessage} from "../../domain/communication/command/SupprimerMessageCommandHandler";
+import {ValiderTacheQuotidienne} from "../../domain/communication/command/ValiderTacheQuotidienneCommandHandler";
 import {RecupererAlerteLancee} from "../../domain/communication/query/RecupererAlerteLanceeQueryHandler";
 import {RecupererMessagesQuery} from "../../domain/communication/query/RecupererMessagesQueryHandler";
+import {RecupererTachesQuotidiennes} from "../../domain/communication/query/RecupererTachesQuotidiennesQueryHandler";
 import {Lieu} from "../../domain/communication/valueObject/Lieu";
 import {AlerteDataMapper} from "../mapper/AlerteDataMapper";
 import {MessageDataMapper} from "../mapper/MessageDataMapper";
@@ -58,5 +60,16 @@ export class CommunicationController {
         const result = this.commandBus.dispatch(new ArreterAlerteLancee());
         if (result.isFailure) return res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
         res.sendStatus(StatusCodes.NO_CONTENT);
+    }
+
+    validerTacheQuotidienne(req: Request, res: Response) {
+        const result = this.commandBus.dispatch(new ValiderTacheQuotidienne(req.body.typeTache));
+        if (result.isFailure) return res.sendStatus(StatusCodes.NOT_FOUND);
+        res.sendStatus(StatusCodes.NO_CONTENT);
+    }
+
+    recupererTachesQuotidiennes(req: Request, res: Response) {
+        const result = this.queryBus.dispatch(new RecupererTachesQuotidiennes());
+        res.status(StatusCodes.OK).send(result.getValue());
     }
 }

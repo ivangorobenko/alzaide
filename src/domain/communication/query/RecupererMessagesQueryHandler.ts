@@ -18,6 +18,10 @@ export class RecupererMessagesQueryHandler implements QueryHandler<Message[]> {
             this.messageRepository.getAll().sort((message1, message2) => message2.timestamp - message1.timestamp)
         );
     }
+
+    typeOf(): string {
+        return RECUPERER_MESSAGES;
+    }
 }
 
 export class RecupererMessagesQuery extends Query {
