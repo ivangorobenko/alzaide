@@ -5,7 +5,7 @@ import {QueryBus} from "../../../core/QueryBus";
 
 const communicationRouter = express.Router();
 
-export const configureMessageRoutes = (commandBus: CommandBus, queryBus: QueryBus) => {
+export const configureCommunicationRoutes = (commandBus: CommandBus, queryBus: QueryBus) => {
     const communicationController = new CommunicationController(commandBus, queryBus);
     communicationRouter.put("/message", (req: Request, res: Response) =>
         communicationController.laisserMessage(req, res)

@@ -16,4 +16,8 @@ export class TacheQuotidienne {
     public static create(typeTache: string, timestampMiseAJour: number): TacheQuotidienne {
         return new TacheQuotidienne(typeTache, false, timestampMiseAJour);
     }
+
+    static invalider(tache: TacheQuotidienne, timestampMiseAJour: number) {
+        return new TacheQuotidienne(tache.type, false, timestampMiseAJour);
+    }
 }
